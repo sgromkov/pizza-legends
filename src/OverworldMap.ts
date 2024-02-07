@@ -1,13 +1,14 @@
 import { GameObject } from './GameObject';
+import { Person } from './Person';
 
 export interface OverworldMapConfig {
-  gameObjects: Record<string, GameObject>;
+  gameObjects: Record<string, GameObject | Person>;
   lowerSrc: string;
   upperSrc: string;
 }
 
 export class OverworldMap {
-  gameObjects: Record<string, GameObject>;
+  gameObjects: Record<string, GameObject | Person>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
 

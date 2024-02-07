@@ -1,20 +1,23 @@
 import { GameObject } from './GameObject';
 import { OverworldMapConfig } from './OverworldMap';
+import { Person } from './Person';
+import { withGrid } from './utils';
 
 export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
   DemoRoom: {
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
-      hero: new GameObject({
+      hero: new Person({
         src: '../images/characters/people/hero.png',
-        x: 5,
-        y: 6,
+        x: withGrid(5),
+        y: withGrid(6),
+        isPlayerControlled: true,
       }),
-      npc1: new GameObject({
+      npc1: new Person({
         src: '../images/characters/people/npc1.png',
-        x: 4,
-        y: 9,
+        x: withGrid(4),
+        y: withGrid(9),
       }),
     },
   },
@@ -22,20 +25,21 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {
-      hero: new GameObject({
+      hero: new Person({
         src: '../images/characters/people/hero.png',
-        x: 3,
-        y: 5,
+        x: withGrid(3),
+        y: withGrid(5),
+        isPlayerControlled: true,
       }),
-      npc2: new GameObject({
+      npc2: new Person({
         src: '../images/characters/people/npc2.png',
-        x: 9,
-        y: 6,
+        x: withGrid(9),
+        y: withGrid(6),
       }),
-      npc3: new GameObject({
+      npc3: new Person({
         src: '../images/characters/people/npc3.png',
-        x: 10,
-        y: 8,
+        x: withGrid(10),
+        y: withGrid(8),
       }),
     },
   },
