@@ -87,7 +87,7 @@ export class Sprite {
     this.currentAnimation = config.currentAnimation || AnimationKey.IdleDown;
     this.currentAnimationFrame = 0;
 
-    this.animationFrameLimit = config.animationFrameLimit || 12;
+    this.animationFrameLimit = config.animationFrameLimit || 16;
     this.animationFrameProgress = this.animationFrameLimit;
 
     // Configure the game object:
