@@ -30,5 +30,5 @@ export class GameObject {
     });
   }
 
-  update() {}
+  update(state: { arrow: Direction }) {}
 }

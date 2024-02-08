@@ -1,4 +1,5 @@
 import { Direction, GameObject, GameObjectConfig } from './GameObject';
+import { AnimationKey } from './Sprite';
 
 interface PersonConfig extends GameObjectConfig {
   isPlayerControlled?: boolean;
@@ -26,6 +27,7 @@ export class Person extends GameObject {
 
   update(state: { arrow: Direction }) {
     this.updatePosition();
+    this.updateSprite(state);
 
     if (
       this.isPlayerControlled &&
@@ -43,6 +45,21 @@ export class Person extends GameObject {
 
       this[property] += change;
       this.movingProgressRemaining -= 1;
+    }
+  }
+
+  updateSprite(state: { arrow: Direction }) {
+    if (
+      this.isPlayerControlled &&
+      this.movingProgressRemaining === 0 &&
+      !state.arrow
+    ) {
+      this.sprite.setAnimation(('idle-' + this.direction) as AnimationKey);
+      return;
+    }
+
+    if (this.movingProgressRemaining > 0) {
+      this.sprite.setAnimation(('walk-' + this.direction) as AnimationKey);
     }
   }
 }

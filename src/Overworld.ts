@@ -49,7 +49,7 @@ export class Overworld {
   }
 
   init() {
-    this.map = new OverworldMap(OVERWORLD_MAPS.Kitchen);
+    this.map = new OverworldMap(OVERWORLD_MAPS.DemoRoom);
 
     this.directionInput = new DirectionInput();
     this.directionInput.init();
