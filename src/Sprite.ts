@@ -1,4 +1,6 @@
 import { GameObject } from './GameObject';
+import { Person } from './Person';
+import { withGrid } from './utils';
 
 export enum AnimationKey {
   IdleDown = 'idle-down',
@@ -122,9 +124,9 @@ export class Sprite {
     }
   }
 
-  draw(ctx: CanvasRenderingContext2D): void {
-    const x = this.gameObject.x - 8;
-    const y = this.gameObject.y - 18;
+  draw(ctx: CanvasRenderingContext2D, cameraPerson: GameObject | Person): void {
+    const x = this.gameObject.x - 8 + withGrid(10.5) - cameraPerson.x;
+    const y = this.gameObject.y - 18 + withGrid(6) - cameraPerson.y;
 
     if (this.isShadowLoaded) {
       ctx.drawImage(this.shadow, x, y);
