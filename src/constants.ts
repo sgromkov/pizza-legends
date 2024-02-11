@@ -1,7 +1,7 @@
 import { GameObject } from './GameObject';
 import { OverworldMapConfig } from './OverworldMap';
 import { Person } from './Person';
-import { withGrid } from './utils';
+import { asGridCoord, withGrid } from './utils';
 
 export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
   DemoRoom: {
@@ -19,6 +19,26 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
         x: withGrid(4),
         y: withGrid(9),
       }),
+    },
+    walls: {
+      [asGridCoord(7, 6)]: true,
+      [asGridCoord(8, 6)]: true,
+      [asGridCoord(7, 7)]: true,
+      [asGridCoord(8, 7)]: true,
+      [asGridCoord(6, 4)]: true,
+      [asGridCoord(8, 4)]: true,
+      [asGridCoord(3, 4)]: true,
+      [asGridCoord(4, 4)]: true,
+      [asGridCoord(1, 3)]: true,
+      [asGridCoord(2, 3)]: true,
+      [asGridCoord(5, 3)]: true,
+      [asGridCoord(6, 3)]: true,
+      [asGridCoord(8, 3)]: true,
+      [asGridCoord(9, 3)]: true,
+      [asGridCoord(10, 3)]: true,
+      [asGridCoord(6, 2)]: true,
+      [asGridCoord(7, 2)]: true,
+      [asGridCoord(8, 2)]: true,
     },
   },
   Kitchen: {
@@ -42,5 +62,6 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
         y: withGrid(8),
       }),
     },
+    walls: {},
   },
 };

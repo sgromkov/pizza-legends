@@ -1,3 +1,4 @@
+import { OverworldMap } from './OverworldMap';
 import { Sprite } from './Sprite';
 
 export enum Direction {
@@ -5,6 +6,11 @@ export enum Direction {
   Down = 'down',
   Left = 'left',
   Right = 'right',
+}
+
+export interface ActionState {
+  arrow: Direction;
+  map: OverworldMap;
 }
 
 export interface GameObjectConfig {
@@ -19,8 +25,10 @@ export class GameObject {
   y: number;
   sprite: Sprite;
   direction: Direction;
+  isMounted: boolean;
 
   constructor(config: GameObjectConfig) {
+    this.isMounted = false;
     this.x = config.x || 0;
     this.y = config.y || 0;
     this.direction = config.direction || Direction.Down;
@@ -30,5 +38,11 @@ export class GameObject {
     });
   }
 
-  update(state: { arrow: Direction }) {}
+  mount(map: OverworldMap): void {
+    this.isMounted = true;
+
+    map.addWall(this.x, this.y);
+  }
+
+  update(state: ActionState): void {}
 }
