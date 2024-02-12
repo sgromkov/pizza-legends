@@ -34,3 +34,17 @@ export function nextPosition(
 
   return { x, y };
 }
+
+export enum eventName {
+  PersonWalkingComplete = 'PersonWalkingComplete',
+  PersonStandComplete = 'PersonStandComplete',
+}
+
+export function emitEvent(
+  name: eventName,
+  detail: Record<string, unknown>
+): void {
+  const event = new CustomEvent(name, { detail });
+
+  document.dispatchEvent(event);
+}

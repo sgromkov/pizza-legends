@@ -3,16 +3,15 @@ import {
   Direction,
   GameObject,
   GameObjectConfig,
+  GameObjectAction,
+  GameObjectBehaviour,
 } from './GameObject';
 import { OverworldMap } from './OverworldMap';
 import { AnimationKey } from './Sprite';
+import { emitEvent, eventName } from './utils';
 
 interface PersonConfig extends GameObjectConfig {
   isPlayerControlled?: boolean;
-}
-
-enum PersonAction {
-  Walk = 'walk',
 }
 
 export class Person extends GameObject {
@@ -40,9 +39,13 @@ export class Person extends GameObject {
       this.updatePosition();
     } else {
       // Case: We are keyboard ready and have an arrow pressed:
-      if (this.isPlayerControlled && state.arrow) {
+      if (
+        !state.map.isCutscenePlaying &&
+        this.isPlayerControlled &&
+        state.arrow
+      ) {
         this.startBehaviour(state, {
-          type: PersonAction.Walk,
+          type: GameObjectAction.Walk,
           direction: state.arrow,
         });
       }
@@ -50,22 +53,32 @@ export class Person extends GameObject {
     }
   }
 
-  startBehaviour(
-    state: ActionState,
-    behaviour: { type: PersonAction; direction: Direction }
-  ): void {
+  startBehaviour(state: ActionState, behaviour: GameObjectBehaviour): void {
     // Set character direction to whatever behaviour has:
     this.direction = behaviour.direction;
 
-    if (behaviour.type === PersonAction.Walk) {
+    if (behaviour.type === GameObjectAction.Walk) {
       // Stop here if space is not free:
       if (state.map.isSpaceTaken(this.x, this.y, this.direction)) {
+        if (behaviour.retry) {
+          setTimeout(() => {
+            this.startBehaviour(state, behaviour);
+          }, 10);
+        }
+
         return;
       }
 
       // Move character:
       state.map.moveWall(this.x, this.y, this.direction);
       this.movingProgressRemaining = 16;
+      this.updateSprite();
+    }
+
+    if (behaviour.type === GameObjectAction.Stand) {
+      setTimeout(() => {
+        emitEvent(eventName.PersonStandComplete, { whoId: this.id });
+      }, behaviour.time);
     }
   }
 
@@ -74,6 +87,11 @@ export class Person extends GameObject {
 
     this[property] += change;
     this.movingProgressRemaining -= 0.5;
+
+    if (this.movingProgressRemaining === 0) {
+      // We finished the walk!
+      emitEvent(eventName.PersonWalkingComplete, { whoId: this.id });
+    }
   }
 
   updateSprite(): void {

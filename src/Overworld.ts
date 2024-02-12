@@ -1,5 +1,5 @@
 import { DirectionInput } from './DirectionInput';
-import { GameObject } from './GameObject';
+import { Direction, GameObject, GameObjectAction } from './GameObject';
 import { OverworldMap } from './OverworldMap';
 import { OVERWORLD_MAPS } from './constants';
 
@@ -41,9 +41,14 @@ export class Overworld {
       this.map.drawLowerImage(this.ctx, cameraPerson);
 
       // Draw Game Objects:
-      Object.values(this.map.gameObjects).forEach((object) => {
-        object.sprite.draw(this.ctx, cameraPerson);
-      });
+      Object.values(this.map.gameObjects)
+        // Set correct z-indexes:
+        .sort((a, b) => {
+          return a.y - b.y;
+        })
+        .forEach((object) => {
+          object.sprite.draw(this.ctx, cameraPerson);
+        });
 
       // Draw Upper Layer:
       this.map.drawUpperImage(this.ctx, cameraPerson);
@@ -64,5 +69,13 @@ export class Overworld {
     this.directionInput.init();
 
     this.startGameLoop();
+
+    this.map.startCutscene([
+      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+      { who: 'hero', type: GameObjectAction.Stand, direction: Direction.Right },
+      { who: 'npc1', type: GameObjectAction.Walk, direction: Direction.Left },
+    ]);
   }
 }

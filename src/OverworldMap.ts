@@ -1,4 +1,5 @@
 import { Direction, GameObject } from './GameObject';
+import { BehaviourEvent, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
 import { nextPosition, withGrid } from './utils';
 
@@ -14,6 +15,7 @@ export class OverworldMap {
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
   walls: Record<string, boolean>;
+  isCutscenePlaying: boolean;
 
   constructor(config: OverworldMapConfig) {
     this.gameObjects = config.gameObjects;
@@ -24,6 +26,8 @@ export class OverworldMap {
 
     this.upperImage = new Image();
     this.upperImage.src = config.upperSrc;
+
+    this.isCutscenePlaying = false;
   }
 
   drawLowerImage(
@@ -59,9 +63,28 @@ export class OverworldMap {
   }
 
   mountObjects(): void {
-    Object.values(this.gameObjects).forEach((gameObject) => {
+    Object.keys(this.gameObjects).forEach((key) => {
+      const gameObject = this.gameObjects[key];
+
+      gameObject.id = key;
       gameObject.mount(this);
-    })
+    });
+  }
+
+  async startCutscene(events: BehaviourEvent[]) {
+    this.isCutscenePlaying = true;
+
+    // Start a loop of async events
+    for (let i = 0; i < events.length; i++) {
+      const eventHandler = new OverworldEvent({
+        event: events[i],
+        map: this,
+      });
+
+      await eventHandler.init();
+    }
+
+    this.isCutscenePlaying = false;
   }
 
   addWall(x: number, y: number): void {

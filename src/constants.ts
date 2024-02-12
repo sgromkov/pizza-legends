@@ -1,4 +1,4 @@
-import { GameObject } from './GameObject';
+import { Direction, GameObject, GameObjectAction } from './GameObject';
 import { OverworldMapConfig } from './OverworldMap';
 import { Person } from './Person';
 import { asGridCoord, withGrid } from './utils';
@@ -9,15 +9,61 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
       hero: new Person({
-        src: '../images/characters/people/hero.png',
+        src: '../images/characters/people/npc4.png',
         x: withGrid(5),
         y: withGrid(6),
         isPlayerControlled: true,
       }),
       npc1: new Person({
         src: '../images/characters/people/npc1.png',
-        x: withGrid(4),
+        x: withGrid(7),
         y: withGrid(9),
+        behaviourLoop: [
+          {
+            type: GameObjectAction.Stand,
+            direction: Direction.Left,
+            time: 800,
+          },
+          {
+            type: GameObjectAction.Stand,
+            direction: Direction.Up,
+            time: 800,
+          },
+          {
+            type: GameObjectAction.Stand,
+            direction: Direction.Right,
+            time: 1200,
+          },
+          { type: GameObjectAction.Stand, direction: Direction.Up, time: 300 },
+        ],
+      }),
+      npc2: new Person({
+        src: '../images/characters/people/npc2.png',
+        x: withGrid(3),
+        y: withGrid(7),
+        behaviourLoop: [
+          {
+            type: GameObjectAction.Walk,
+            direction: Direction.Left,
+          },
+          {
+            type: GameObjectAction.Stand,
+            direction: Direction.Up,
+            time: 800,
+          },
+          {
+            type: GameObjectAction.Walk,
+            direction: Direction.Up,
+          },
+          {
+            type: GameObjectAction.Walk,
+            direction: Direction.Right,
+          },
+          {
+            type: GameObjectAction.Walk,
+            direction: Direction.Down,
+          },
+        ],
       }),
     },
     walls: {
