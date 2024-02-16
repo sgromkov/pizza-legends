@@ -23,9 +23,8 @@ export class Person extends GameObject {
     super(config);
 
     this.movingProgressRemaining = 0;
-
+    this.isStanding = false;
     this.isPlayerControlled = config.isPlayerControlled || false;
-
     this.directionUpdate = {
       [Direction.Up]: ['y', -0.5],
       [Direction.Down]: ['y', 0.5],
@@ -76,8 +75,10 @@ export class Person extends GameObject {
     }
 
     if (behaviour.type === GameObjectAction.Stand) {
+      this.isStanding = true;
       setTimeout(() => {
         emitEvent(eventName.PersonStandComplete, { whoId: this.id });
+        this.isStanding = false;
       }, behaviour.time);
     }
   }
