@@ -35,16 +35,37 @@ export function nextPosition(
   return { x, y };
 }
 
-export enum eventName {
+export enum EventName {
   PersonWalkingComplete = 'PersonWalkingComplete',
   PersonStandComplete = 'PersonStandComplete',
 }
 
 export function emitEvent(
-  name: eventName,
+  name: EventName,
   detail: Record<string, unknown>
 ): void {
   const event = new CustomEvent(name, { detail });
 
   document.dispatchEvent(event);
+}
+
+export function getOppositeDirection(direction: Direction): Direction {
+  let oppositeDirection: Direction;
+
+  switch (direction) {
+    case Direction.Left:
+      oppositeDirection = Direction.Up;
+      break;
+    case Direction.Right:
+      oppositeDirection = Direction.Left;
+      break;
+    case Direction.Up:
+      oppositeDirection = Direction.Down;
+      break;
+    case Direction.Down:
+      oppositeDirection = Direction.Up;
+      break;
+  }
+
+  return oppositeDirection;
 }

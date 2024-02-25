@@ -1,6 +1,12 @@
-import { Direction, GameObject, GameObjectAction } from './GameObject';
+import {
+  Direction,
+  GameObject,
+  GameObjectAction,
+  GameObjectName,
+} from './GameObject';
 import { OverworldMapConfig } from './OverworldMap';
 import { Person } from './Person';
+import { TextMessageAction } from './TextMessageEvent';
 import { asGridCoord, withGrid } from './utils';
 
 export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
@@ -8,13 +14,13 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
-      hero: new Person({
+      [GameObjectName.Hero]: new Person({
         src: '../images/characters/people/npc4.png',
         x: withGrid(5),
         y: withGrid(6),
         isPlayerControlled: true,
       }),
-      npc1: new Person({
+      [GameObjectName.Npc1]: new Person({
         src: '../images/characters/people/npc1.png',
         x: withGrid(7),
         y: withGrid(9),
@@ -36,8 +42,30 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
           },
           { type: GameObjectAction.Stand, direction: Direction.Up, time: 300 },
         ],
+        talking: [
+          {
+            events: [
+              {
+                type: TextMessageAction.TextMessage,
+                text: "I'm busy...",
+                faceHero: GameObjectName.Npc1,
+              },
+              { type: TextMessageAction.TextMessage, text: 'Go away!' },
+              {
+                type: GameObjectAction.Walk,
+                direction: Direction.Left,
+                who: GameObjectName.Hero,
+              },
+              {
+                type: GameObjectAction.Walk,
+                direction: Direction.Up,
+                who: GameObjectName.Hero,
+              },
+            ],
+          },
+        ],
       }),
-      npc2: new Person({
+      [GameObjectName.Npc2]: new Person({
         src: '../images/characters/people/npc2.png',
         x: withGrid(3),
         y: withGrid(7),
@@ -91,18 +119,18 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {
-      hero: new Person({
+      [GameObjectName.Hero]: new Person({
         src: '../images/characters/people/hero.png',
         x: withGrid(3),
         y: withGrid(5),
         isPlayerControlled: true,
       }),
-      npc2: new Person({
+      [GameObjectName.Npc2]: new Person({
         src: '../images/characters/people/npc2.png',
         x: withGrid(9),
         y: withGrid(6),
       }),
-      npc3: new Person({
+      [GameObjectName.Npc3]: new Person({
         src: '../images/characters/people/npc3.png',
         x: withGrid(10),
         y: withGrid(8),

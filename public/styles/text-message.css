@@ -1,0 +1,31 @@
+.text-message {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 36px;
+    padding: 4px;
+    background-color: var(--menu-background);
+    border-top: 1px solid var(--menu-border-color);
+    color: var(--menu-font-color);
+}
+
+
+.text-message__text {
+    margin: 0;
+    font-size: 12px;
+}
+
+.text-message__button {
+    margin: 0;
+    font-style: 8px;
+    padding: 0;
+    -webkit-appearance: none;
+    background: none;
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    bottom: 0;
+}

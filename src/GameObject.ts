@@ -1,6 +1,14 @@
-import { BehaviourEvent, OverworldEvent } from './OverworldEvent';
+import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
+import { EventPayload } from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
 import { Sprite } from './Sprite';
+
+export enum GameObjectName {
+  Hero = 'hero',
+  Npc1 = 'npc1',
+  Npc2 = 'npc2',
+  Npc3 = 'npc3',
+}
 
 export enum Direction {
   Up = 'up',
@@ -32,10 +40,13 @@ export interface GameObjectConfig {
   src: string;
   direction?: Direction;
   behaviourLoop?: GameObjectBehaviour[];
+  talking?: Array<{
+    events: EventPayload[];
+  }>;
 }
 
 export class GameObject {
-  id: string;
+  id: GameObjectName;
   x: number;
   y: number;
   sprite: Sprite;
@@ -44,6 +55,9 @@ export class GameObject {
   behaviourLoop: GameObjectBehaviour[];
   behaviourLoopIndex: number;
   isStanding: boolean;
+  talking?: Array<{
+    events: EventPayload[];
+  }>;
 
   constructor(config: GameObjectConfig) {
     this.id = null;
@@ -57,6 +71,7 @@ export class GameObject {
     });
     this.behaviourLoop = config.behaviourLoop || [];
     this.behaviourLoopIndex = 0;
+    this.talking = config.talking || [];
   }
 
   mount(map: OverworldMap): void {
@@ -75,18 +90,22 @@ export class GameObject {
   startBehaviour(state: ActionState, behaviour: GameObjectBehaviour): void {}
 
   async doBehaviourEvent(map: OverworldMap): Promise<void> {
-    if (map.isCutscenePlaying || this.behaviourLoop.length === 0 || this.isStanding) {
+    if (
+      map.isCutscenePlaying ||
+      this.behaviourLoop.length === 0 ||
+      this.isStanding
+    ) {
       return;
     }
 
     // Setting up our event with relevant info:
-    const eventConfig: BehaviourEvent = {
+    const eventConfig: GameObjectEventPayload = {
       ...this.behaviourLoop[this.behaviourLoopIndex],
       who: this.id,
     };
 
     // Create an event instance out of our next event config:
-    const eventHandler = new OverworldEvent({ map, event: eventConfig });
+    const eventHandler = new GameObjectEvent({ map, event: eventConfig });
     await eventHandler.init();
 
     // Setting the next event to fire:

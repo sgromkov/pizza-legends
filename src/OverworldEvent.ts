@@ -1,79 +1,25 @@
 import { GameObjectAction, GameObjectBehaviour } from './GameObject';
 import { OverworldMap } from './OverworldMap';
-import { eventName } from './utils';
+import { TextMessage } from './TextMessage';
+import { EventName } from './utils';
 
-export interface BehaviourEvent extends GameObjectBehaviour {
-  who: string;
+export interface EventPayload {
+  type: string;
+  [key: string]: any;
 }
 
 interface Config {
   map: OverworldMap;
-  event: BehaviourEvent;
+  event: EventPayload;
 }
 
 export class OverworldEvent {
   map: OverworldMap;
-  event: BehaviourEvent;
+  event: EventPayload;
 
   constructor(config: Config) {
     this.map = config.map;
     this.event = config.event;
-  }
-
-  stand(resolve: Function): void {
-    const person = this.map.gameObjects[this.event.who];
-
-    person.startBehaviour(
-      {
-        map: this.map,
-      },
-      {
-        type: GameObjectAction.Stand,
-        direction: this.event.direction,
-        time: this.event.time,
-      }
-    );
-
-    const completeHandler = (e) => {
-      if (e.detail.whoId === this.event.who) {
-        document.removeEventListener(
-          eventName.PersonStandComplete,
-          completeHandler
-        );
-
-        resolve();
-      }
-    };
-
-    document.addEventListener(eventName.PersonStandComplete, completeHandler);
-  }
-
-  walk(resolve: Function): void {
-    const person = this.map.gameObjects[this.event.who];
-
-    person.startBehaviour(
-      {
-        map: this.map,
-      },
-      {
-        type: GameObjectAction.Walk,
-        direction: this.event.direction,
-        retry: true,
-      }
-    );
-
-    const completeHandler = (e) => {
-      if (e.detail.whoId === this.event.who) {
-        document.removeEventListener(
-          eventName.PersonWalkingComplete,
-          completeHandler
-        );
-
-        resolve();
-      }
-    };
-
-    document.addEventListener(eventName.PersonWalkingComplete, completeHandler);
   }
 
   async init(): Promise<void> {

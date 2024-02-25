@@ -1,6 +1,8 @@
 import { DirectionInput } from './DirectionInput';
 import { Direction, GameObject, GameObjectAction } from './GameObject';
+import { KeyPressListener } from './KeyPressListener';
 import { OverworldMap } from './OverworldMap';
+import { TextMessageAction } from './TextMessageEvent';
 import { OVERWORLD_MAPS } from './constants';
 
 interface Config {
@@ -61,21 +63,31 @@ export class Overworld {
     step();
   }
 
+  bindActionInput() {
+    new KeyPressListener('Enter', () => {
+      // Is there a person here to talk?
+      this.map.checkForActionCutscene()
+    });
+  }
+
   init() {
     this.map = new OverworldMap(OVERWORLD_MAPS.DemoRoom);
     this.map.mountObjects();
+
+    this.bindActionInput();
 
     this.directionInput = new DirectionInput();
     this.directionInput.init();
 
     this.startGameLoop();
 
-    this.map.startCutscene([
-      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-      { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-      { who: 'hero', type: GameObjectAction.Stand, direction: Direction.Right },
-      { who: 'npc1', type: GameObjectAction.Walk, direction: Direction.Left },
-    ]);
+    // this.map.startCutscene([
+    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
+    //   { who: 'hero', type: GameObjectAction.Stand, direction: Direction.Right },
+    //   { who: 'npc1', type: GameObjectAction.Walk, direction: Direction.Left },
+    //   { type: TextMessageAction.TextMessage, text: 'Well hello there!' },
+    // ]);
   }
 }

@@ -8,7 +8,7 @@ import {
 } from './GameObject';
 import { OverworldMap } from './OverworldMap';
 import { AnimationKey } from './Sprite';
-import { emitEvent, eventName } from './utils';
+import { emitEvent, EventName } from './utils';
 
 interface PersonConfig extends GameObjectConfig {
   isPlayerControlled?: boolean;
@@ -77,7 +77,7 @@ export class Person extends GameObject {
     if (behaviour.type === GameObjectAction.Stand) {
       this.isStanding = true;
       setTimeout(() => {
-        emitEvent(eventName.PersonStandComplete, { whoId: this.id });
+        emitEvent(EventName.PersonStandComplete, { whoId: this.id });
         this.isStanding = false;
       }, behaviour.time);
     }
@@ -91,7 +91,7 @@ export class Person extends GameObject {
 
     if (this.movingProgressRemaining === 0) {
       // We finished the walk!
-      emitEvent(eventName.PersonWalkingComplete, { whoId: this.id });
+      emitEvent(EventName.PersonWalkingComplete, { whoId: this.id });
     }
   }
 

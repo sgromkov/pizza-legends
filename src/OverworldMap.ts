@@ -1,17 +1,28 @@
-import { Direction, GameObject } from './GameObject';
-import { BehaviourEvent, OverworldEvent } from './OverworldEvent';
+import {
+  Direction,
+  GameObject,
+  GameObjectAction,
+  GameObjectName,
+} from './GameObject';
+import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
+import { EventPayload, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
+import {
+  TextMessageAction,
+  TextMessageEvent,
+  TextMesssageEventPayload,
+} from './TextMessageEvent';
 import { nextPosition, withGrid } from './utils';
 
 export interface OverworldMapConfig {
-  gameObjects: Record<string, GameObject | Person>;
+  gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
   lowerSrc: string;
   upperSrc: string;
   walls: Record<string, boolean>;
 }
 
 export class OverworldMap {
-  gameObjects: Record<string, GameObject | Person>;
+  gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
   walls: Record<string, boolean>;
@@ -63,7 +74,7 @@ export class OverworldMap {
   }
 
   mountObjects(): void {
-    Object.keys(this.gameObjects).forEach((key) => {
+    Object.keys(this.gameObjects).forEach((key: GameObjectName) => {
       const gameObject = this.gameObjects[key];
 
       gameObject.id = key;
@@ -71,15 +82,28 @@ export class OverworldMap {
     });
   }
 
-  async startCutscene(events: BehaviourEvent[]) {
+  async startCutscene(events: EventPayload[]): Promise<void> {
     this.isCutscenePlaying = true;
 
     // Start a loop of async events
     for (let i = 0; i < events.length; i++) {
-      const eventHandler = new OverworldEvent({
-        event: events[i],
-        map: this,
-      });
+      let eventHandler: OverworldEvent;
+
+      switch (events[i].type) {
+        case TextMessageAction.TextMessage:
+          eventHandler = new TextMessageEvent({
+            event: events[i] as TextMesssageEventPayload,
+            map: this,
+          });
+          break;
+        case GameObjectAction.Stand:
+        case GameObjectAction.Walk:
+          eventHandler = new GameObjectEvent({
+            event: events[i] as GameObjectEventPayload,
+            map: this,
+          });
+          break;
+      }
 
       await eventHandler.init();
     }
@@ -87,7 +111,21 @@ export class OverworldMap {
     this.isCutscenePlaying = false;
 
     // Reset NPCs to do their idle behaviour:
-    Object.values(this.gameObjects).forEach(gameObject => gameObject.doBehaviourEvent(this))
+    Object.values(this.gameObjects).forEach((gameObject) =>
+      gameObject.doBehaviourEvent(this)
+    );
+  }
+
+  checkForActionCutscene() {
+    const hero = this.gameObjects['hero'];
+    const nextCoords = nextPosition(hero.x, hero.y, hero.direction);
+    const match = Object.values(this.gameObjects).find((object) => {
+      return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`;
+    });
+
+    if (!this.isCutscenePlaying && match && match.talking.length) {
+      this.startCutscene(match.talking[0].events);
+    }
   }
 
   addWall(x: number, y: number): void {
