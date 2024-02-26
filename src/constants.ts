@@ -4,13 +4,14 @@ import {
   GameObjectAction,
   GameObjectName,
 } from './GameObject';
-import { OverworldMapConfig } from './OverworldMap';
+import { MapAction } from './MapEvent';
+import { MapName, OverworldMapConfig } from './OverworldMap';
 import { Person } from './Person';
 import { TextMessageAction } from './TextMessageEvent';
 import { asGridCoord, withGrid } from './utils';
 
-export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
-  DemoRoom: {
+window.OVERWORLD_MAPS = {
+  [MapName.DemoRoom]: {
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
@@ -67,31 +68,31 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
       }),
       [GameObjectName.Npc2]: new Person({
         src: '../images/characters/people/npc2.png',
-        x: withGrid(3),
-        y: withGrid(7),
-        behaviourLoop: [
-          {
-            type: GameObjectAction.Walk,
-            direction: Direction.Left,
-          },
-          {
-            type: GameObjectAction.Stand,
-            direction: Direction.Up,
-            time: 800,
-          },
-          {
-            type: GameObjectAction.Walk,
-            direction: Direction.Up,
-          },
-          {
-            type: GameObjectAction.Walk,
-            direction: Direction.Right,
-          },
-          {
-            type: GameObjectAction.Walk,
-            direction: Direction.Down,
-          },
-        ],
+        x: withGrid(8),
+        y: withGrid(5),
+        // behaviourLoop: [
+        //   {
+        //     type: GameObjectAction.Walk,
+        //     direction: Direction.Left,
+        //   },
+        //   {
+        //     type: GameObjectAction.Stand,
+        //     direction: Direction.Up,
+        //     time: 800,
+        //   },
+        //   {
+        //     type: GameObjectAction.Walk,
+        //     direction: Direction.Up,
+        //   },
+        //   {
+        //     type: GameObjectAction.Walk,
+        //     direction: Direction.Right,
+        //   },
+        //   {
+        //     type: GameObjectAction.Walk,
+        //     direction: Direction.Down,
+        //   },
+        // ],
       }),
     },
     walls: {
@@ -114,26 +115,75 @@ export const OVERWORLD_MAPS = <Record<string, OverworldMapConfig>>{
       [asGridCoord(7, 2)]: true,
       [asGridCoord(8, 2)]: true,
     },
+    cutsceneSpaces: {
+      [asGridCoord(7, 4)]: [
+        {
+          events: [
+            {
+              who: GameObjectName.Npc2,
+              type: GameObjectAction.Walk,
+              direction: Direction.Left,
+            },
+            {
+              who: GameObjectName.Npc2,
+              type: GameObjectAction.Stand,
+              direction: Direction.Up,
+              time: 500,
+            },
+            {
+              type: TextMessageAction.TextMessage,
+              text: "You can't be in here!",
+            },
+            {
+              who: GameObjectName.Npc2,
+              type: GameObjectAction.Walk,
+              direction: Direction.Right,
+            },
+            {
+              who: GameObjectName.Hero,
+              type: GameObjectAction.Walk,
+              direction: Direction.Down,
+            },
+            {
+              who: GameObjectName.Hero,
+              type: GameObjectAction.Walk,
+              direction: Direction.Left,
+            },
+          ],
+        },
+      ],
+      [asGridCoord(5, 10)]: [
+        {
+          events: [{ type: MapAction.ChangeMap, map: MapName.Kitchen }],
+        },
+      ],
+    },
   },
-  Kitchen: {
+  [MapName.Kitchen]: {
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {
       [GameObjectName.Hero]: new Person({
         src: '../images/characters/people/hero.png',
-        x: withGrid(3),
+        x: withGrid(5),
         y: withGrid(5),
         isPlayerControlled: true,
-      }),
-      [GameObjectName.Npc2]: new Person({
-        src: '../images/characters/people/npc2.png',
-        x: withGrid(9),
-        y: withGrid(6),
       }),
       [GameObjectName.Npc3]: new Person({
         src: '../images/characters/people/npc3.png',
         x: withGrid(10),
         y: withGrid(8),
+        talking: [
+          {
+            events: [
+              {
+                type: TextMessageAction.TextMessage,
+                text: 'You made it!',
+                faceHero: GameObjectName.Npc3,
+              },
+            ],
+          },
+        ],
       }),
     },
     walls: {},

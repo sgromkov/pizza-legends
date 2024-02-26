@@ -1,3 +1,4 @@
+import './constants';
 import { Overworld } from './Overworld';
 
 (function () {

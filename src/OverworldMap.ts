@@ -5,6 +5,8 @@ import {
   GameObjectName,
 } from './GameObject';
 import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
+import { MapAction, MapEvent, MapEventPayload } from './MapEvent';
+import { Overworld } from './Overworld';
 import { EventPayload, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
 import {
@@ -14,23 +16,43 @@ import {
 } from './TextMessageEvent';
 import { nextPosition, withGrid } from './utils';
 
+export enum MapName {
+  DemoRoom = 'DemoRoom',
+  Kitchen = 'Kitchen',
+}
+
 export interface OverworldMapConfig {
   gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
   lowerSrc: string;
   upperSrc: string;
-  walls: Record<string, boolean>;
+  walls?: Record<string, boolean>;
+  cutsceneSpaces?: Record<
+    string,
+    Array<{
+      events: EventPayload[];
+    }>
+  >;
 }
 
 export class OverworldMap {
+  overworld: Overworld;
   gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
   walls: Record<string, boolean>;
+  cutsceneSpaces: Record<
+    string,
+    Array<{
+      events: EventPayload[];
+    }>
+  >;
   isCutscenePlaying: boolean;
 
   constructor(config: OverworldMapConfig) {
+    this.overworld = null;
     this.gameObjects = config.gameObjects;
     this.walls = config.walls || {};
+    this.cutsceneSpaces = config.cutsceneSpaces || {};
 
     this.lowerImage = new Image();
     this.lowerImage.src = config.lowerSrc;
@@ -103,6 +125,12 @@ export class OverworldMap {
             map: this,
           });
           break;
+        case MapAction.ChangeMap:
+          eventHandler = new MapEvent({
+            event: events[i] as MapEventPayload,
+            map: this,
+          });
+          break;
       }
 
       await eventHandler.init();
@@ -117,7 +145,7 @@ export class OverworldMap {
   }
 
   checkForActionCutscene() {
-    const hero = this.gameObjects['hero'];
+    const hero = this.gameObjects[GameObjectName.Hero];
     const nextCoords = nextPosition(hero.x, hero.y, hero.direction);
     const match = Object.values(this.gameObjects).find((object) => {
       return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`;
@@ -125,6 +153,15 @@ export class OverworldMap {
 
     if (!this.isCutscenePlaying && match && match.talking.length) {
       this.startCutscene(match.talking[0].events);
+    }
+  }
+
+  checkForFootstepCutscene() {
+    const hero = this.gameObjects[GameObjectName.Hero];
+    const match = this.cutsceneSpaces[`${hero.x},${hero.y}`];
+
+    if (!this.isCutscenePlaying && match) {
+      this.startCutscene(match[0].events);
     }
   }
 

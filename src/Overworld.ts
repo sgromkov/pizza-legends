@@ -1,9 +1,14 @@
 import { DirectionInput } from './DirectionInput';
-import { Direction, GameObject, GameObjectAction } from './GameObject';
+import {
+  Direction,
+  GameObject,
+  GameObjectAction,
+  GameObjectName,
+} from './GameObject';
 import { KeyPressListener } from './KeyPressListener';
-import { OverworldMap } from './OverworldMap';
+import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
 import { TextMessageAction } from './TextMessageEvent';
-import { OVERWORLD_MAPS } from './constants';
+import { EventName } from './utils';
 
 interface Config {
   element: HTMLElement;
@@ -66,15 +71,32 @@ export class Overworld {
   bindActionInput() {
     new KeyPressListener('Enter', () => {
       // Is there a person here to talk?
-      this.map.checkForActionCutscene()
+      this.map.checkForActionCutscene();
     });
   }
 
-  init() {
-    this.map = new OverworldMap(OVERWORLD_MAPS.DemoRoom);
-    this.map.mountObjects();
+  bindHeroPositionCheck() {
+    document.addEventListener(
+      EventName.PersonWalkingComplete,
+      (e: CustomEvent) => {
+        if (e.detail.whoId === GameObjectName.Hero) {
+          // Hero's position has changed
+          this.map.checkForFootstepCutscene();
+        }
+      }
+    );
+  }
 
+  startMap(mapConfig: OverworldMapConfig) {
+    this.map = new OverworldMap(mapConfig);
+    this.map.overworld = this;
+    this.map.mountObjects();
+  }
+
+  init() {
+    this.startMap(window.OVERWORLD_MAPS[MapName.DemoRoom]);
     this.bindActionInput();
+    this.bindHeroPositionCheck();
 
     this.directionInput = new DirectionInput();
     this.directionInput.init();
