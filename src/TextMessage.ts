@@ -1,10 +1,12 @@
 import { KeyPressListener } from './KeyPressListener';
+import { RevealingText } from './RevealingText';
 
 export class TextMessage {
   text: string;
   onComplete: Function;
   element: HTMLElement;
   actionListener: KeyPressListener;
+  revealingText: RevealingText;
 
   constructor({ text, onComplete }: { text: string; onComplete: Function }) {
     this.text = text;
@@ -13,33 +15,46 @@ export class TextMessage {
   }
 
   createElement(): void {
+    // Create the element:
     this.element = document.createElement('div');
     this.element.classList.add('text-message');
     this.element.innerHTML = `
-      <p class="text-message__text">${this.text}</p>
+      <p class="text-message__text"></p>
       <button class="text-message__button">Next</button>
     `;
+
+    // Init the typewriter effect:
+    this.revealingText = new RevealingText({
+      text: this.text,
+      element: this.element.querySelector('.text-message__text'),
+    });
 
     const button = this.element.querySelector('button');
     const clickEventListener = () => {
       button.removeEventListener('click', clickEventListener);
+      // Close the text message:
       this.done();
     };
     button.addEventListener('click', clickEventListener);
 
     this.actionListener = new KeyPressListener('Enter', () => {
-      this.actionListener.unbind();
       this.done();
     });
   }
 
   done(): void {
-    this.element.remove();
-    this.onComplete();
+    if (this.revealingText.isDone) {
+      this.element.remove();
+      this.actionListener.unbind();
+      this.onComplete();
+    } else {
+      this.revealingText.warpToDone();
+    }
   }
 
   init(container: HTMLElement): void {
     this.createElement();
     container.appendChild(this.element);
+    this.revealingText.init();
   }
 }

@@ -16,6 +16,14 @@
     font-size: 12px;
 }
 
+.text-message span {
+    opacity: 0;
+}
+
+.text-message span.revealed {
+    opacity: 1;
+}
+
 .text-message__button {
     margin: 0;
     font-style: 8px;
