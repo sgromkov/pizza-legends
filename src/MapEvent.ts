@@ -1,5 +1,6 @@
 import { OverworldEvent } from './OverworldEvent';
 import { MapName, OverworldMap } from './OverworldMap';
+import { SceneTransition } from './SceneTransition';
 
 export enum MapAction {
   ChangeMap = 'changeMap',
@@ -23,7 +24,12 @@ export class MapEvent extends OverworldEvent {
   }
 
   changeMap(resolve: Function) {
-    this.map.overworld.startMap(window.OVERWORLD_MAPS[this.event.map]);
-    resolve();
+    const sceneTransition = new SceneTransition();
+    sceneTransition.init(document.querySelector('.game-container'), () => {
+      this.map.overworld.startMap(window.OVERWORLD_MAPS[this.event.map]);
+      resolve();
+
+      sceneTransition.fadeOut();
+    });
   }
 }

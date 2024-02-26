@@ -6,6 +6,7 @@ import {
   GameObjectName,
 } from './GameObject';
 import { KeyPressListener } from './KeyPressListener';
+import { MapAction } from './MapEvent';
 import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
 import { TextMessageAction } from './TextMessageEvent';
 import { EventName } from './utils';
@@ -102,14 +103,5 @@ export class Overworld {
     this.directionInput.init();
 
     this.startGameLoop();
-
-    // this.map.startCutscene([
-    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-    //   { who: 'hero', type: GameObjectAction.Walk, direction: Direction.Down },
-    //   { who: 'hero', type: GameObjectAction.Stand, direction: Direction.Right },
-    //   { who: 'npc1', type: GameObjectAction.Walk, direction: Direction.Left },
-    //   { type: TextMessageAction.TextMessage, text: 'Well hello there!' },
-    // ]);
   }
 }
