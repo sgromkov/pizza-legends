@@ -1,3 +1,4 @@
+import { ActionKey } from '../content/actions';
 import { PizzaType } from '../content/pizzas';
 import { Battle } from './Battle';
 
@@ -39,6 +40,7 @@ export class Combatant {
   type: PizzaType;
   src: string;
   icon: string;
+  actions: ActionKey[];
   // Teams:
   team: Team;
   hpFills: NodeListOf<HTMLElement>;

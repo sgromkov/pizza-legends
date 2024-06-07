@@ -1,5 +1,8 @@
+import { ActionPayload } from '../content/actions';
 import { PIZZAS, PizzaKey } from '../content/pizzas';
+import { BattleEvent } from './BattleEvent';
 import { Combatant, Team } from './Combatant';
+import { TurnCycle } from './TurnCycle';
 
 interface Config {
   onComplete: () => void;
@@ -9,6 +12,7 @@ export class Battle {
   element: HTMLElement;
   combatants: Record<string, Combatant>;
   activeCombatants: Record<Team, string>;
+  turnCycle: TurnCycle;
 
   constructor(config: Config) {
     this.combatants = {
@@ -79,5 +83,16 @@ export class Battle {
       combatant.id = key;
       combatant.init(this.element);
     });
+
+    this.turnCycle = new TurnCycle({
+      battle: this,
+      onNewEvent: (event: ActionPayload) => {
+        return new Promise((resolve) => {
+          const battleEvent = new BattleEvent(event, this);
+          battleEvent.init(resolve);
+        });
+      },
+    });
+    this.turnCycle.init();
   }
 }

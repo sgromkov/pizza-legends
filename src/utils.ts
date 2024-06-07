@@ -35,6 +35,14 @@ export function nextPosition(
   return { x, y };
 }
 
+export function wait(ms) {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+}
+
 export enum EventName {
   PersonWalkingComplete = 'PersonWalkingComplete',
   PersonStandComplete = 'PersonStandComplete',
