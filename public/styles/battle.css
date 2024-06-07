@@ -1,0 +1,39 @@
+.battle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(/images/maps/street-battle.png);
+    background-size: cover;
+    image-rendering: pixelated;
+}
+
+.battle__hero,
+.battle__enemy {
+    position: absolute;
+    transform: scale(2);
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    background: url(/images/characters/shadow.png) no-repeat no-repeat;
+}
+
+.battle__hero img,
+.battle__enemy img {
+    pointer-events: none;
+}
+
+.battle__hero {
+    bottom: 57px;
+    left: 1px;
+}
+
+.battle__hero img {
+    transform: translateY(-64px);
+}
+
+.battle__enemy {
+    top: 42px;
+    right: -1px;
+}

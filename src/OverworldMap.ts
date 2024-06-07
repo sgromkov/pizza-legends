@@ -1,4 +1,9 @@
 import {
+  BattleAction,
+  BattleEvent,
+  BattleEventPayload,
+} from './Battle/BattleEvent';
+import {
   Direction,
   GameObject,
   GameObjectAction,
@@ -128,6 +133,12 @@ export class OverworldMap {
         case MapAction.ChangeMap:
           eventHandler = new MapEvent({
             event: events[i] as MapEventPayload,
+            map: this,
+          });
+          break;
+        case BattleAction.Battle:
+          eventHandler = new BattleEvent({
+            event: events[i] as BattleEventPayload,
             map: this,
           });
           break;

@@ -1,3 +1,4 @@
+import { BattleAction } from './Battle/BattleEvent';
 import { DirectionInput } from './DirectionInput';
 import {
   Direction,
@@ -103,5 +104,9 @@ export class Overworld {
     this.directionInput.init();
 
     this.startGameLoop();
+
+    this.map.startCutscene([
+      {type: BattleAction.Battle}
+    ])
   }
 }
