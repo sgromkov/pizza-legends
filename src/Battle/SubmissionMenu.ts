@@ -1,4 +1,4 @@
-import { ACTIONS, Action } from '../content/actions';
+import { Action } from '../constants/ACTIONS';
 import { Combatant } from './Combatant';
 
 export interface SubmissionMenuResultPayload {
@@ -27,7 +27,7 @@ export class SubmissionMenu {
 
   decide() {
     this.onComplete({
-      action: ACTIONS[this.caster.actions[0]],
+      action: window.ACTIONS[this.caster.actions[0]],
       target: this.enemy,
     });
   }

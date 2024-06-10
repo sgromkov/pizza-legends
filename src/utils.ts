@@ -43,6 +43,10 @@ export function wait(ms) {
   });
 }
 
+export function randomFromArray<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 export enum EventName {
   PersonWalkingComplete = 'PersonWalkingComplete',
   PersonStandComplete = 'PersonStandComplete',

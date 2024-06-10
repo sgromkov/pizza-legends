@@ -1,5 +1,12 @@
-import { ActionKey } from '../content/actions';
-import { PizzaType } from '../content/pizzas';
+import {
+  ActionKey,
+  ActionPayload,
+  ActionType,
+  StateChangeStatusType,
+  TextMessageActionPayload,
+} from '../constants/ACTIONS';
+import { PizzaType } from '../constants/PIZZAS';
+import { randomFromArray } from '../utils';
 import { Battle } from './Battle';
 
 export enum Team {
@@ -14,7 +21,10 @@ interface Config {
   xp: number;
   maxXp: number;
   level: number;
-  status?: Record<string, any>;
+  status?: {
+    type: StateChangeStatusType;
+    expiresIn: number;
+  };
   // Pizza:
   name: string;
   type: PizzaType;
@@ -34,7 +44,10 @@ export class Combatant {
   xp: number;
   maxXp: number;
   level: number;
-  status?: Record<string, any>;
+  status?: {
+    type: StateChangeStatusType;
+    expiresIn: number;
+  };
   // Pizza:
   name: string;
   type: PizzaType;
@@ -125,6 +138,60 @@ export class Combatant {
     this.hudElement.querySelector('.combatant__level').innerHTML = String(
       this.level
     );
+
+    // Update status:
+    const statusElement: HTMLElement =
+      this.hudElement.querySelector('.combatant__status');
+    if (this.status) {
+      statusElement.innerText = this.status.type;
+      statusElement.style.display = 'block';
+    } else {
+      statusElement.innerText = '';
+      statusElement.style.display = 'none';
+    }
+  }
+
+  getReplacedEvents(originalEvents: ActionPayload[]): ActionPayload[] {
+    if (
+      this.status?.type === StateChangeStatusType.Clumsy &&
+      randomFromArray([true, false, false])
+    ) {
+      return [
+        { type: ActionType.TextMessage, text: `${this.name} flops over!` },
+      ];
+    }
+
+    return originalEvents;
+  }
+
+  getPostEvents(): ActionPayload[] {
+    if (this.status?.type === StateChangeStatusType.Saucy) {
+      return [
+        { type: ActionType.TextMessage, text: 'Feeling saucy!' },
+        { type: ActionType.StateChange, recover: 5, onCaster: true },
+      ];
+    }
+
+    return [];
+  }
+
+  decrementStatus(): TextMessageActionPayload | null {
+    if (this.status?.expiresIn > 0) {
+      this.status.expiresIn -= 1;
+
+      if (this.status.expiresIn === 0) {
+        this.update({
+          status: null,
+        });
+
+        return {
+          type: ActionType.TextMessage,
+          text: 'Status expired!',
+        };
+      }
+    }
+
+    return null;
   }
 
   init(container: HTMLElement) {

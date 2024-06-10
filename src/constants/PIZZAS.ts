@@ -1,4 +1,4 @@
-import { ActionKey } from './actions';
+import { ActionKey } from './ACTIONS';
 
 export enum PizzaType {
   Normal = 'normal',
@@ -14,7 +14,7 @@ export enum PizzaKey {
   F001 = 'f001',
 }
 
-interface Pizza {
+export interface Pizza {
   name: string;
   type: PizzaType;
   src: string;
@@ -22,13 +22,13 @@ interface Pizza {
   actions: ActionKey[];
 }
 
-export const PIZZAS: Record<PizzaKey, Pizza> = {
+window.PIZZAS = {
   [PizzaKey.S001]: {
     name: 'Slice Samurai',
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s001.png',
     icon: 'images/icons/spicy.png',
-    actions: [ActionKey.Damage1],
+    actions: [ActionKey.ClumsyStatus, ActionKey.SaucyStatus, ActionKey.Damage1],
   },
   [PizzaKey.V001]: {
     name: 'Call me Kale',

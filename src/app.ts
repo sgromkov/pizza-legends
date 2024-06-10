@@ -1,4 +1,7 @@
-import './constants';
+import './constants/OVERWORLD_MAPS';
+import './constants/PIZZAS';
+import './constants/ACTIONS';
+import './constants/BATTLE_ANIMATIONS';
 import { Overworld } from './Overworld';
 
 (function () {

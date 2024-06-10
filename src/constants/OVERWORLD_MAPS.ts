@@ -3,12 +3,12 @@ import {
   GameObject,
   GameObjectAction,
   GameObjectName,
-} from './GameObject';
-import { MapAction } from './MapEvent';
-import { MapName, OverworldMapConfig } from './OverworldMap';
-import { Person } from './Person';
-import { TextMessageAction } from './TextMessageEvent';
-import { asGridCoord, withGrid } from './utils';
+} from '../GameObject';
+import { MapAction } from '../MapEvent';
+import { MapName, OverworldMapConfig } from '../OverworldMap';
+import { Person } from '../Person';
+import { TextMessageAction } from '../TextMessageEvent';
+import { asGridCoord, withGrid } from '../utils';
 
 window.OVERWORLD_MAPS = {
   [MapName.DemoRoom]: {

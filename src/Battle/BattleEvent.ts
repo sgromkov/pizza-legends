@@ -1,14 +1,15 @@
 import { TextMessage } from '../TextMessage';
 import {
   ActionPayload,
+  ActionTargetType,
   AnimationActionPayload,
   StateChangeActionPayload,
   SubmissionMenuActionPayload,
   TextMessageActionPayload,
-} from '../content/actions';
+} from '../constants/ACTIONS';
 import { wait } from '../utils';
 import { Battle } from './Battle';
-import { BATTLE_ANIMATIONS } from './BattleAnimations';
+// import { BATTLE_ANIMATIONS } from './BattleAnimations';
 import { SubmissionMenu, SubmissionMenuResultPayload } from './SubmissionMenu';
 
 export class BattleEvent {
@@ -40,6 +41,11 @@ export class BattleEvent {
   async stateChange(resolve: Function) {
     const payload = this.payload as StateChangeActionPayload;
 
+    let who = payload.onCaster ? payload.caster : payload.target;
+    if (payload.action?.targetType === ActionTargetType.Friendly) {
+      who = payload.caster;
+    }
+
     if (payload.damage) {
       // Modify the target to have less HP:
       payload.target.update({
@@ -48,6 +54,27 @@ export class BattleEvent {
 
       // Start blinking:
       payload.target.pizzaElement.classList.add('battle-damage-blink');
+    }
+
+    if (payload.recover) {
+      let newHp = who.hp + payload.recover;
+      if (newHp > who.maxHp) {
+        newHp = who.maxHp;
+      }
+      who.update({
+        hp: newHp,
+      });
+    }
+
+    if (payload.status) {
+      who.update({
+        status: { ...payload.status },
+      });
+    }
+    if (payload.status === null) {
+      who.update({
+        status: null,
+      });
     }
 
     // Wait a little kit:
@@ -74,7 +101,7 @@ export class BattleEvent {
 
   animation(resolve: Function) {
     const payload = this.payload as AnimationActionPayload;
-    const fn = BATTLE_ANIMATIONS[payload.animation];
+    const fn = window.BATTLE_ANIMATIONS[payload.animation];
     fn(payload, resolve);
   }
 

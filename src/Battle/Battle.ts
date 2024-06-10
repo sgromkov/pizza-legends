@@ -1,5 +1,5 @@
-import { ActionPayload } from '../content/actions';
-import { PIZZAS, PizzaKey } from '../content/pizzas';
+import { ActionPayload, StateChangeStatusType } from '../constants/ACTIONS';
+import { PizzaKey } from '../constants/PIZZAS';
 import { BattleEvent } from './BattleEvent';
 import { Combatant, Team } from './Combatant';
 import { TurnCycle } from './TurnCycle';
@@ -18,9 +18,9 @@ export class Battle {
     this.combatants = {
       player1: new Combatant(
         {
-          ...PIZZAS[PizzaKey.S001],
+          ...window.PIZZAS[PizzaKey.S001],
           team: Team.Player,
-          hp: 50,
+          hp: 40,
           maxHp: 50,
           xp: 0,
           maxXp: 100,
@@ -31,9 +31,9 @@ export class Battle {
       ),
       enemy1: new Combatant(
         {
-          ...PIZZAS[PizzaKey.V001],
+          ...window.PIZZAS[PizzaKey.V001],
           team: Team.Enemy,
-          hp: 50,
+          hp: 25,
           maxHp: 50,
           xp: 20,
           maxXp: 100,
@@ -43,7 +43,7 @@ export class Battle {
       ),
       enemy2: new Combatant(
         {
-          ...PIZZAS[PizzaKey.F001],
+          ...window.PIZZAS[PizzaKey.F001],
           team: Team.Enemy,
           hp: 50,
           maxHp: 50,
