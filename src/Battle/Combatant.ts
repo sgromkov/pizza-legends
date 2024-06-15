@@ -25,6 +25,7 @@ interface Config {
     type: StateChangeStatusType;
     expiresIn: number;
   };
+  isPlayerControlled?: boolean;
   // Pizza:
   name: string;
   type: PizzaType;
@@ -48,6 +49,7 @@ export class Combatant {
     type: StateChangeStatusType;
     expiresIn: number;
   };
+  isPlayerControlled?: boolean;
   // Pizza:
   name: string;
   type: PizzaType;

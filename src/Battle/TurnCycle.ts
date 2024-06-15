@@ -74,10 +74,10 @@ export class TurnCycle {
   }
 
   async init() {
-    await this.onNewEvent({
-      type: ActionType.TextMessage,
-      text: 'The battle is starting!',
-    });
+    // await this.onNewEvent({
+    //   type: ActionType.TextMessage,
+    //   text: 'The battle is starting!',
+    // });
 
     // Start the first turn:
     this.turn();

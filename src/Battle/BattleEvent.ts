@@ -42,9 +42,6 @@ export class BattleEvent {
     const payload = this.payload as StateChangeActionPayload;
 
     let who = payload.onCaster ? payload.caster : payload.target;
-    if (payload.action?.targetType === ActionTargetType.Friendly) {
-      who = payload.caster;
-    }
 
     if (payload.damage) {
       // Modify the target to have less HP:

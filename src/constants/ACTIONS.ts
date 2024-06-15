@@ -68,6 +68,7 @@ export interface Action {
   name: string;
   success: Array<ActionPayload>;
   targetType?: ActionTargetType;
+  description?: string;
 }
 
 window.ACTIONS = {
