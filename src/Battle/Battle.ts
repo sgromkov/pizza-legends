@@ -1,4 +1,9 @@
-import { ActionPayload, StateChangeStatusType } from '../constants/ACTIONS';
+import {
+  ActionItem,
+  ActionKey,
+  ActionPayload,
+  StateChangeStatusType,
+} from '../constants/ACTIONS';
 import { PizzaKey } from '../constants/PIZZAS';
 import { BattleEvent } from './BattleEvent';
 import { Combatant, Team } from './Combatant';
@@ -13,6 +18,7 @@ export class Battle {
   combatants: Record<string, Combatant>;
   activeCombatants: Record<Team, string>;
   turnCycle: TurnCycle;
+  items: ActionItem[];
 
   constructor(config: Config) {
     this.combatants = {
@@ -60,6 +66,29 @@ export class Battle {
       [Team.Player]: 'player1',
       [Team.Enemy]: 'enemy1',
     };
+
+    this.items = [
+      {
+        actionId: ActionKey.ItemRecoverStatus,
+        instanceId: 'p1',
+        team: Team.Player,
+      },
+      {
+        actionId: ActionKey.ItemRecoverStatus,
+        instanceId: 'p2',
+        team: Team.Player,
+      },
+      {
+        actionId: ActionKey.ItemRecoverHp,
+        instanceId: 'p3',
+        team: Team.Player,
+      },
+      {
+        actionId: ActionKey.ItemRecoverStatus,
+        instanceId: 'p4',
+        team: Team.Enemy,
+      },
+    ];
   }
 
   createElement() {

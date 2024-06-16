@@ -1,4 +1,4 @@
-import { Combatant } from '../Battle/Combatant';
+import { Combatant, Team } from '../Battle/Combatant';
 import { BattleAnimationKey } from './BATTLE_ANIMATIONS';
 
 export enum ActionTargetType {
@@ -62,6 +62,8 @@ export enum ActionKey {
   Damage1 = 'damage1',
   SaucyStatus = 'saucyStatus',
   ClumsyStatus = 'clumsyStatus',
+  ItemRecoverStatus = 'item_recoverStatus',
+  ItemRecoverHp = 'item_revoverHp',
 }
 
 export interface Action {
@@ -69,6 +71,12 @@ export interface Action {
   success: Array<ActionPayload>;
   targetType?: ActionTargetType;
   description?: string;
+}
+
+export interface ActionItem {
+  actionId: ActionKey;
+  instanceId: string;
+  team: Team;
 }
 
 window.ACTIONS = {
@@ -128,6 +136,45 @@ window.ACTIONS = {
       {
         type: ActionType.TextMessage,
         text: '{TARGET} is slipping all around!',
+      },
+    ],
+  },
+  // Items:
+  [ActionKey.ItemRecoverStatus]: {
+    name: 'Heating Lamp',
+    description: 'Clear status to your character',
+    targetType: ActionTargetType.Friendly,
+    success: [
+      {
+        type: ActionType.TextMessage,
+        text: '{CASTER} uses a {ACTION}!',
+      },
+      {
+        type: ActionType.StateChange,
+        status: null,
+      },
+      {
+        type: ActionType.TextMessage,
+        text: 'Feeling fresh!',
+      },
+    ],
+  },
+  [ActionKey.ItemRecoverHp]: {
+    name: 'Parmesan',
+    description: 'Recover 10 hp to your character',
+    targetType: ActionTargetType.Friendly,
+    success: [
+      {
+        type: ActionType.TextMessage,
+        text: '{CASTER} sprinkles on some {ACTION}!',
+      },
+      {
+        type: ActionType.StateChange,
+        recover: 10,
+      },
+      {
+        type: ActionType.TextMessage,
+        text: '{CASTER} recovers HP!',
       },
     ],
   },
