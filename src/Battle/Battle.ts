@@ -36,6 +36,20 @@ export class Battle {
         },
         this
       ),
+      player2: new Combatant(
+        {
+          ...window.PIZZAS[PizzaKey.S002],
+          team: Team.Player,
+          hp: 30,
+          maxHp: 50,
+          xp: 75,
+          maxXp: 100,
+          level: 1,
+          status: null,
+          isPlayerControlled: true,
+        },
+        this
+      ),
       enemy1: new Combatant(
         {
           ...window.PIZZAS[PizzaKey.V001],

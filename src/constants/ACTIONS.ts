@@ -10,6 +10,8 @@ export enum ActionType {
   Animation = 'animation',
   StateChange = 'stateChange',
   SubmissionMenu = 'submissionMenu',
+  Replace = 'replace',
+  ReplacementMenu = 'replacementMenu',
 }
 
 export interface TextMessageActionPayload {
@@ -52,11 +54,23 @@ export interface SubmissionMenuActionPayload {
   enemy: Combatant;
 }
 
+export interface ReplaceActionPayload {
+  type: ActionType.Replace;
+  replacement: Combatant;
+}
+
+export interface ReplacementMenuActionPayload {
+  type: ActionType.ReplacementMenu;
+  team: Team;
+}
+
 export type ActionPayload =
   | TextMessageActionPayload
   | AnimationActionPayload
   | StateChangeActionPayload
-  | SubmissionMenuActionPayload;
+  | SubmissionMenuActionPayload
+  | ReplaceActionPayload
+  | ReplacementMenuActionPayload;
 
 export enum ActionKey {
   Damage1 = 'damage1',

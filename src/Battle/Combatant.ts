@@ -52,6 +52,7 @@ export class Combatant {
   isPlayerControlled?: boolean;
   // Pizza:
   name: string;
+  description: string;
   type: PizzaType;
   src: string;
   icon: string;

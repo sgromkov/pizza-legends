@@ -3,12 +3,16 @@ import {
   ActionPayload,
   ActionTargetType,
   AnimationActionPayload,
+  ReplaceActionPayload,
+  ReplacementMenuActionPayload,
   StateChangeActionPayload,
   SubmissionMenuActionPayload,
   TextMessageActionPayload,
 } from '../constants/ACTIONS';
 import { wait } from '../utils';
 import { Battle } from './Battle';
+import { Combatant } from './Combatant';
+import { ReplacementMenu } from './ReplacementMenu';
 // import { BATTLE_ANIMATIONS } from './BattleAnimations';
 import { SubmissionMenu, SubmissionMenuResultPayload } from './SubmissionMenu';
 
@@ -89,12 +93,55 @@ export class BattleEvent {
       caster: payload.caster,
       enemy: payload.enemy,
       items: this.battle.items,
+      replacements: Object.values(this.battle.combatants).filter(
+        (combatant) => {
+          return (
+            combatant.id !== payload.caster.id &&
+            combatant.team === payload.caster.team &&
+            combatant.hp > 0
+          );
+        }
+      ),
       onComplete: (submission: SubmissionMenuResultPayload) => {
         // submission { what move to use, who to use it on }
         resolve(submission);
       },
     });
     menu.init(this.battle.element);
+  }
+
+  replacementMenu(resolve: Function) {
+    const payload = this.payload as ReplacementMenuActionPayload;
+    const menu = new ReplacementMenu({
+      replacements: Object.values(this.battle.combatants).filter(
+        (combatant) => {
+          return combatant.team === payload.team && combatant.hp > 0;
+        }
+      ),
+      onComplete: (replacement: Combatant) => {
+        resolve(replacement);
+      },
+    });
+    menu.init(this.battle.element);
+  }
+
+  async replace(resolve: Function) {
+    const payload = this.payload as ReplaceActionPayload;
+    const { replacement } = payload;
+
+    // Clear out the old combatant:
+    const prevCombatant: Combatant =
+      this.battle.combatants[this.battle.activeCombatants[replacement.team]];
+    this.battle.activeCombatants[replacement.team] = null;
+    prevCombatant.update();
+    await wait(400);
+
+    // In with the new!
+    this.battle.activeCombatants[replacement.team] = replacement.id;
+    replacement.update();
+    await wait(400);
+
+    resolve();
   }
 
   animation(resolve: Function) {

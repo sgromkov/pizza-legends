@@ -1,8 +1,15 @@
-import { SubmissionMenuOption } from './Battle/SubmissionMenu';
 import { KeyPressListener } from './KeyPressListener';
 
+export interface KeyboardMenuOption {
+  label: string;
+  description: string;
+  handler: Function;
+  right?: () => string;
+  disabled?: boolean;
+}
+
 export class KeyboardMenu {
-  options: SubmissionMenuOption[];
+  options: KeyboardMenuOption[];
   up: KeyPressListener;
   down: KeyPressListener;
   prevFocus: HTMLButtonElement;
@@ -17,7 +24,7 @@ export class KeyboardMenu {
     this.prevFocus = null;
   }
 
-  setOptions(options: SubmissionMenuOption[]) {
+  setOptions(options: KeyboardMenuOption[]) {
     this.options = options;
     this.element.innerHTML = this.options
       .map((option, index) => {

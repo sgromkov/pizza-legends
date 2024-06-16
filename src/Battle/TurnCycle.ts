@@ -1,6 +1,6 @@
 import { ActionPayload, ActionType } from '../constants/ACTIONS';
 import { Battle } from './Battle';
-import { Team } from './Combatant';
+import { Combatant, Team } from './Combatant';
 import { SubmissionMenuResultPayload } from './SubmissionMenu';
 
 export class TurnCycle {
@@ -36,6 +36,23 @@ export class TurnCycle {
       enemy,
     });
 
+    // Stop here is we are replacing this Pizza:
+    if (submission.replacement) {
+      await this.onNewEvent({
+        type: ActionType.Replace,
+        replacement: submission.replacement,
+      });
+
+      await this.onNewEvent({
+        type: ActionType.TextMessage,
+        text: `Go get 'em, ${submission.replacement.name}`,
+      });
+
+      this.nextTurn();
+
+      return;
+    }
+
     if (submission.instanceId) {
       this.battle.items = this.battle.items.filter(
         (item) => item.instanceId !== submission.instanceId
@@ -52,6 +69,43 @@ export class TurnCycle {
         target: submission.target,
       };
       await this.onNewEvent(event);
+    }
+
+    // Did the target die?
+    const targetDead = submission.target.hp <= 0;
+    if (targetDead) {
+      await this.onNewEvent({
+        type: ActionType.TextMessage,
+        text: `${submission.target.name} is ruined!`,
+      });
+    }
+
+    // Do we have a winner team?
+    const winner = this.getWinningTeam();
+    if (winner) {
+      // End the battle:
+      await this.onNewEvent({
+        type: ActionType.TextMessage,
+        text: 'Winner!',
+      });
+
+      return;
+    }
+
+    // We have a dead target, but still no winner, so bring in a replacement
+    if (targetDead) {
+      const replacement: Combatant = await this.onNewEvent({
+        type: ActionType.ReplacementMenu,
+        team: submission.target.team,
+      });
+      await this.onNewEvent({
+        type: ActionType.Replace,
+        replacement,
+      });
+      await this.onNewEvent({
+        type: ActionType.TextMessage,
+        text: `${replacement.name} appears!`,
+      });
     }
 
     // Check for post events:
@@ -74,9 +128,32 @@ export class TurnCycle {
       await this.onNewEvent(expiredEvent);
     }
 
+    this.nextTurn();
+  }
+
+  nextTurn() {
     this.currentTeam =
       this.currentTeam === Team.Player ? Team.Enemy : Team.Player;
     this.turn();
+  }
+
+  getWinningTeam(): Team | null {
+    let aliveTeams = {};
+    Object.values(this.battle.combatants).forEach((combatant) => {
+      if (combatant.hp > 0) {
+        aliveTeams[combatant.team] = true;
+      }
+    });
+
+    if (!aliveTeams[Team.Player]) {
+      return Team.Enemy;
+    }
+
+    if (!aliveTeams[Team.Enemy]) {
+      return Team.Player;
+    }
+
+    return null;
   }
 
   async init() {

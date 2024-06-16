@@ -5,26 +5,20 @@ import {
   ActionTargetType,
 } from '../constants/ACTIONS';
 import { Combatant } from './Combatant';
-import { KeyboardMenu } from '../KeyboardMenu';
+import { KeyboardMenu, KeyboardMenuOption } from '../KeyboardMenu';
 
 export interface SubmissionMenuResultPayload {
-  action: Action;
-  target: Combatant;
+  action?: Action;
+  target?: Combatant;
   instanceId?: string;
-}
-
-export interface SubmissionMenuOption {
-  label: string;
-  description: string;
-  handler: Function;
-  right?: () => string;
-  disabled?: boolean;
+  replacement?: Combatant;
 }
 
 export enum SubmissionMenuPageKey {
   Root = 'root',
   Attacks = 'attacks',
   Items = 'items',
+  Replacements = 'replacements',
 }
 
 interface SubmissionMenuItem {
@@ -36,23 +30,27 @@ interface SubmissionMenuItem {
 export class SubmissionMenu {
   caster: Combatant;
   enemy: Combatant;
-  onComplete: (SubmissionMenuResultPayload) => any;
+  onComplete: (payload: SubmissionMenuResultPayload) => any;
   keyboardMenu: KeyboardMenu;
   items: SubmissionMenuItem[];
+  replacements: Combatant[];
 
   constructor({
     caster,
     enemy,
     onComplete,
     items,
+    replacements,
   }: {
     caster: Combatant;
     enemy: Combatant;
-    onComplete: (SubmissionMenuResultPayload) => any;
+    onComplete: (payload: SubmissionMenuResultPayload) => any;
     items: ActionItem[];
+    replacements: Combatant[];
   }) {
     this.caster = caster;
     this.enemy = enemy;
+    this.replacements = replacements;
     this.onComplete = onComplete;
 
     let quantityMap: Partial<Record<ActionKey, SubmissionMenuItem>> = {};
@@ -75,8 +73,8 @@ export class SubmissionMenu {
     this.items = Object.values(quantityMap);
   }
 
-  getPages(): Record<SubmissionMenuPageKey, SubmissionMenuOption[]> {
-    const backOption: SubmissionMenuOption = {
+  getPages(): Record<SubmissionMenuPageKey, KeyboardMenuOption[]> {
+    const backOption: KeyboardMenuOption = {
       label: 'Go back',
       description: 'Return to previous page',
       handler: () => {
@@ -86,7 +84,7 @@ export class SubmissionMenu {
       },
     };
 
-    const pages: Record<SubmissionMenuPageKey, SubmissionMenuOption[]> = {
+    const pages: Record<SubmissionMenuPageKey, KeyboardMenuOption[]> = {
       [SubmissionMenuPageKey.Root]: [
         {
           label: 'Attack',
@@ -110,14 +108,16 @@ export class SubmissionMenu {
           label: 'Swap',
           description: 'Change to another pizza',
           handler: () => {
-            // See pizza options...
+            this.keyboardMenu.setOptions(
+              this.getPages()[SubmissionMenuPageKey.Replacements]
+            );
           },
         },
       ],
       [SubmissionMenuPageKey.Attacks]: [
         ...this.caster.actions.map((key) => {
           const action = window.ACTIONS[key];
-          const option: SubmissionMenuOption = {
+          const option: KeyboardMenuOption = {
             label: action.name,
             description: action.description,
             handler: () => {
@@ -132,7 +132,7 @@ export class SubmissionMenu {
       [SubmissionMenuPageKey.Items]: [
         ...this.items.map((item) => {
           const action = window.ACTIONS[item.actionId];
-          const option: SubmissionMenuOption = {
+          const option: KeyboardMenuOption = {
             label: action.name,
             description: action.description,
             handler: () => {
@@ -147,9 +147,30 @@ export class SubmissionMenu {
         }),
         backOption,
       ],
+      [SubmissionMenuPageKey.Replacements]: [
+        ...this.replacements.map((replacement) => {
+          const option: KeyboardMenuOption = {
+            label: replacement.name,
+            description: replacement.description,
+            handler: () => {
+              this.menuSubmitReplacement(replacement);
+            },
+          };
+
+          return option;
+        }),
+        backOption,
+      ],
     };
 
     return pages;
+  }
+
+  menuSubmitReplacement(replacement: Combatant) {
+    this.keyboardMenu?.end();
+    this.onComplete({
+      replacement,
+    });
   }
 
   menuSubmit(action: Action, instanceId: string = null) {
