@@ -1,4 +1,4 @@
-import { Team } from '../Battle/Combatant';
+import { TeamType } from '../Battle/Combatant';
 import { wait } from '../utils';
 import { AnimationActionPayload } from './ACTIONS';
 
@@ -13,7 +13,7 @@ window.BATTLE_ANIMATIONS = {
     onComplete: Function
   ) => {
     const animationClassName =
-      payload.caster.team === Team.Player
+      payload.caster.team === TeamType.Player
         ? 'battle-spin-right'
         : 'battle-spin-left';
     const element = payload.caster.pizzaElement;
@@ -36,7 +36,7 @@ window.BATTLE_ANIMATIONS = {
     onComplete: Function
   ) => {
     const animationClassName =
-      payload.caster.team === Team.Player
+      payload.caster.team === TeamType.Player
         ? 'battle-glob-right'
         : 'battle-glob-left';
     const element = document.createElement('div');

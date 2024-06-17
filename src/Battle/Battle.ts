@@ -6,7 +6,8 @@ import {
 } from '../constants/ACTIONS';
 import { PizzaKey } from '../constants/PIZZAS';
 import { BattleEvent } from './BattleEvent';
-import { Combatant, Team } from './Combatant';
+import { Combatant, TeamType } from './Combatant';
+import { Team } from './Team';
 import { TurnCycle } from './TurnCycle';
 
 interface Config {
@@ -16,16 +17,18 @@ interface Config {
 export class Battle {
   element: HTMLElement;
   combatants: Record<string, Combatant>;
-  activeCombatants: Record<Team, string>;
+  activeCombatants: Record<TeamType, string>;
   turnCycle: TurnCycle;
   items: ActionItem[];
+  playerTeam: Team;
+  enemyTeam: Team;
 
   constructor(config: Config) {
     this.combatants = {
       player1: new Combatant(
         {
           ...window.PIZZAS[PizzaKey.S001],
-          team: Team.Player,
+          team: TeamType.Player,
           hp: 40,
           maxHp: 50,
           xp: 0,
@@ -39,7 +42,7 @@ export class Battle {
       player2: new Combatant(
         {
           ...window.PIZZAS[PizzaKey.S002],
-          team: Team.Player,
+          team: TeamType.Player,
           hp: 30,
           maxHp: 50,
           xp: 75,
@@ -53,7 +56,7 @@ export class Battle {
       enemy1: new Combatant(
         {
           ...window.PIZZAS[PizzaKey.V001],
-          team: Team.Enemy,
+          team: TeamType.Enemy,
           hp: 25,
           maxHp: 50,
           xp: 20,
@@ -65,7 +68,7 @@ export class Battle {
       enemy2: new Combatant(
         {
           ...window.PIZZAS[PizzaKey.F001],
-          team: Team.Enemy,
+          team: TeamType.Enemy,
           hp: 50,
           maxHp: 50,
           xp: 30,
@@ -77,30 +80,30 @@ export class Battle {
     };
 
     this.activeCombatants = {
-      [Team.Player]: 'player1',
-      [Team.Enemy]: 'enemy1',
+      [TeamType.Player]: 'player1',
+      [TeamType.Enemy]: 'enemy1',
     };
 
     this.items = [
       {
         actionId: ActionKey.ItemRecoverStatus,
         instanceId: 'p1',
-        team: Team.Player,
+        team: TeamType.Player,
       },
       {
         actionId: ActionKey.ItemRecoverStatus,
         instanceId: 'p2',
-        team: Team.Player,
+        team: TeamType.Player,
       },
       {
         actionId: ActionKey.ItemRecoverHp,
         instanceId: 'p3',
-        team: Team.Player,
+        team: TeamType.Player,
       },
       {
         actionId: ActionKey.ItemRecoverStatus,
         instanceId: 'p4',
-        team: Team.Enemy,
+        team: TeamType.Enemy,
       },
     ];
   }
@@ -122,11 +125,24 @@ export class Battle {
     this.createElement();
     container.appendChild(this.element);
 
+    this.playerTeam = new Team(TeamType.Player, 'Hero');
+    this.enemyTeam = new Team(TeamType.Enemy, 'Bully');
+
     Object.keys(this.combatants).forEach((key) => {
       let combatant = this.combatants[key];
       combatant.id = key;
       combatant.init(this.element);
+
+      // Add to correct team:
+      if (combatant.team === TeamType.Player) {
+        this.playerTeam.combatants.push(combatant);
+      } else if (combatant.team === TeamType.Enemy) {
+        this.enemyTeam.combatants.push(combatant);
+      }
     });
+
+    this.playerTeam.init(this.element);
+    this.enemyTeam.init(this.element);
 
     this.turnCycle = new TurnCycle({
       battle: this,

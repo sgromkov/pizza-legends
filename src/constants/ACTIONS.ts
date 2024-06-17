@@ -1,4 +1,4 @@
-import { Combatant, Team } from '../Battle/Combatant';
+import { Combatant, TeamType } from '../Battle/Combatant';
 import { BattleAnimationKey } from './BATTLE_ANIMATIONS';
 
 export enum ActionTargetType {
@@ -61,7 +61,7 @@ export interface ReplaceActionPayload {
 
 export interface ReplacementMenuActionPayload {
   type: ActionType.ReplacementMenu;
-  team: Team;
+  team: TeamType;
 }
 
 export type ActionPayload =
@@ -90,7 +90,7 @@ export interface Action {
 export interface ActionItem {
   actionId: ActionKey;
   instanceId: string;
-  team: Team;
+  team: TeamType;
 }
 
 window.ACTIONS = {

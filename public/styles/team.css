@@ -1,0 +1,32 @@
+.team {
+    display: flex;
+    position: absolute;
+    top: 4px;
+    gap: 4px;
+}
+
+.team[data-team="player"] {
+    left: 4px;
+}
+
+.team[data-team="enemy"] {
+    right: 4px;
+}
+
+/* Start steteful paths as display:none */
+.team .dead-pizza {
+    display: none;
+}
+
+.team .active-pizza-indicator {
+    display: none;
+}
+
+/* Display them as opted in by data-attributes */
+.team [data-dead="true"] .dead-pizza {
+    display: block;
+}
+
+.team [data-active="true"] .active-pizza-indicator {
+    display: block;
+}

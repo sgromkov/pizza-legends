@@ -9,7 +9,7 @@ import { PizzaType } from '../constants/PIZZAS';
 import { randomFromArray } from '../utils';
 import { Battle } from './Battle';
 
-export enum Team {
+export enum TeamType {
   Player = 'player',
   Enemy = 'enemy',
 }
@@ -32,7 +32,7 @@ interface Config {
   src: string;
   icon: string;
   // Teams:
-  team: Team;
+  team: TeamType;
 }
 
 export class Combatant {
@@ -58,7 +58,7 @@ export class Combatant {
   icon: string;
   actions: ActionKey[];
   // Teams:
-  team: Team;
+  team: TeamType;
   hpFills: NodeListOf<HTMLElement>;
   xpFills: NodeListOf<HTMLElement>;
   pizzaElement: HTMLImageElement;

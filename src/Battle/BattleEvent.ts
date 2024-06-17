@@ -81,6 +81,10 @@ export class BattleEvent {
     // Wait a little kit:
     await wait(600);
 
+    // Update team components:
+    this.battle.playerTeam.update();
+    this.battle.enemyTeam.update();
+
     // Stop blinking:
     payload.target.pizzaElement.classList.remove('battle-damage-blink');
 
@@ -140,6 +144,10 @@ export class BattleEvent {
     this.battle.activeCombatants[replacement.team] = replacement.id;
     replacement.update();
     await wait(400);
+
+    // Update team components:
+    this.battle.playerTeam.update();
+    this.battle.enemyTeam.update();
 
     resolve();
   }

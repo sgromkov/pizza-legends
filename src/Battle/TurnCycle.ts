@@ -1,12 +1,12 @@
 import { ActionPayload, ActionType } from '../constants/ACTIONS';
 import { Battle } from './Battle';
-import { Combatant, Team } from './Combatant';
+import { Combatant, TeamType } from './Combatant';
 import { SubmissionMenuResultPayload } from './SubmissionMenu';
 
 export class TurnCycle {
   battle: Battle;
   onNewEvent: (ActionPayload) => Promise<any>;
-  currentTeam: Team;
+  currentTeam: TeamType;
 
   constructor({
     battle,
@@ -17,7 +17,7 @@ export class TurnCycle {
   }) {
     this.battle = battle;
     this.onNewEvent = onNewEvent;
-    this.currentTeam = Team.Player;
+    this.currentTeam = TeamType.Player;
   }
 
   async turn() {
@@ -26,7 +26,7 @@ export class TurnCycle {
     const caster = this.battle.combatants[casterId];
 
     // Get the caster's enemy:
-    const enemyTeam = caster.team === Team.Player ? Team.Enemy : Team.Player;
+    const enemyTeam = caster.team === TeamType.Player ? TeamType.Enemy : TeamType.Player;
     const enemyId = this.battle.activeCombatants[enemyTeam];
     const enemy = this.battle.combatants[enemyId];
 
@@ -133,11 +133,11 @@ export class TurnCycle {
 
   nextTurn() {
     this.currentTeam =
-      this.currentTeam === Team.Player ? Team.Enemy : Team.Player;
+      this.currentTeam === TeamType.Player ? TeamType.Enemy : TeamType.Player;
     this.turn();
   }
 
-  getWinningTeam(): Team | null {
+  getWinningTeam(): TeamType | null {
     let aliveTeams = {};
     Object.values(this.battle.combatants).forEach((combatant) => {
       if (combatant.hp > 0) {
@@ -145,12 +145,12 @@ export class TurnCycle {
       }
     });
 
-    if (!aliveTeams[Team.Player]) {
-      return Team.Enemy;
+    if (!aliveTeams[TeamType.Player]) {
+      return TeamType.Enemy;
     }
 
-    if (!aliveTeams[Team.Enemy]) {
-      return Team.Player;
+    if (!aliveTeams[TeamType.Enemy]) {
+      return TeamType.Player;
     }
 
     return null;
