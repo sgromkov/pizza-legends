@@ -3,6 +3,7 @@ import {
   ActionPayload,
   ActionTargetType,
   AnimationActionPayload,
+  GiveXpActionPayload,
   ReplaceActionPayload,
   ReplacementMenuActionPayload,
   StateChangeActionPayload,
@@ -150,6 +151,34 @@ export class BattleEvent {
     this.battle.enemyTeam.update();
 
     resolve();
+  }
+
+  giveXp(resolve: Function) {
+    const payload = this.payload as GiveXpActionPayload;
+    let amount = payload.xp;
+    const { combatant } = payload;
+    const step = () => {
+      if (amount > 0) {
+        amount -= 1;
+        combatant.xp += 1;
+
+        // Check if we've hit level up point:
+        if (combatant.xp === combatant.maxXp) {
+          combatant.xp = 0;
+          combatant.maxXp = 100;
+          combatant.level += 1;
+        }
+
+        combatant.update();
+        requestAnimationFrame(step);
+
+        return;
+      }
+
+      resolve();
+    };
+
+    requestAnimationFrame(step);
   }
 
   animation(resolve: Function) {

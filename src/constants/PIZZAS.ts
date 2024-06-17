@@ -12,7 +12,7 @@ export enum PizzaKey {
   S001 = 's001',
   S002 = 's002',
   V001 = 'v001',
-  F001 = 'f001',
+  F001 = 'f001'
 }
 
 export interface Pizza {

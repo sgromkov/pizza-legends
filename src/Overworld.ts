@@ -10,6 +10,7 @@ import { KeyPressListener } from './KeyPressListener';
 import { MapAction } from './MapEvent';
 import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
 import { TextMessageAction } from './TextMessageEvent';
+import { EnemyKey } from './constants/ENEMIES';
 import { EventName } from './utils';
 
 interface Config {
@@ -105,8 +106,8 @@ export class Overworld {
 
     this.startGameLoop();
 
-    this.map.startCutscene([
-      {type: BattleMapAction.Battle}
-    ])
+    // this.map.startCutscene([
+    //   { type: BattleMapAction.Battle, enemyId: EnemyKey.Beth },
+    // ]);
   }
 }

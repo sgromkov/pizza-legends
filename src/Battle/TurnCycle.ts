@@ -7,16 +7,20 @@ export class TurnCycle {
   battle: Battle;
   onNewEvent: (ActionPayload) => Promise<any>;
   currentTeam: TeamType;
+  onWinner: (winnerTeam: TeamType) => void;
 
   constructor({
     battle,
     onNewEvent,
+    onWinner,
   }: {
     battle: Battle;
     onNewEvent: (ActionPayload) => Promise<void>;
+    onWinner: (winnerTeam: TeamType) => void;
   }) {
     this.battle = battle;
     this.onNewEvent = onNewEvent;
+    this.onWinner = onWinner;
     this.currentTeam = TeamType.Player;
   }
 
@@ -26,7 +30,8 @@ export class TurnCycle {
     const caster = this.battle.combatants[casterId];
 
     // Get the caster's enemy:
-    const enemyTeam = caster.team === TeamType.Player ? TeamType.Enemy : TeamType.Player;
+    const enemyTeam =
+      caster.team === TeamType.Player ? TeamType.Enemy : TeamType.Player;
     const enemyId = this.battle.activeCombatants[enemyTeam];
     const enemy = this.battle.combatants[enemyId];
 
@@ -54,6 +59,10 @@ export class TurnCycle {
     }
 
     if (submission.instanceId) {
+      // Add to list to persist to player state later:
+      this.battle.usedInstanceIds[submission.instanceId] = true;
+
+      // Removing items from battle state:
       this.battle.items = this.battle.items.filter(
         (item) => item.instanceId !== submission.instanceId
       );
@@ -78,6 +87,22 @@ export class TurnCycle {
         type: ActionType.TextMessage,
         text: `${submission.target.name} is ruined!`,
       });
+
+      if (submission.target.team === TeamType.Enemy) {
+        const playerActivePizzaId = this.battle.activeCombatants.player;
+        const xp = submission.target.givesXp;
+
+        await this.onNewEvent({
+          type: ActionType.TextMessage,
+          text: `Gained ${xp} XP!`,
+        });
+
+        await this.onNewEvent({
+          type: ActionType.GiveXp,
+          xp,
+          combatant: this.battle.combatants[playerActivePizzaId],
+        });
+      }
     }
 
     // Do we have a winner team?
@@ -88,6 +113,8 @@ export class TurnCycle {
         type: ActionType.TextMessage,
         text: 'Winner!',
       });
+
+      this.onWinner(winner);
 
       return;
     }
@@ -157,10 +184,10 @@ export class TurnCycle {
   }
 
   async init() {
-    // await this.onNewEvent({
-    //   type: ActionType.TextMessage,
-    //   text: 'The battle is starting!',
-    // });
+    await this.onNewEvent({
+      type: ActionType.TextMessage,
+      text: `${this.battle.enemy.name} wants to throw down!`,
+    });
 
     // Start the first turn:
     this.turn();

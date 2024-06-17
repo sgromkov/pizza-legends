@@ -14,12 +14,12 @@ export enum TeamType {
   Enemy = 'enemy',
 }
 
-interface Config {
+export interface CombatantConfig {
   // Params:
-  hp: number;
+  hp?: number;
   maxHp: number;
-  xp: number;
-  maxXp: number;
+  xp?: number;
+  maxXp?: number;
   level: number;
   status?: {
     type: StateChangeStatusType;
@@ -63,11 +63,12 @@ export class Combatant {
   xpFills: NodeListOf<HTMLElement>;
   pizzaElement: HTMLImageElement;
 
-  constructor(config: Config, battle: Battle) {
+  constructor(config: CombatantConfig, battle: Battle) {
     Object.keys(config).forEach((key) => {
       this[key] = config[key];
     });
 
+    this.hp = typeof this.hp === 'undefined' ? this.maxHp : this.hp;
     this.battle = battle;
   }
 
@@ -83,6 +84,10 @@ export class Combatant {
 
   get isActive() {
     return this.battle.activeCombatants[this.team] === this.id;
+  }
+
+  get givesXp() {
+    return this.level * 20;
   }
 
   createElement() {
@@ -123,7 +128,7 @@ export class Combatant {
     );
   }
 
-  update(changes: Partial<Config> = {}) {
+  update(changes: Partial<CombatantConfig> = {}) {
     // Update anything incoming:
     Object.keys(changes).forEach((key) => {
       this[key] = changes[key];

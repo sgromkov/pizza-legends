@@ -1,3 +1,4 @@
+import { BattleMapAction } from '../Battle/BattleMapEvent';
 import {
   Direction,
   GameObject,
@@ -9,6 +10,7 @@ import { MapName, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
 import { TextMessageAction } from '../TextMessageEvent';
 import { asGridCoord, withGrid } from '../utils';
+import { EnemyKey } from './ENEMIES';
 
 window.OVERWORLD_MAPS = {
   [MapName.DemoRoom]: {
@@ -51,25 +53,48 @@ window.OVERWORLD_MAPS = {
                 text: "I'm busy...",
                 faceHero: GameObjectName.Npc1,
               },
-              { type: TextMessageAction.TextMessage, text: 'Go away!' },
-              {
-                type: GameObjectAction.Walk,
-                direction: Direction.Left,
-                who: GameObjectName.Hero,
-              },
-              {
-                type: GameObjectAction.Walk,
-                direction: Direction.Up,
-                who: GameObjectName.Hero,
-              },
+              { type: BattleMapAction.Battle, enemyId: EnemyKey.Beth },
+              // { type: TextMessageAction.TextMessage, text: 'Go away!' },
+              // {
+              //   type: GameObjectAction.Walk,
+              //   direction: Direction.Left,
+              //   who: GameObjectName.Hero,
+              // },
+              // {
+              //   type: GameObjectAction.Walk,
+              //   direction: Direction.Up,
+              //   who: GameObjectName.Hero,
+              // },
             ],
           },
         ],
       }),
       [GameObjectName.Npc2]: new Person({
-        src: '../images/characters/people/npc2.png',
+        src: '../images/characters/people/erio.png',
         x: withGrid(8),
         y: withGrid(5),
+        talking: [
+          {
+            events: [
+              {
+                type: TextMessageAction.TextMessage,
+                text: 'Bahaha!',
+                faceHero: GameObjectName.Npc2,
+              },
+              { type: BattleMapAction.Battle, enemyId: EnemyKey.Erio },
+              // {
+              //   type: GameObjectAction.Walk,
+              //   direction: Direction.Left,
+              //   who: GameObjectName.Hero,
+              // },
+              // {
+              //   type: GameObjectAction.Walk,
+              //   direction: Direction.Up,
+              //   who: GameObjectName.Hero,
+              // },
+            ],
+          },
+        ],
         // behaviourLoop: [
         //   {
         //     type: GameObjectAction.Walk,

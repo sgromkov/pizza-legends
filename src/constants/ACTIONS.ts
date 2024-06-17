@@ -12,6 +12,7 @@ export enum ActionType {
   SubmissionMenu = 'submissionMenu',
   Replace = 'replace',
   ReplacementMenu = 'replacementMenu',
+  GiveXp = 'giveXp',
 }
 
 export interface TextMessageActionPayload {
@@ -64,13 +65,20 @@ export interface ReplacementMenuActionPayload {
   team: TeamType;
 }
 
+export interface GiveXpActionPayload {
+  type: ActionType.GiveXp;
+  xp: number;
+  combatant: Combatant;
+}
+
 export type ActionPayload =
   | TextMessageActionPayload
   | AnimationActionPayload
   | StateChangeActionPayload
   | SubmissionMenuActionPayload
   | ReplaceActionPayload
-  | ReplacementMenuActionPayload;
+  | ReplacementMenuActionPayload
+  | GiveXpActionPayload;
 
 export enum ActionKey {
   Damage1 = 'damage1',
@@ -90,12 +98,13 @@ export interface Action {
 export interface ActionItem {
   actionId: ActionKey;
   instanceId: string;
-  team: TeamType;
+  team?: TeamType;
 }
 
 window.ACTIONS = {
   [ActionKey.Damage1]: {
     name: 'Whomp!',
+    description: 'Pillowy punch of dough',
     success: [
       {
         type: ActionType.TextMessage,
@@ -113,6 +122,7 @@ window.ACTIONS = {
   },
   [ActionKey.SaucyStatus]: {
     name: 'Tomato Squeeze!',
+    description: 'Applies the Saucy status',
     targetType: ActionTargetType.Friendly,
     success: [
       {
@@ -130,6 +140,7 @@ window.ACTIONS = {
   },
   [ActionKey.ClumsyStatus]: {
     name: 'Olive Oil',
+    description: 'Slippery mess of deliciousness',
     success: [
       {
         type: ActionType.TextMessage,

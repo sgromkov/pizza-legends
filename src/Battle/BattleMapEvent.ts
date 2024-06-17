@@ -1,5 +1,6 @@
 import { EventPayload, OverworldEvent } from '../OverworldEvent';
 import { OverworldMap } from '../OverworldMap';
+import { EnemyKey } from '../constants/ENEMIES';
 import { Battle } from './Battle';
 
 export enum BattleMapAction {
@@ -8,6 +9,7 @@ export enum BattleMapAction {
 
 export interface BattleMapEventPayload {
   type: BattleMapAction;
+  enemyId: EnemyKey;
 }
 
 interface Config {
@@ -24,6 +26,7 @@ export class BattleMapEvent extends OverworldEvent {
 
   battle(resolve: Function) {
     const battle = new Battle({
+      enemy: window.ENEMIES[this.event.enemyId],
       onComplete: () => {
         resolve();
       },
