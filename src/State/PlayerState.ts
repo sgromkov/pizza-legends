@@ -5,10 +5,12 @@ import {
   StateChangeStatusType,
 } from '../constants/ACTIONS';
 import { PizzaKey } from '../constants/PIZZAS';
+import { EventName, emitEvent } from '../utils';
 
 export enum PlayerPizzaKey {
   P1 = 'p1',
   P2 = 'p2',
+  P3 = 'p3',
 }
 
 export interface PlayerPizza {
@@ -52,6 +54,15 @@ export class PlayerState {
         level: 1,
         status: null,
       },
+      [PlayerPizzaKey.P3]: {
+        pizzaId: PizzaKey.F001,
+        hp: 50,
+        maxHp: 50,
+        xp: 75,
+        maxXp: 100,
+        level: 1,
+        status: null,
+      },
     };
     this.lineup = [PlayerPizzaKey.P1, PlayerPizzaKey.P2];
     this.items = [
@@ -68,6 +79,20 @@ export class PlayerState {
         instanceId: 'item3',
       },
     ];
+  }
+
+  swapLineup(oldId: PlayerPizzaKey, incomingId: PlayerPizzaKey) {
+    const oldIndex = this.lineup.indexOf(oldId);
+    this.lineup[oldIndex] = incomingId;
+
+    emitEvent(EventName.LineupChanged);
+  }
+
+  moveToFront(futureFrontId: PlayerPizzaKey) {
+    this.lineup = this.lineup.filter((id) => id !== futureFrontId);
+    this.lineup.unshift(futureFrontId);
+
+    emitEvent(EventName.LineupChanged);
   }
 
   update() {}

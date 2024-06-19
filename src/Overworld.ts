@@ -10,6 +10,7 @@ import { Hud } from './Hud';
 import { KeyPressListener } from './KeyPressListener';
 import { MapAction } from './MapEvent';
 import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
+import { PauseAction } from './PauseEvent';
 import { TextMessageAction } from './TextMessageEvent';
 import { EnemyKey } from './constants/ENEMIES';
 import { EventName } from './utils';
@@ -65,9 +66,11 @@ export class Overworld {
       // Draw Upper Layer:
       this.map.drawUpperImage(this.ctx, cameraPerson);
 
-      requestAnimationFrame(() => {
-        step();
-      });
+      if (!this.map.isPaused) {
+        requestAnimationFrame(() => {
+          step();
+        });
+      }
     };
 
     step();
@@ -77,6 +80,16 @@ export class Overworld {
     new KeyPressListener('Enter', () => {
       // Is there a person here to talk?
       this.map.checkForActionCutscene();
+    });
+
+    new KeyPressListener('Escape', () => {
+      if (!this.map.isCutscenePlaying) {
+        this.map.startCutscene([
+          {
+            type: PauseAction.Pause,
+          },
+        ]);
+      }
     });
   }
 

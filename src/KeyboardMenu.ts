@@ -8,6 +8,10 @@ export interface KeyboardMenuOption {
   disabled?: boolean;
 }
 
+export interface Config {
+  descriptionContainer?: HTMLElement;
+}
+
 export class KeyboardMenu {
   options: KeyboardMenuOption[];
   up: KeyPressListener;
@@ -16,12 +20,14 @@ export class KeyboardMenu {
   element: HTMLElement;
   descriptionElement: HTMLElement;
   descriptionElementText: HTMLElement;
+  descriptionContainer: HTMLElement;
 
-  constructor() {
+  constructor(config: Config = {}) {
     this.options = [];
     this.up = null;
     this.down = null;
     this.prevFocus = null;
+    this.descriptionContainer = config.descriptionContainer || null;
   }
 
   setOptions(options: KeyboardMenuOption[]) {
@@ -91,7 +97,13 @@ export class KeyboardMenu {
 
   init(container: HTMLElement) {
     this.createElement();
-    container.appendChild(this.descriptionElement);
+
+    if (this.descriptionContainer) {
+      this.descriptionContainer.appendChild(this.descriptionElement);
+    } else {
+      container.appendChild(this.descriptionElement);
+    }
+
     container.appendChild(this.element);
 
     this.up = new KeyPressListener('ArrowUp', () => {

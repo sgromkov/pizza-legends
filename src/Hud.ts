@@ -16,6 +16,11 @@ export class Hud {
   }
 
   createElement() {
+    if (this.element) {
+      this.element.remove();
+      this.scoreboards = [];
+    }
+
     this.element = document.createElement('div');
     this.element.classList.add('hud');
 
@@ -43,6 +48,11 @@ export class Hud {
 
     document.addEventListener(EventName.PlayerStateUpdated, () => {
       this.update();
+    });
+
+    document.addEventListener(EventName.LineupChanged, () => {
+      this.createElement();
+      container.appendChild(this.element);
     });
   }
 }

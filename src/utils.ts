@@ -51,6 +51,7 @@ export enum EventName {
   PersonWalkingComplete = 'PersonWalkingComplete',
   PersonStandComplete = 'PersonStandComplete',
   PlayerStateUpdated = 'PlayerStateUpdated',
+  LineupChanged = 'LineupChanged',
 }
 
 export function emitEvent(

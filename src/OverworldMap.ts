@@ -13,6 +13,7 @@ import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
 import { MapAction, MapEvent, MapEventPayload } from './MapEvent';
 import { Overworld } from './Overworld';
 import { EventPayload, OverworldEvent } from './OverworldEvent';
+import { PauseAction, PauseEvent, PauseEventPayload } from './PauseEvent';
 import { Person } from './Person';
 import {
   TextMessageAction,
@@ -52,6 +53,7 @@ export class OverworldMap {
     }>
   >;
   isCutscenePlaying: boolean;
+  isPaused: boolean;
 
   constructor(config: OverworldMapConfig) {
     this.overworld = null;
@@ -66,6 +68,7 @@ export class OverworldMap {
     this.upperImage.src = config.upperSrc;
 
     this.isCutscenePlaying = false;
+    this.isPaused = false;
   }
 
   drawLowerImage(
@@ -139,6 +142,12 @@ export class OverworldMap {
         case BattleMapAction.Battle:
           eventHandler = new BattleMapEvent({
             event: events[i] as BattleMapEventPayload,
+            map: this,
+          });
+          break;
+        case PauseAction.Pause:
+          eventHandler = new PauseEvent({
+            event: events[i] as PauseEventPayload,
             map: this,
           });
           break;
