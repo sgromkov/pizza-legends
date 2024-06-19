@@ -7,6 +7,7 @@ import {
 } from '../constants/ACTIONS';
 import { Enemy, EnemyPizzaKey } from '../constants/ENEMIES';
 import { PizzaKey } from '../constants/PIZZAS';
+import { EventName, emitEvent } from '../utils';
 import { BattleEvent } from './BattleEvent';
 import { Combatant, CombatantConfig, TeamType } from './Combatant';
 import { Team } from './Team';
@@ -158,6 +159,9 @@ export class Battle {
           window.playerState.items = window.playerState.items.filter((item) => {
             return !this.usedInstanceIds[item.instanceId];
           });
+
+          // Send signal to update:
+          emitEvent(EventName.PlayerStateUpdated);
         }
 
         this.element.remove();

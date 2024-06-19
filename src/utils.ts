@@ -50,11 +50,12 @@ export function randomFromArray<T>(array: T[]): T {
 export enum EventName {
   PersonWalkingComplete = 'PersonWalkingComplete',
   PersonStandComplete = 'PersonStandComplete',
+  PlayerStateUpdated = 'PlayerStateUpdated',
 }
 
 export function emitEvent(
   name: EventName,
-  detail: Record<string, unknown>
+  detail?: Record<string, unknown>
 ): void {
   const event = new CustomEvent(name, { detail });
 

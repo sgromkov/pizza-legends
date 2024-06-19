@@ -15,6 +15,7 @@ export enum TeamType {
 }
 
 export interface CombatantConfig {
+  id?: string;
   // Params:
   hp?: number;
   maxHp: number;
@@ -32,7 +33,7 @@ export interface CombatantConfig {
   src: string;
   icon: string;
   // Teams:
-  team: TeamType;
+  team?: TeamType;
 }
 
 export class Combatant {
@@ -83,7 +84,7 @@ export class Combatant {
   }
 
   get isActive() {
-    return this.battle.activeCombatants[this.team] === this.id;
+    return this.battle?.activeCombatants[this.team] === this.id;
   }
 
   get givesXp() {
