@@ -85,7 +85,7 @@ export enum ActionId {
   SaucyStatus = 'saucyStatus',
   ClumsyStatus = 'clumsyStatus',
   ItemRecoverStatus = 'item_recoverStatus',
-  ItemRecoverHp = 'item_revoverHp',
+  ItemRecoverHp = 'item_recoverHp',
 }
 
 export interface Action {
