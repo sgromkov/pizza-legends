@@ -1,12 +1,12 @@
-import { PlayerPizzaKey } from '../State/PlayerState';
+import { PlayerPizzaId } from '../State/PlayerState';
 import {
   ActionItem,
-  ActionKey,
+  ActionId,
   ActionPayload,
   StateChangeStatusType,
 } from '../constants/ACTIONS';
-import { Enemy, EnemyPizzaKey } from '../constants/ENEMIES';
-import { PizzaKey } from '../constants/PIZZAS';
+import { Enemy, EnemyPizzaId } from '../constants/ENEMIES';
+import { PizzaId } from '../constants/PIZZAS';
 import { EventName, emitEvent } from '../utils';
 import { BattleEvent } from './BattleEvent';
 import { Combatant, CombatantConfig, TeamType } from './Combatant';
@@ -42,13 +42,13 @@ export class Battle {
     };
 
     // Dynamically add the Player team:
-    window.playerState.lineup.forEach((id: PlayerPizzaKey) => {
+    window.playerState.lineup.forEach((id: PlayerPizzaId) => {
       this.addCombatant(id, TeamType.Player, window.playerState.pizzas[id]);
     });
 
     // Dynamically add the Enemy team:
-    Object.keys(this.enemy.pizzas).forEach((key: EnemyPizzaKey) => {
-      this.addCombatant('e_' + key, TeamType.Enemy, this.enemy.pizzas[key]);
+    Object.keys(this.enemy.pizzas).forEach((id: EnemyPizzaId) => {
+      this.addCombatant('e_' + id, TeamType.Enemy, this.enemy.pizzas[id]);
     });
 
     // Start empty:
@@ -69,7 +69,7 @@ export class Battle {
     id: string,
     team: TeamType,
     config: {
-      pizzaId: PizzaKey;
+      pizzaId: PizzaId;
       hp?: number;
       maxHp: number;
       xp?: number;
@@ -142,9 +142,9 @@ export class Battle {
       onWinner: (winnerTeam: TeamType) => {
         if (winnerTeam === TeamType.Player) {
           Object.keys(window.playerState.pizzas).forEach(
-            (key: PlayerPizzaKey) => {
-              const playerStatePizza = window.playerState.pizzas[key];
-              const combatant = this.combatants[key];
+            (id: PlayerPizzaId) => {
+              const playerStatePizza = window.playerState.pizzas[id];
+              const combatant = this.combatants[id];
 
               if (combatant) {
                 playerStatePizza.hp = combatant.hp;

@@ -1,10 +1,10 @@
 import { Battle } from './Battle/Battle';
-import { Direction, GameObjectBehaviour, GameObjectName } from './GameObject';
+import { Direction, GameObjectBehaviour, GameObjectId } from './GameObject';
 import { MapName, OverworldMap } from './OverworldMap';
 import { PauseMenu } from './PauseMenu';
 import { SceneTransition } from './SceneTransition';
 import { TextMessage } from './TextMessage';
-import { EnemyKey } from './constants/ENEMIES';
+import { EnemyId } from './constants/ENEMIES';
 import { EventName, getOppositeDirection } from './utils';
 
 export enum OverworldEventAction {
@@ -19,19 +19,19 @@ export enum OverworldEventAction {
 export interface OverworldEventTextMesssagePayload {
   type: OverworldEventAction.TextMessage;
   text: string;
-  faceHero?: GameObjectName;
+  faceHero?: GameObjectId;
 }
 
 export interface OverworldEventStandPayload {
   type: OverworldEventAction.Stand;
-  who: GameObjectName;
+  who: GameObjectId;
   direction: Direction;
   time?: number;
 }
 
 export interface OverworldEventWalkPayload {
   type: OverworldEventAction.Walk;
-  who: GameObjectName;
+  who: GameObjectId;
   direction: Direction;
   time?: number;
   retry?: boolean;
@@ -44,7 +44,7 @@ export interface OverworldEventChangeMapPayload {
 
 export interface OverworldEventBattlePayload {
   type: OverworldEventAction.Battle;
-  enemyId: EnemyKey;
+  enemyId: EnemyId;
 }
 
 export interface OverworldEventPausePayload {
@@ -80,7 +80,7 @@ export class OverworldEvent {
       const gameObject = this.map.gameObjects[event.faceHero];
 
       gameObject.direction = getOppositeDirection(
-        this.map.gameObjects[GameObjectName.Hero].direction
+        this.map.gameObjects[GameObjectId.Hero].direction
       );
     }
 

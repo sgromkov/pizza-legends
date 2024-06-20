@@ -1,6 +1,6 @@
 import { KeyPressListener } from './KeyPressListener';
 import { KeyboardMenu, KeyboardMenuOption } from './KeyboardMenu';
-import { PlayerPizzaKey } from './State/PlayerState';
+import { PlayerPizzaId } from './State/PlayerState';
 import { wait } from './utils';
 
 export enum PauseMenuPageKey {
@@ -17,7 +17,7 @@ export class PauseMenu {
     this.onComplete = onComplete;
   }
 
-  getOptions(pageKey: PauseMenuPageKey | PlayerPizzaKey): KeyboardMenuOption[] {
+  getOptions(pageKey: PauseMenuPageKey | PlayerPizzaId): KeyboardMenuOption[] {
     // Case 1: Show the first page of options:
     if (pageKey === PauseMenuPageKey.Root) {
       const lineupPizzas: KeyboardMenuOption[] = window.playerState.lineup.map(
@@ -58,10 +58,10 @@ export class PauseMenu {
     const unequipped: KeyboardMenuOption[] = Object.keys(
       window.playerState.pizzas
     )
-      .filter((id: PlayerPizzaKey) => {
+      .filter((id: PlayerPizzaId) => {
         return window.playerState.lineup.indexOf(id) === -1;
       })
-      .map((id: PlayerPizzaKey) => {
+      .map((id: PlayerPizzaId) => {
         const { pizzaId } = window.playerState.pizzas[id];
         const base = window.PIZZAS[pizzaId];
         const option: KeyboardMenuOption = {

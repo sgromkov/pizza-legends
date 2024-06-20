@@ -1,10 +1,10 @@
 import { DirectionInput } from './DirectionInput';
-import { Direction, GameObject, GameObjectName } from './GameObject';
+import { Direction, GameObject, GameObjectId } from './GameObject';
 import { Hud } from './Hud';
 import { KeyPressListener } from './KeyPressListener';
 import { OverworldEventAction } from './OverworldEvent';
 import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
-import { EnemyKey } from './constants/ENEMIES';
+import { EnemyId } from './constants/ENEMIES';
 import { EventName } from './utils';
 
 interface Config {
@@ -89,7 +89,7 @@ export class Overworld {
     document.addEventListener(
       EventName.PersonWalkingComplete,
       (e: CustomEvent) => {
-        if (e.detail.whoId === GameObjectName.Hero) {
+        if (e.detail.whoId === GameObjectId.Hero) {
           // Hero's position has changed
           this.map.checkForFootstepCutscene();
         }

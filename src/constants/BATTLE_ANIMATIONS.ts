@@ -2,13 +2,13 @@ import { TeamType } from '../Battle/Combatant';
 import { wait } from '../utils';
 import { AnimationActionPayload } from './ACTIONS';
 
-export enum BattleAnimationKey {
+export enum BattleAnimationId {
   Spin = 'spin',
   Glob = 'glob',
 }
 
 window.BATTLE_ANIMATIONS = {
-  [BattleAnimationKey.Spin]: async (
+  [BattleAnimationId.Spin]: async (
     payload: AnimationActionPayload,
     onComplete: Function
   ) => {
@@ -31,7 +31,7 @@ window.BATTLE_ANIMATIONS = {
     await wait(100);
     onComplete();
   },
-  [BattleAnimationKey.Glob]: async (
+  [BattleAnimationId.Glob]: async (
     payload: AnimationActionPayload,
     onComplete: Function
   ) => {

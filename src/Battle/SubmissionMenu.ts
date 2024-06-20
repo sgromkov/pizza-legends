@@ -1,7 +1,7 @@
 import {
   Action,
   ActionItem,
-  ActionKey,
+  ActionId,
   ActionTargetType,
 } from '../constants/ACTIONS';
 import { Combatant } from './Combatant';
@@ -23,7 +23,7 @@ export enum SubmissionMenuPageKey {
 
 interface SubmissionMenuItem {
   quantity: number;
-  actionId: ActionKey;
+  actionId: ActionId;
   instanceId: string;
 }
 
@@ -53,7 +53,7 @@ export class SubmissionMenu {
     this.replacements = replacements;
     this.onComplete = onComplete;
 
-    let quantityMap: Partial<Record<ActionKey, SubmissionMenuItem>> = {};
+    let quantityMap: Partial<Record<ActionId, SubmissionMenuItem>> = {};
     items.forEach((item) => {
       if (item.team === caster.team) {
         let existing = quantityMap[item.actionId];
@@ -115,8 +115,8 @@ export class SubmissionMenu {
         },
       ],
       [SubmissionMenuPageKey.Attacks]: [
-        ...this.caster.actions.map((key) => {
-          const action = window.ACTIONS[key];
+        ...this.caster.actions.map((id) => {
+          const action = window.ACTIONS[id];
           const option: KeyboardMenuOption = {
             label: action.name,
             description: action.description,

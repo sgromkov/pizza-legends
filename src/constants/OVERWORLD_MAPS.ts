@@ -1,22 +1,22 @@
-import { Direction, GameObject, GameObjectName } from '../GameObject';
+import { Direction, GameObject, GameObjectId } from '../GameObject';
 import { OverworldEventAction } from '../OverworldEvent';
 import { MapName, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
 import { asGridCoord, withGrid } from '../utils';
-import { EnemyKey } from './ENEMIES';
+import { EnemyId } from './ENEMIES';
 
 window.OVERWORLD_MAPS = {
   [MapName.DemoRoom]: {
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
-      [GameObjectName.Hero]: new Person({
+      [GameObjectId.Hero]: new Person({
         src: '../images/characters/people/npc4.png',
         x: withGrid(5),
         y: withGrid(6),
         isPlayerControlled: true,
       }),
-      [GameObjectName.Npc1]: new Person({
+      [GameObjectId.Npc1]: new Person({
         src: '../images/characters/people/npc1.png',
         x: withGrid(7),
         y: withGrid(9),
@@ -48,9 +48,9 @@ window.OVERWORLD_MAPS = {
               {
                 type: OverworldEventAction.TextMessage,
                 text: "I'm busy...",
-                faceHero: GameObjectName.Npc1,
+                faceHero: GameObjectId.Npc1,
               },
-              { type: OverworldEventAction.Battle, enemyId: EnemyKey.Beth },
+              { type: OverworldEventAction.Battle, enemyId: EnemyId.Beth },
               // { type: OverworldEventAction.TextMessage, text: 'Go away!' },
               // {
               //   type: OverworldEventAction.Walk,
@@ -66,7 +66,7 @@ window.OVERWORLD_MAPS = {
           },
         ],
       }),
-      [GameObjectName.Npc2]: new Person({
+      [GameObjectId.Npc2]: new Person({
         src: '../images/characters/people/erio.png',
         x: withGrid(8),
         y: withGrid(5),
@@ -76,9 +76,9 @@ window.OVERWORLD_MAPS = {
               {
                 type: OverworldEventAction.TextMessage,
                 text: 'Bahaha!',
-                faceHero: GameObjectName.Npc2,
+                faceHero: GameObjectId.Npc2,
               },
-              { type: OverworldEventAction.Battle, enemyId: EnemyKey.Erio },
+              { type: OverworldEventAction.Battle, enemyId: EnemyId.Erio },
               // {
               //   type: OverworldEventAction.Walk,
               //   direction: Direction.Left,
@@ -142,12 +142,12 @@ window.OVERWORLD_MAPS = {
         {
           events: [
             {
-              who: GameObjectName.Npc2,
+              who: GameObjectId.Npc2,
               type: OverworldEventAction.Walk,
               direction: Direction.Left,
             },
             {
-              who: GameObjectName.Npc2,
+              who: GameObjectId.Npc2,
               type: OverworldEventAction.Stand,
               direction: Direction.Up,
               time: 500,
@@ -157,17 +157,17 @@ window.OVERWORLD_MAPS = {
               text: "You can't be in here!",
             },
             {
-              who: GameObjectName.Npc2,
+              who: GameObjectId.Npc2,
               type: OverworldEventAction.Walk,
               direction: Direction.Right,
             },
             {
-              who: GameObjectName.Hero,
+              who: GameObjectId.Hero,
               type: OverworldEventAction.Walk,
               direction: Direction.Down,
             },
             {
-              who: GameObjectName.Hero,
+              who: GameObjectId.Hero,
               type: OverworldEventAction.Walk,
               direction: Direction.Left,
             },
@@ -187,13 +187,13 @@ window.OVERWORLD_MAPS = {
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {
-      [GameObjectName.Hero]: new Person({
+      [GameObjectId.Hero]: new Person({
         src: '../images/characters/people/hero.png',
         x: withGrid(5),
         y: withGrid(5),
         isPlayerControlled: true,
       }),
-      [GameObjectName.Npc3]: new Person({
+      [GameObjectId.Npc3]: new Person({
         src: '../images/characters/people/npc3.png',
         x: withGrid(10),
         y: withGrid(8),
@@ -203,7 +203,7 @@ window.OVERWORLD_MAPS = {
               {
                 type: OverworldEventAction.TextMessage,
                 text: 'You made it!',
-                faceHero: GameObjectName.Npc3,
+                faceHero: GameObjectId.Npc3,
               },
             ],
           },

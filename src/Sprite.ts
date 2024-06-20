@@ -2,7 +2,7 @@ import { GameObject } from './GameObject';
 import { Person } from './Person';
 import { withGrid } from './utils';
 
-export enum AnimationKey {
+export enum AnimationId {
   IdleDown = 'idle-down',
   IdleRight = 'idle-right',
   IdleUp = 'idle-up',
@@ -15,11 +15,11 @@ export enum AnimationKey {
 
 type AnimationStep = [number, number];
 type Animation = AnimationStep[];
-type Animations = Record<AnimationKey, Animation>;
+type Animations = Record<AnimationId, Animation>;
 
 interface Config {
   animations?: Animations;
-  currentAnimation?: AnimationKey;
+  currentAnimation?: AnimationId;
   src: string;
   gameObject: GameObject;
   animationFrameLimit?: number;
@@ -27,7 +27,7 @@ interface Config {
 
 export class Sprite {
   animations: Animations;
-  currentAnimation: AnimationKey;
+  currentAnimation: AnimationId;
   currentAnimationFrame: number;
   image: HTMLImageElement;
   isLoaded: boolean = false;
@@ -57,36 +57,36 @@ export class Sprite {
 
     // Configure Animation & Initial State:
     this.animations = config.animations || {
-      [AnimationKey.IdleDown]: [[0, 0]],
-      [AnimationKey.IdleRight]: [[0, 1]],
-      [AnimationKey.IdleUp]: [[0, 2]],
-      [AnimationKey.IdleLeft]: [[0, 3]],
-      [AnimationKey.WalkDown]: [
+      [AnimationId.IdleDown]: [[0, 0]],
+      [AnimationId.IdleRight]: [[0, 1]],
+      [AnimationId.IdleUp]: [[0, 2]],
+      [AnimationId.IdleLeft]: [[0, 3]],
+      [AnimationId.WalkDown]: [
         [1, 0],
         [0, 0],
         [3, 0],
         [0, 0],
       ],
-      [AnimationKey.WalkRight]: [
+      [AnimationId.WalkRight]: [
         [1, 1],
         [0, 1],
         [3, 1],
         [0, 1],
       ],
-      [AnimationKey.WalkUp]: [
+      [AnimationId.WalkUp]: [
         [1, 2],
         [0, 2],
         [3, 2],
         [0, 2],
       ],
-      [AnimationKey.WalkLeft]: [
+      [AnimationId.WalkLeft]: [
         [1, 3],
         [0, 3],
         [3, 3],
         [0, 3],
       ],
     };
-    this.currentAnimation = config.currentAnimation || AnimationKey.IdleDown;
+    this.currentAnimation = config.currentAnimation || AnimationId.IdleDown;
     this.currentAnimationFrame = 0;
 
     this.animationFrameLimit = config.animationFrameLimit || 16;
@@ -100,9 +100,9 @@ export class Sprite {
     return this.animations[this.currentAnimation][this.currentAnimationFrame];
   }
 
-  setAnimation(key: AnimationKey) {
-    if (this.currentAnimation !== key) {
-      this.currentAnimation = key;
+  setAnimation(id: AnimationId) {
+    if (this.currentAnimation !== id) {
+      this.currentAnimation = id;
       this.currentAnimationFrame = 0;
       this.animationFrameProgress = this.animationFrameProgress;
     }

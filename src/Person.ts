@@ -7,7 +7,7 @@ import {
 } from './GameObject';
 import { OverworldEventAction } from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
-import { AnimationKey } from './Sprite';
+import { AnimationId } from './Sprite';
 import { emitEvent, EventName } from './utils';
 
 interface PersonConfig extends GameObjectConfig {
@@ -97,11 +97,11 @@ export class Person extends GameObject {
 
   updateSprite(): void {
     if (this.movingProgressRemaining > 0) {
-      this.sprite.setAnimation(('walk-' + this.direction) as AnimationKey);
+      this.sprite.setAnimation(('walk-' + this.direction) as AnimationId);
 
       return;
     }
 
-    this.sprite.setAnimation(('idle-' + this.direction) as AnimationKey);
+    this.sprite.setAnimation(('idle-' + this.direction) as AnimationId);
   }
 }

@@ -1,4 +1,4 @@
-import { ActionKey } from './ACTIONS';
+import { ActionId } from './ACTIONS';
 
 export enum PizzaType {
   Normal = 'normal',
@@ -8,7 +8,7 @@ export enum PizzaType {
   Chill = 'chill',
 }
 
-export enum PizzaKey {
+export enum PizzaId {
   S001 = 's001',
   S002 = 's002',
   V001 = 'v001',
@@ -21,40 +21,40 @@ export interface Pizza {
   type: PizzaType;
   src: string;
   icon: string;
-  actions: ActionKey[];
+  actions: ActionId[];
 }
 
 window.PIZZAS = {
-  [PizzaKey.S001]: {
+  [PizzaId.S001]: {
     name: 'Slice Samurai',
     description: 'Pizza desc here',
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s001.png',
     icon: 'images/icons/spicy.png',
-    actions: [ActionKey.ClumsyStatus, ActionKey.SaucyStatus, ActionKey.Damage1],
+    actions: [ActionId.ClumsyStatus, ActionId.SaucyStatus, ActionId.Damage1],
   },
-  [PizzaKey.S002]: {
+  [PizzaId.S002]: {
     name: 'Bacon Brigade',
     description: 'A salty warrior who fears nothing',
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s002.png',
     icon: 'images/icons/spicy.png',
-    actions: [ActionKey.Damage1, ActionKey.SaucyStatus, ActionKey.ClumsyStatus],
+    actions: [ActionId.Damage1, ActionId.SaucyStatus, ActionId.ClumsyStatus],
   },
-  [PizzaKey.V001]: {
+  [PizzaId.V001]: {
     name: 'Call me Kale',
     description: 'Pizza desc here',
     type: PizzaType.Veggie,
     src: '/images/characters/pizzas/v001.png',
     icon: 'images/icons/veggie.png',
-    actions: [ActionKey.Damage1],
+    actions: [ActionId.Damage1],
   },
-  [PizzaKey.F001]: {
+  [PizzaId.F001]: {
     name: 'Portobello Express',
     description: 'Pizza desc here',
     type: PizzaType.Fungi,
     src: '/images/characters/pizzas/f001.png',
     icon: 'images/icons/fungi.png',
-    actions: [ActionKey.Damage1],
+    actions: [ActionId.Damage1],
   },
 };

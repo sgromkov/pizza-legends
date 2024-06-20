@@ -8,7 +8,7 @@ import {
 import { OverworldMap } from './OverworldMap';
 import { Sprite } from './Sprite';
 
-export enum GameObjectName {
+export enum GameObjectId {
   Hero = 'hero',
   Npc1 = 'npc1',
   Npc2 = 'npc2',
@@ -46,7 +46,7 @@ export interface GameObjectConfig {
 }
 
 export class GameObject {
-  id: GameObjectName;
+  id: GameObjectId;
   x: number;
   y: number;
   sprite: Sprite;

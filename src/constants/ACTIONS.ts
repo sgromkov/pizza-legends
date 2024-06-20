@@ -1,5 +1,5 @@
 import { Combatant, TeamType } from '../Battle/Combatant';
-import { BattleAnimationKey } from './BATTLE_ANIMATIONS';
+import { BattleAnimationId } from './BATTLE_ANIMATIONS';
 
 export enum ActionTargetType {
   Friendly = 'friendly',
@@ -25,7 +25,7 @@ export interface TextMessageActionPayload {
 
 export interface AnimationActionPayload {
   type: ActionType.Animation;
-  animation: BattleAnimationKey;
+  animation: BattleAnimationId;
   caster?: Combatant;
   color?: string;
 }
@@ -80,7 +80,7 @@ export type ActionPayload =
   | ReplacementMenuActionPayload
   | GiveXpActionPayload;
 
-export enum ActionKey {
+export enum ActionId {
   Damage1 = 'damage1',
   SaucyStatus = 'saucyStatus',
   ClumsyStatus = 'clumsyStatus',
@@ -96,13 +96,13 @@ export interface Action {
 }
 
 export interface ActionItem {
-  actionId: ActionKey;
+  actionId: ActionId;
   instanceId: string;
   team?: TeamType;
 }
 
 window.ACTIONS = {
-  [ActionKey.Damage1]: {
+  [ActionId.Damage1]: {
     name: 'Whomp!',
     description: 'Pillowy punch of dough',
     success: [
@@ -112,7 +112,7 @@ window.ACTIONS = {
       },
       {
         type: ActionType.Animation,
-        animation: BattleAnimationKey.Spin,
+        animation: BattleAnimationId.Spin,
       },
       {
         type: ActionType.StateChange,
@@ -120,7 +120,7 @@ window.ACTIONS = {
       },
     ],
   },
-  [ActionKey.SaucyStatus]: {
+  [ActionId.SaucyStatus]: {
     name: 'Tomato Squeeze!',
     description: 'Applies the Saucy status',
     targetType: ActionTargetType.Friendly,
@@ -138,7 +138,7 @@ window.ACTIONS = {
       },
     ],
   },
-  [ActionKey.ClumsyStatus]: {
+  [ActionId.ClumsyStatus]: {
     name: 'Olive Oil',
     description: 'Slippery mess of deliciousness',
     success: [
@@ -148,7 +148,7 @@ window.ACTIONS = {
       },
       {
         type: ActionType.Animation,
-        animation: BattleAnimationKey.Glob,
+        animation: BattleAnimationId.Glob,
         color: '#dafd2a',
       },
       {
@@ -165,7 +165,7 @@ window.ACTIONS = {
     ],
   },
   // Items:
-  [ActionKey.ItemRecoverStatus]: {
+  [ActionId.ItemRecoverStatus]: {
     name: 'Heating Lamp',
     description: 'Clear status to your character',
     targetType: ActionTargetType.Friendly,
@@ -184,7 +184,7 @@ window.ACTIONS = {
       },
     ],
   },
-  [ActionKey.ItemRecoverHp]: {
+  [ActionId.ItemRecoverHp]: {
     name: 'Parmesan',
     description: 'Recover 10 hp to your character',
     targetType: ActionTargetType.Friendly,

@@ -1,5 +1,5 @@
 import {
-  ActionKey,
+  ActionId,
   ActionPayload,
   ActionType,
   StateChangeStatusType,
@@ -57,7 +57,7 @@ export class Combatant {
   type: PizzaType;
   src: string;
   icon: string;
-  actions: ActionKey[];
+  actions: ActionId[];
   // Teams:
   team: TeamType;
   hpFills: NodeListOf<HTMLElement>;

@@ -1,20 +1,20 @@
 import { TeamType } from '../Battle/Combatant';
 import {
   ActionItem,
-  ActionKey,
+  ActionId,
   StateChangeStatusType,
 } from '../constants/ACTIONS';
-import { PizzaKey } from '../constants/PIZZAS';
+import { PizzaId } from '../constants/PIZZAS';
 import { EventName, emitEvent } from '../utils';
 
-export enum PlayerPizzaKey {
+export enum PlayerPizzaId {
   P1 = 'p1',
   P2 = 'p2',
   P3 = 'p3',
 }
 
 export interface PlayerPizza {
-  pizzaId: PizzaKey;
+  pizzaId: PizzaId;
   hp: number;
   maxHp: number;
   xp: number;
@@ -27,14 +27,14 @@ export interface PlayerPizza {
 }
 
 export class PlayerState {
-  pizzas: Record<PlayerPizzaKey, PlayerPizza>;
-  lineup: Array<Partial<PlayerPizzaKey>>;
+  pizzas: Record<PlayerPizzaId, PlayerPizza>;
+  lineup: Array<Partial<PlayerPizzaId>>;
   items: Array<ActionItem>;
 
   constructor() {
     this.pizzas = {
-      [PlayerPizzaKey.P1]: {
-        pizzaId: PizzaKey.S001,
+      [PlayerPizzaId.P1]: {
+        pizzaId: PizzaId.S001,
         hp: 30,
         maxHp: 50,
         xp: 90,
@@ -45,8 +45,8 @@ export class PlayerState {
           expiresIn: 3,
         },
       },
-      [PlayerPizzaKey.P2]: {
-        pizzaId: PizzaKey.V001,
+      [PlayerPizzaId.P2]: {
+        pizzaId: PizzaId.V001,
         hp: 50,
         maxHp: 50,
         xp: 75,
@@ -54,8 +54,8 @@ export class PlayerState {
         level: 1,
         status: null,
       },
-      [PlayerPizzaKey.P3]: {
-        pizzaId: PizzaKey.F001,
+      [PlayerPizzaId.P3]: {
+        pizzaId: PizzaId.F001,
         hp: 50,
         maxHp: 50,
         xp: 75,
@@ -64,31 +64,31 @@ export class PlayerState {
         status: null,
       },
     };
-    this.lineup = [PlayerPizzaKey.P1, PlayerPizzaKey.P2];
+    this.lineup = [PlayerPizzaId.P1, PlayerPizzaId.P2];
     this.items = [
       {
-        actionId: ActionKey.ItemRecoverHp,
+        actionId: ActionId.ItemRecoverHp,
         instanceId: 'item1',
       },
       {
-        actionId: ActionKey.ItemRecoverHp,
+        actionId: ActionId.ItemRecoverHp,
         instanceId: 'item2',
       },
       {
-        actionId: ActionKey.ItemRecoverHp,
+        actionId: ActionId.ItemRecoverHp,
         instanceId: 'item3',
       },
     ];
   }
 
-  swapLineup(oldId: PlayerPizzaKey, incomingId: PlayerPizzaKey) {
+  swapLineup(oldId: PlayerPizzaId, incomingId: PlayerPizzaId) {
     const oldIndex = this.lineup.indexOf(oldId);
     this.lineup[oldIndex] = incomingId;
 
     emitEvent(EventName.LineupChanged);
   }
 
-  moveToFront(futureFrontId: PlayerPizzaKey) {
+  moveToFront(futureFrontId: PlayerPizzaId) {
     this.lineup = this.lineup.filter((id) => id !== futureFrontId);
     this.lineup.unshift(futureFrontId);
 

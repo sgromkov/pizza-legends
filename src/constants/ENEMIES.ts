@@ -1,17 +1,17 @@
-import { PizzaKey } from './PIZZAS';
+import { PizzaId } from './PIZZAS';
 
-export enum EnemyKey {
+export enum EnemyId {
   Erio = 'erio',
   Beth = 'beth',
 }
 
-export enum EnemyPizzaKey {
+export enum EnemyPizzaId {
   A = 'a',
   B = 'b',
 }
 
 export interface EnemyPizza {
-  pizzaId: PizzaKey;
+  pizzaId: PizzaId;
   hp?: number;
   maxHp: number;
   level: number;
@@ -20,33 +20,33 @@ export interface EnemyPizza {
 export interface Enemy {
   name: string;
   src: string;
-  pizzas: Partial<Record<EnemyPizzaKey, EnemyPizza>>;
+  pizzas: Partial<Record<EnemyPizzaId, EnemyPizza>>;
 }
 
 window.ENEMIES = {
-  [EnemyKey.Erio]: {
+  [EnemyId.Erio]: {
     name: 'Erio',
     src: '/images/characters/people/erio.png',
     pizzas: {
-      [EnemyPizzaKey.A]: {
-        pizzaId: PizzaKey.S001,
+      [EnemyPizzaId.A]: {
+        pizzaId: PizzaId.S001,
         maxHp: 50,
         level: 1,
       },
-      [EnemyPizzaKey.B]: {
-        pizzaId: PizzaKey.S002,
+      [EnemyPizzaId.B]: {
+        pizzaId: PizzaId.S002,
         maxHp: 50,
         level: 1,
       },
     },
   },
-  [EnemyKey.Beth]: {
+  [EnemyId.Beth]: {
     name: 'Beth',
     src: '/images/characters/people/npc1.png',
     pizzas: {
-      [EnemyPizzaKey.A]: {
+      [EnemyPizzaId.A]: {
         hp: 1,
-        pizzaId: PizzaKey.F001,
+        pizzaId: PizzaId.F001,
         maxHp: 50,
         level: 1,
       },

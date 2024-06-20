@@ -1,4 +1,4 @@
-import { Direction, GameObject, GameObjectName } from './GameObject';
+import { Direction, GameObject, GameObjectId } from './GameObject';
 import { Overworld } from './Overworld';
 import { OverworldEventPayload, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
@@ -10,7 +10,7 @@ export enum MapName {
 }
 
 export interface OverworldMapConfig {
-  gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
+  gameObjects: Partial<Record<GameObjectId, GameObject | Person>>;
   lowerSrc: string;
   upperSrc: string;
   walls?: Record<string, boolean>;
@@ -24,7 +24,7 @@ export interface OverworldMapConfig {
 
 export class OverworldMap {
   overworld: Overworld;
-  gameObjects: Partial<Record<GameObjectName, GameObject | Person>>;
+  gameObjects: Partial<Record<GameObjectId, GameObject | Person>>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
   walls: Record<string, boolean>;
@@ -86,10 +86,10 @@ export class OverworldMap {
   }
 
   mountObjects(): void {
-    Object.keys(this.gameObjects).forEach((key: GameObjectName) => {
-      const gameObject = this.gameObjects[key];
+    Object.keys(this.gameObjects).forEach((id: GameObjectId) => {
+      const gameObject = this.gameObjects[id];
 
-      gameObject.id = key;
+      gameObject.id = id;
       gameObject.mount(this);
     });
   }
@@ -116,7 +116,7 @@ export class OverworldMap {
   }
 
   checkForActionCutscene() {
-    const hero = this.gameObjects[GameObjectName.Hero];
+    const hero = this.gameObjects[GameObjectId.Hero];
     const nextCoords = nextPosition(hero.x, hero.y, hero.direction);
     const match = Object.values(this.gameObjects).find((object) => {
       return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`;
@@ -128,7 +128,7 @@ export class OverworldMap {
   }
 
   checkForFootstepCutscene() {
-    const hero = this.gameObjects[GameObjectName.Hero];
+    const hero = this.gameObjects[GameObjectId.Hero];
     const match = this.cutsceneSpaces[`${hero.x},${hero.y}`];
 
     if (!this.isCutscenePlaying && match) {
