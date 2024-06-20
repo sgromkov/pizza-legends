@@ -1,14 +1,14 @@
 import {
-  Action,
-  ActionItem,
-  ActionId,
-  ActionTargetType,
-} from '../constants/ACTIONS';
+  BattleAction,
+  BattleActionItem,
+  BattleActionId,
+  BattleActionTargetType,
+} from '../constants/BATLE_ACTIONS';
 import { Combatant } from './Combatant';
 import { KeyboardMenu, KeyboardMenuOption } from '../KeyboardMenu';
 
 export interface SubmissionMenuResultPayload {
-  action?: Action;
+  action?: BattleAction;
   target?: Combatant;
   instanceId?: string;
   replacement?: Combatant;
@@ -23,7 +23,7 @@ export enum SubmissionMenuPageKey {
 
 interface SubmissionMenuItem {
   quantity: number;
-  actionId: ActionId;
+  actionId: BattleActionId;
   instanceId: string;
 }
 
@@ -45,7 +45,7 @@ export class SubmissionMenu {
     caster: Combatant;
     enemy: Combatant;
     onComplete: (payload: SubmissionMenuResultPayload) => any;
-    items: ActionItem[];
+    items: BattleActionItem[];
     replacements: Combatant[];
   }) {
     this.caster = caster;
@@ -53,7 +53,7 @@ export class SubmissionMenu {
     this.replacements = replacements;
     this.onComplete = onComplete;
 
-    let quantityMap: Partial<Record<ActionId, SubmissionMenuItem>> = {};
+    let quantityMap: Partial<Record<BattleActionId, SubmissionMenuItem>> = {};
     items.forEach((item) => {
       if (item.team === caster.team) {
         let existing = quantityMap[item.actionId];
@@ -116,7 +116,7 @@ export class SubmissionMenu {
       ],
       [SubmissionMenuPageKey.Attacks]: [
         ...this.caster.actions.map((id) => {
-          const action = window.ACTIONS[id];
+          const action = window.BATLE_ACTIONS[id];
           const option: KeyboardMenuOption = {
             label: action.name,
             description: action.description,
@@ -131,7 +131,7 @@ export class SubmissionMenu {
       ],
       [SubmissionMenuPageKey.Items]: [
         ...this.items.map((item) => {
-          const action = window.ACTIONS[item.actionId];
+          const action = window.BATLE_ACTIONS[item.actionId];
           const option: KeyboardMenuOption = {
             label: action.name,
             description: action.description,
@@ -173,14 +173,14 @@ export class SubmissionMenu {
     });
   }
 
-  menuSubmit(action: Action, instanceId: string = null) {
+  menuSubmit(action: BattleAction, instanceId: string = null) {
     this.keyboardMenu?.end();
 
     this.onComplete({
       action,
       instanceId,
       target:
-        action.targetType === ActionTargetType.Friendly
+        action.targetType === BattleActionTargetType.Friendly
           ? this.caster
           : this.enemy,
     });
@@ -190,7 +190,7 @@ export class SubmissionMenu {
     /**
      * @todo Enemies should randomly decide what to do...
      */
-    this.menuSubmit(window.ACTIONS[this.caster.actions[0]]);
+    this.menuSubmit(window.BATLE_ACTIONS[this.caster.actions[0]]);
   }
 
   showMenu(container: HTMLElement) {

@@ -1,10 +1,10 @@
 import { PlayerPizzaId } from '../State/PlayerState';
 import {
-  ActionItem,
-  ActionId,
-  ActionPayload,
+  BattleActionItem,
+  BattleActionId,
+  BattleActionPayload,
   StateChangeStatusType,
-} from '../constants/ACTIONS';
+} from '../constants/BATLE_ACTIONS';
 import { Enemy, EnemyPizzaId } from '../constants/ENEMIES';
 import { PizzaId } from '../constants/PIZZAS';
 import { EventName, emitEvent } from '../utils';
@@ -23,7 +23,7 @@ export class Battle {
   combatants: Record<string, Combatant>;
   activeCombatants: Record<TeamType, string>;
   turnCycle: TurnCycle;
-  items: ActionItem[];
+  items: BattleActionItem[];
   playerTeam: Team;
   enemyTeam: Team;
   enemy: Enemy;
@@ -133,7 +133,7 @@ export class Battle {
 
     this.turnCycle = new TurnCycle({
       battle: this,
-      onNewEvent: (event: ActionPayload) => {
+      onNewEvent: (event: BattleActionPayload) => {
         return new Promise((resolve) => {
           const battleEvent = new BattleEvent(event, this);
           battleEvent.init(resolve);

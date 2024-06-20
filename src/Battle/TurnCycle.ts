@@ -1,4 +1,4 @@
-import { ActionPayload, ActionType } from '../constants/ACTIONS';
+import { BattleActionPayload, BattleActionType } from '../constants/BATLE_ACTIONS';
 import { Battle } from './Battle';
 import { Combatant, TeamType } from './Combatant';
 import { SubmissionMenuResultPayload } from './SubmissionMenu';
@@ -36,7 +36,7 @@ export class TurnCycle {
     const enemy = this.battle.combatants[enemyId];
 
     const submission: SubmissionMenuResultPayload = await this.onNewEvent({
-      type: ActionType.SubmissionMenu,
+      type: BattleActionType.SubmissionMenu,
       caster,
       enemy,
     });
@@ -44,12 +44,12 @@ export class TurnCycle {
     // Stop here is we are replacing this Pizza:
     if (submission.replacement) {
       await this.onNewEvent({
-        type: ActionType.Replace,
+        type: BattleActionType.Replace,
         replacement: submission.replacement,
       });
 
       await this.onNewEvent({
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: `Go get 'em, ${submission.replacement.name}`,
       });
 
@@ -84,7 +84,7 @@ export class TurnCycle {
     const targetDead = submission.target.hp <= 0;
     if (targetDead) {
       await this.onNewEvent({
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: `${submission.target.name} is ruined!`,
       });
 
@@ -93,12 +93,12 @@ export class TurnCycle {
         const xp = submission.target.givesXp;
 
         await this.onNewEvent({
-          type: ActionType.TextMessage,
+          type: BattleActionType.TextMessage,
           text: `Gained ${xp} XP!`,
         });
 
         await this.onNewEvent({
-          type: ActionType.GiveXp,
+          type: BattleActionType.GiveXp,
           xp,
           combatant: this.battle.combatants[playerActivePizzaId],
         });
@@ -110,7 +110,7 @@ export class TurnCycle {
     if (winner) {
       // End the battle:
       await this.onNewEvent({
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: 'Winner!',
       });
 
@@ -122,15 +122,15 @@ export class TurnCycle {
     // We have a dead target, but still no winner, so bring in a replacement
     if (targetDead) {
       const replacement: Combatant = await this.onNewEvent({
-        type: ActionType.ReplacementMenu,
+        type: BattleActionType.ReplacementMenu,
         team: submission.target.team,
       });
       await this.onNewEvent({
-        type: ActionType.Replace,
+        type: BattleActionType.Replace,
         replacement,
       });
       await this.onNewEvent({
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: `${replacement.name} appears!`,
       });
     }
@@ -185,7 +185,7 @@ export class TurnCycle {
 
   async init() {
     await this.onNewEvent({
-      type: ActionType.TextMessage,
+      type: BattleActionType.TextMessage,
       text: `${this.battle.enemy.name} wants to throw down!`,
     });
 

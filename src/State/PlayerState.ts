@@ -1,9 +1,9 @@
 import { TeamType } from '../Battle/Combatant';
 import {
-  ActionItem,
-  ActionId,
+  BattleActionItem,
+  BattleActionId,
   StateChangeStatusType,
-} from '../constants/ACTIONS';
+} from '../constants/BATLE_ACTIONS';
 import { PizzaId } from '../constants/PIZZAS';
 import { EventName, emitEvent } from '../utils';
 
@@ -29,7 +29,7 @@ export interface PlayerPizza {
 export class PlayerState {
   pizzas: Record<PlayerPizzaId, PlayerPizza>;
   lineup: Array<Partial<PlayerPizzaId>>;
-  items: Array<ActionItem>;
+  items: Array<BattleActionItem>;
 
   constructor() {
     this.pizzas = {
@@ -67,15 +67,15 @@ export class PlayerState {
     this.lineup = [PlayerPizzaId.P1, PlayerPizzaId.P2];
     this.items = [
       {
-        actionId: ActionId.ItemRecoverHp,
+        actionId: BattleActionId.ItemRecoverHp,
         instanceId: 'item1',
       },
       {
-        actionId: ActionId.ItemRecoverHp,
+        actionId: BattleActionId.ItemRecoverHp,
         instanceId: 'item2',
       },
       {
-        actionId: ActionId.ItemRecoverHp,
+        actionId: BattleActionId.ItemRecoverHp,
         instanceId: 'item3',
       },
     ];

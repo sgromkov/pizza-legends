@@ -1,15 +1,15 @@
 import { TextMessage } from '../TextMessage';
 import {
-  ActionPayload,
-  ActionTargetType,
-  AnimationActionPayload,
-  GiveXpActionPayload,
-  ReplaceActionPayload,
-  ReplacementMenuActionPayload,
-  StateChangeActionPayload,
-  SubmissionMenuActionPayload,
-  TextMessageActionPayload,
-} from '../constants/ACTIONS';
+  BattleActionPayload,
+  BattleActionTargetType,
+  BattleActionAnimationPayload,
+  BattleActionGiveXpPayload,
+  BattleActionReplacePayload,
+  BattleActionReplacementMenuPayload,
+  BattleActionStateChangePayload,
+  BattleActionSubmissionMenuPayload,
+  BattleActionTextMessagePayload,
+} from '../constants/BATLE_ACTIONS';
 import { wait } from '../utils';
 import { Battle } from './Battle';
 import { Combatant } from './Combatant';
@@ -18,16 +18,16 @@ import { ReplacementMenu } from './ReplacementMenu';
 import { SubmissionMenu, SubmissionMenuResultPayload } from './SubmissionMenu';
 
 export class BattleEvent {
-  payload: ActionPayload;
+  payload: BattleActionPayload;
   battle: Battle;
 
-  constructor(payload: ActionPayload, battle: Battle) {
+  constructor(payload: BattleActionPayload, battle: Battle) {
     this.payload = payload;
     this.battle = battle;
   }
 
   textMessage(resolve: Function) {
-    const payload = this.payload as TextMessageActionPayload;
+    const payload = this.payload as BattleActionTextMessagePayload;
 
     const text = payload.text
       .replace('{CASTER}', payload.caster?.name)
@@ -44,7 +44,7 @@ export class BattleEvent {
   }
 
   async stateChange(resolve: Function) {
-    const payload = this.payload as StateChangeActionPayload;
+    const payload = this.payload as BattleActionStateChangePayload;
 
     let who = payload.onCaster ? payload.caster : payload.target;
 
@@ -93,7 +93,7 @@ export class BattleEvent {
   }
 
   submissionMenu(resolve: Function) {
-    const payload = this.payload as SubmissionMenuActionPayload;
+    const payload = this.payload as BattleActionSubmissionMenuPayload;
     const menu = new SubmissionMenu({
       caster: payload.caster,
       enemy: payload.enemy,
@@ -116,7 +116,7 @@ export class BattleEvent {
   }
 
   replacementMenu(resolve: Function) {
-    const payload = this.payload as ReplacementMenuActionPayload;
+    const payload = this.payload as BattleActionReplacementMenuPayload;
     const menu = new ReplacementMenu({
       replacements: Object.values(this.battle.combatants).filter(
         (combatant) => {
@@ -131,7 +131,7 @@ export class BattleEvent {
   }
 
   async replace(resolve: Function) {
-    const payload = this.payload as ReplaceActionPayload;
+    const payload = this.payload as BattleActionReplacePayload;
     const { replacement } = payload;
 
     // Clear out the old combatant:
@@ -154,7 +154,7 @@ export class BattleEvent {
   }
 
   giveXp(resolve: Function) {
-    const payload = this.payload as GiveXpActionPayload;
+    const payload = this.payload as BattleActionGiveXpPayload;
     let amount = payload.xp;
     const { combatant } = payload;
     const step = () => {
@@ -182,7 +182,7 @@ export class BattleEvent {
   }
 
   animation(resolve: Function) {
-    const payload = this.payload as AnimationActionPayload;
+    const payload = this.payload as BattleActionAnimationPayload;
     const fn = window.BATTLE_ANIMATIONS[payload.animation];
     fn(payload, resolve);
   }

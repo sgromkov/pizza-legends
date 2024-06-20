@@ -1,10 +1,10 @@
 import {
-  ActionId,
-  ActionPayload,
-  ActionType,
+  BattleActionId,
+  BattleActionPayload,
+  BattleActionType,
   StateChangeStatusType,
-  TextMessageActionPayload,
-} from '../constants/ACTIONS';
+  BattleActionTextMessagePayload,
+} from '../constants/BATLE_ACTIONS';
 import { PizzaType } from '../constants/PIZZAS';
 import { randomFromArray } from '../utils';
 import { Battle } from './Battle';
@@ -57,7 +57,7 @@ export class Combatant {
   type: PizzaType;
   src: string;
   icon: string;
-  actions: ActionId[];
+  actions: BattleActionId[];
   // Teams:
   team: TeamType;
   hpFills: NodeListOf<HTMLElement>;
@@ -160,31 +160,31 @@ export class Combatant {
     }
   }
 
-  getReplacedEvents(originalEvents: ActionPayload[]): ActionPayload[] {
+  getReplacedEvents(originalEvents: BattleActionPayload[]): BattleActionPayload[] {
     if (
       this.status?.type === StateChangeStatusType.Clumsy &&
       randomFromArray([true, false, false])
     ) {
       return [
-        { type: ActionType.TextMessage, text: `${this.name} flops over!` },
+        { type: BattleActionType.TextMessage, text: `${this.name} flops over!` },
       ];
     }
 
     return originalEvents;
   }
 
-  getPostEvents(): ActionPayload[] {
+  getPostEvents(): BattleActionPayload[] {
     if (this.status?.type === StateChangeStatusType.Saucy) {
       return [
-        { type: ActionType.TextMessage, text: 'Feeling saucy!' },
-        { type: ActionType.StateChange, recover: 5, onCaster: true },
+        { type: BattleActionType.TextMessage, text: 'Feeling saucy!' },
+        { type: BattleActionType.StateChange, recover: 5, onCaster: true },
       ];
     }
 
     return [];
   }
 
-  decrementStatus(): TextMessageActionPayload | null {
+  decrementStatus(): BattleActionTextMessagePayload | null {
     if (this.status?.expiresIn > 0) {
       this.status.expiresIn -= 1;
 
@@ -194,7 +194,7 @@ export class Combatant {
         });
 
         return {
-          type: ActionType.TextMessage,
+          type: BattleActionType.TextMessage,
           text: 'Status expired!',
         };
       }

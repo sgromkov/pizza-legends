@@ -1,11 +1,11 @@
 import { Combatant, TeamType } from '../Battle/Combatant';
 import { BattleAnimationId } from './BATTLE_ANIMATIONS';
 
-export enum ActionTargetType {
+export enum BattleActionTargetType {
   Friendly = 'friendly',
 }
 
-export enum ActionType {
+export enum BattleActionType {
   TextMessage = 'textMessage',
   Animation = 'animation',
   StateChange = 'stateChange',
@@ -15,16 +15,16 @@ export enum ActionType {
   GiveXp = 'giveXp',
 }
 
-export interface TextMessageActionPayload {
-  type: ActionType.TextMessage;
+export interface BattleActionTextMessagePayload {
+  type: BattleActionType.TextMessage;
   text: string;
   caster?: Combatant;
   target?: Combatant;
-  action?: Action;
+  action?: BattleAction;
 }
 
-export interface AnimationActionPayload {
-  type: ActionType.Animation;
+export interface BattleActionAnimationPayload {
+  type: BattleActionType.Animation;
   animation: BattleAnimationId;
   caster?: Combatant;
   color?: string;
@@ -35,8 +35,8 @@ export enum StateChangeStatusType {
   Clumsy = 'clumsy',
 }
 
-export interface StateChangeActionPayload {
-  type: ActionType.StateChange;
+export interface BattleActionStateChangePayload {
+  type: BattleActionType.StateChange;
   damage?: number;
   recover?: number;
   onCaster?: boolean;
@@ -46,41 +46,41 @@ export interface StateChangeActionPayload {
   };
   caster?: Combatant;
   target?: Combatant;
-  action?: Action;
+  action?: BattleAction;
 }
 
-export interface SubmissionMenuActionPayload {
-  type: ActionType.SubmissionMenu;
+export interface BattleActionSubmissionMenuPayload {
+  type: BattleActionType.SubmissionMenu;
   caster: Combatant;
   enemy: Combatant;
 }
 
-export interface ReplaceActionPayload {
-  type: ActionType.Replace;
+export interface BattleActionReplacePayload {
+  type: BattleActionType.Replace;
   replacement: Combatant;
 }
 
-export interface ReplacementMenuActionPayload {
-  type: ActionType.ReplacementMenu;
+export interface BattleActionReplacementMenuPayload {
+  type: BattleActionType.ReplacementMenu;
   team: TeamType;
 }
 
-export interface GiveXpActionPayload {
-  type: ActionType.GiveXp;
+export interface BattleActionGiveXpPayload {
+  type: BattleActionType.GiveXp;
   xp: number;
   combatant: Combatant;
 }
 
-export type ActionPayload =
-  | TextMessageActionPayload
-  | AnimationActionPayload
-  | StateChangeActionPayload
-  | SubmissionMenuActionPayload
-  | ReplaceActionPayload
-  | ReplacementMenuActionPayload
-  | GiveXpActionPayload;
+export type BattleActionPayload =
+  | BattleActionTextMessagePayload
+  | BattleActionAnimationPayload
+  | BattleActionStateChangePayload
+  | BattleActionSubmissionMenuPayload
+  | BattleActionReplacePayload
+  | BattleActionReplacementMenuPayload
+  | BattleActionGiveXpPayload;
 
-export enum ActionId {
+export enum BattleActionId {
   Damage1 = 'damage1',
   SaucyStatus = 'saucyStatus',
   ClumsyStatus = 'clumsyStatus',
@@ -88,49 +88,49 @@ export enum ActionId {
   ItemRecoverHp = 'item_recoverHp',
 }
 
-export interface Action {
+export interface BattleAction {
   name: string;
-  success: Array<ActionPayload>;
-  targetType?: ActionTargetType;
+  success: Array<BattleActionPayload>;
+  targetType?: BattleActionTargetType;
   description?: string;
 }
 
-export interface ActionItem {
-  actionId: ActionId;
+export interface BattleActionItem {
+  actionId: BattleActionId;
   instanceId: string;
   team?: TeamType;
 }
 
-window.ACTIONS = {
-  [ActionId.Damage1]: {
+window.BATLE_ACTIONS = {
+  [BattleActionId.Damage1]: {
     name: 'Whomp!',
     description: 'Pillowy punch of dough',
     success: [
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} uses {ACTION}!',
       },
       {
-        type: ActionType.Animation,
+        type: BattleActionType.Animation,
         animation: BattleAnimationId.Spin,
       },
       {
-        type: ActionType.StateChange,
+        type: BattleActionType.StateChange,
         damage: 10,
       },
     ],
   },
-  [ActionId.SaucyStatus]: {
+  [BattleActionId.SaucyStatus]: {
     name: 'Tomato Squeeze!',
     description: 'Applies the Saucy status',
-    targetType: ActionTargetType.Friendly,
+    targetType: BattleActionTargetType.Friendly,
     success: [
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} uses {ACTION}!',
       },
       {
-        type: ActionType.StateChange,
+        type: BattleActionType.StateChange,
         status: {
           type: StateChangeStatusType.Saucy,
           expiresIn: 3,
@@ -138,67 +138,67 @@ window.ACTIONS = {
       },
     ],
   },
-  [ActionId.ClumsyStatus]: {
+  [BattleActionId.ClumsyStatus]: {
     name: 'Olive Oil',
     description: 'Slippery mess of deliciousness',
     success: [
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} uses {ACTION}!',
       },
       {
-        type: ActionType.Animation,
+        type: BattleActionType.Animation,
         animation: BattleAnimationId.Glob,
         color: '#dafd2a',
       },
       {
-        type: ActionType.StateChange,
+        type: BattleActionType.StateChange,
         status: {
           type: StateChangeStatusType.Clumsy,
           expiresIn: 3,
         },
       },
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{TARGET} is slipping all around!',
       },
     ],
   },
   // Items:
-  [ActionId.ItemRecoverStatus]: {
+  [BattleActionId.ItemRecoverStatus]: {
     name: 'Heating Lamp',
     description: 'Clear status to your character',
-    targetType: ActionTargetType.Friendly,
+    targetType: BattleActionTargetType.Friendly,
     success: [
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} uses a {ACTION}!',
       },
       {
-        type: ActionType.StateChange,
+        type: BattleActionType.StateChange,
         status: null,
       },
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: 'Feeling fresh!',
       },
     ],
   },
-  [ActionId.ItemRecoverHp]: {
+  [BattleActionId.ItemRecoverHp]: {
     name: 'Parmesan',
     description: 'Recover 10 hp to your character',
-    targetType: ActionTargetType.Friendly,
+    targetType: BattleActionTargetType.Friendly,
     success: [
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} sprinkles on some {ACTION}!',
       },
       {
-        type: ActionType.StateChange,
+        type: BattleActionType.StateChange,
         recover: 10,
       },
       {
-        type: ActionType.TextMessage,
+        type: BattleActionType.TextMessage,
         text: '{CASTER} recovers HP!',
       },
     ],

@@ -1,4 +1,4 @@
-import { ActionId } from './ACTIONS';
+import { BattleActionId } from './BATLE_ACTIONS';
 
 export enum PizzaType {
   Normal = 'normal',
@@ -21,7 +21,7 @@ export interface Pizza {
   type: PizzaType;
   src: string;
   icon: string;
-  actions: ActionId[];
+  actions: BattleActionId[];
 }
 
 window.PIZZAS = {
@@ -31,7 +31,7 @@ window.PIZZAS = {
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s001.png',
     icon: 'images/icons/spicy.png',
-    actions: [ActionId.ClumsyStatus, ActionId.SaucyStatus, ActionId.Damage1],
+    actions: [BattleActionId.ClumsyStatus, BattleActionId.SaucyStatus, BattleActionId.Damage1],
   },
   [PizzaId.S002]: {
     name: 'Bacon Brigade',
@@ -39,7 +39,7 @@ window.PIZZAS = {
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s002.png',
     icon: 'images/icons/spicy.png',
-    actions: [ActionId.Damage1, ActionId.SaucyStatus, ActionId.ClumsyStatus],
+    actions: [BattleActionId.Damage1, BattleActionId.SaucyStatus, BattleActionId.ClumsyStatus],
   },
   [PizzaId.V001]: {
     name: 'Call me Kale',
@@ -47,7 +47,7 @@ window.PIZZAS = {
     type: PizzaType.Veggie,
     src: '/images/characters/pizzas/v001.png',
     icon: 'images/icons/veggie.png',
-    actions: [ActionId.Damage1],
+    actions: [BattleActionId.Damage1],
   },
   [PizzaId.F001]: {
     name: 'Portobello Express',
@@ -55,6 +55,6 @@ window.PIZZAS = {
     type: PizzaType.Fungi,
     src: '/images/characters/pizzas/f001.png',
     icon: 'images/icons/fungi.png',
-    actions: [ActionId.Damage1],
+    actions: [BattleActionId.Damage1],
   },
 };
