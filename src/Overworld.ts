@@ -1,17 +1,9 @@
-import { BattleMapAction } from './Battle/BattleMapEvent';
 import { DirectionInput } from './DirectionInput';
-import {
-  Direction,
-  GameObject,
-  GameObjectAction,
-  GameObjectName,
-} from './GameObject';
+import { Direction, GameObject, GameObjectName } from './GameObject';
 import { Hud } from './Hud';
 import { KeyPressListener } from './KeyPressListener';
-import { MapAction } from './MapEvent';
+import { OverworldEventAction } from './OverworldEvent';
 import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
-import { PauseAction } from './PauseEvent';
-import { TextMessageAction } from './TextMessageEvent';
 import { EnemyKey } from './constants/ENEMIES';
 import { EventName } from './utils';
 
@@ -86,7 +78,7 @@ export class Overworld {
       if (!this.map.isCutscenePlaying) {
         this.map.startCutscene([
           {
-            type: PauseAction.Pause,
+            type: OverworldEventAction.Pause,
           },
         ]);
       }
@@ -126,7 +118,7 @@ export class Overworld {
     this.startGameLoop();
 
     // this.map.startCutscene([
-    //   { type: BattleMapAction.Battle, enemyId: EnemyKey.Beth },
+    //   { type: OverworldEventAction.Battle, enemyId: EnemyKey.Beth },
     // ]);
   }
 }

@@ -1,14 +1,7 @@
-import { BattleMapAction } from '../Battle/BattleMapEvent';
-import {
-  Direction,
-  GameObject,
-  GameObjectAction,
-  GameObjectName,
-} from '../GameObject';
-import { MapAction } from '../MapEvent';
+import { Direction, GameObject, GameObjectName } from '../GameObject';
+import { OverworldEventAction } from '../OverworldEvent';
 import { MapName, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
-import { TextMessageAction } from '../TextMessageEvent';
 import { asGridCoord, withGrid } from '../utils';
 import { EnemyKey } from './ENEMIES';
 
@@ -29,39 +22,43 @@ window.OVERWORLD_MAPS = {
         y: withGrid(9),
         behaviourLoop: [
           {
-            type: GameObjectAction.Stand,
+            type: OverworldEventAction.Stand,
             direction: Direction.Left,
             time: 800,
           },
           {
-            type: GameObjectAction.Stand,
+            type: OverworldEventAction.Stand,
             direction: Direction.Up,
             time: 800,
           },
           {
-            type: GameObjectAction.Stand,
+            type: OverworldEventAction.Stand,
             direction: Direction.Right,
             time: 1200,
           },
-          { type: GameObjectAction.Stand, direction: Direction.Up, time: 300 },
+          {
+            type: OverworldEventAction.Stand,
+            direction: Direction.Up,
+            time: 300,
+          },
         ],
         talking: [
           {
             events: [
               {
-                type: TextMessageAction.TextMessage,
+                type: OverworldEventAction.TextMessage,
                 text: "I'm busy...",
                 faceHero: GameObjectName.Npc1,
               },
-              { type: BattleMapAction.Battle, enemyId: EnemyKey.Beth },
-              // { type: TextMessageAction.TextMessage, text: 'Go away!' },
+              { type: OverworldEventAction.Battle, enemyId: EnemyKey.Beth },
+              // { type: OverworldEventAction.TextMessage, text: 'Go away!' },
               // {
-              //   type: GameObjectAction.Walk,
+              //   type: OverworldEventAction.Walk,
               //   direction: Direction.Left,
               //   who: GameObjectName.Hero,
               // },
               // {
-              //   type: GameObjectAction.Walk,
+              //   type: OverworldEventAction.Walk,
               //   direction: Direction.Up,
               //   who: GameObjectName.Hero,
               // },
@@ -77,18 +74,18 @@ window.OVERWORLD_MAPS = {
           {
             events: [
               {
-                type: TextMessageAction.TextMessage,
+                type: OverworldEventAction.TextMessage,
                 text: 'Bahaha!',
                 faceHero: GameObjectName.Npc2,
               },
-              { type: BattleMapAction.Battle, enemyId: EnemyKey.Erio },
+              { type: OverworldEventAction.Battle, enemyId: EnemyKey.Erio },
               // {
-              //   type: GameObjectAction.Walk,
+              //   type: OverworldEventAction.Walk,
               //   direction: Direction.Left,
               //   who: GameObjectName.Hero,
               // },
               // {
-              //   type: GameObjectAction.Walk,
+              //   type: OverworldEventAction.Walk,
               //   direction: Direction.Up,
               //   who: GameObjectName.Hero,
               // },
@@ -97,24 +94,24 @@ window.OVERWORLD_MAPS = {
         ],
         // behaviourLoop: [
         //   {
-        //     type: GameObjectAction.Walk,
+        //     type: OverworldEventAction.Walk,
         //     direction: Direction.Left,
         //   },
         //   {
-        //     type: GameObjectAction.Stand,
+        //     type: OverworldEventAction.Stand,
         //     direction: Direction.Up,
         //     time: 800,
         //   },
         //   {
-        //     type: GameObjectAction.Walk,
+        //     type: OverworldEventAction.Walk,
         //     direction: Direction.Up,
         //   },
         //   {
-        //     type: GameObjectAction.Walk,
+        //     type: OverworldEventAction.Walk,
         //     direction: Direction.Right,
         //   },
         //   {
-        //     type: GameObjectAction.Walk,
+        //     type: OverworldEventAction.Walk,
         //     direction: Direction.Down,
         //   },
         // ],
@@ -146,32 +143,32 @@ window.OVERWORLD_MAPS = {
           events: [
             {
               who: GameObjectName.Npc2,
-              type: GameObjectAction.Walk,
+              type: OverworldEventAction.Walk,
               direction: Direction.Left,
             },
             {
               who: GameObjectName.Npc2,
-              type: GameObjectAction.Stand,
+              type: OverworldEventAction.Stand,
               direction: Direction.Up,
               time: 500,
             },
             {
-              type: TextMessageAction.TextMessage,
+              type: OverworldEventAction.TextMessage,
               text: "You can't be in here!",
             },
             {
               who: GameObjectName.Npc2,
-              type: GameObjectAction.Walk,
+              type: OverworldEventAction.Walk,
               direction: Direction.Right,
             },
             {
               who: GameObjectName.Hero,
-              type: GameObjectAction.Walk,
+              type: OverworldEventAction.Walk,
               direction: Direction.Down,
             },
             {
               who: GameObjectName.Hero,
-              type: GameObjectAction.Walk,
+              type: OverworldEventAction.Walk,
               direction: Direction.Left,
             },
           ],
@@ -179,7 +176,9 @@ window.OVERWORLD_MAPS = {
       ],
       [asGridCoord(5, 10)]: [
         {
-          events: [{ type: MapAction.ChangeMap, map: MapName.Kitchen }],
+          events: [
+            { type: OverworldEventAction.ChangeMap, map: MapName.Kitchen },
+          ],
         },
       ],
     },
@@ -202,7 +201,7 @@ window.OVERWORLD_MAPS = {
           {
             events: [
               {
-                type: TextMessageAction.TextMessage,
+                type: OverworldEventAction.TextMessage,
                 text: 'You made it!',
                 faceHero: GameObjectName.Npc3,
               },

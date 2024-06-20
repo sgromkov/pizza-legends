@@ -1,25 +1,7 @@
-import {
-  BattleMapAction,
-  BattleMapEvent,
-  BattleMapEventPayload,
-} from './Battle/BattleMapEvent';
-import {
-  Direction,
-  GameObject,
-  GameObjectAction,
-  GameObjectName,
-} from './GameObject';
-import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
-import { MapAction, MapEvent, MapEventPayload } from './MapEvent';
+import { Direction, GameObject, GameObjectName } from './GameObject';
 import { Overworld } from './Overworld';
-import { EventPayload, OverworldEvent } from './OverworldEvent';
-import { PauseAction, PauseEvent, PauseEventPayload } from './PauseEvent';
+import { OverworldEventPayload, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
-import {
-  TextMessageAction,
-  TextMessageEvent,
-  TextMesssageEventPayload,
-} from './TextMessageEvent';
 import { nextPosition, withGrid } from './utils';
 
 export enum MapName {
@@ -35,7 +17,7 @@ export interface OverworldMapConfig {
   cutsceneSpaces?: Record<
     string,
     Array<{
-      events: EventPayload[];
+      events: OverworldEventPayload[];
     }>
   >;
 }
@@ -49,7 +31,7 @@ export class OverworldMap {
   cutsceneSpaces: Record<
     string,
     Array<{
-      events: EventPayload[];
+      events: OverworldEventPayload[];
     }>
   >;
   isCutscenePlaying: boolean;
@@ -112,46 +94,15 @@ export class OverworldMap {
     });
   }
 
-  async startCutscene(events: EventPayload[]): Promise<void> {
+  async startCutscene(events: OverworldEventPayload[]): Promise<void> {
     this.isCutscenePlaying = true;
 
     // Start a loop of async events
     for (let i = 0; i < events.length; i++) {
-      let eventHandler: OverworldEvent;
-
-      switch (events[i].type) {
-        case TextMessageAction.TextMessage:
-          eventHandler = new TextMessageEvent({
-            event: events[i] as TextMesssageEventPayload,
-            map: this,
-          });
-          break;
-        case GameObjectAction.Stand:
-        case GameObjectAction.Walk:
-          eventHandler = new GameObjectEvent({
-            event: events[i] as GameObjectEventPayload,
-            map: this,
-          });
-          break;
-        case MapAction.ChangeMap:
-          eventHandler = new MapEvent({
-            event: events[i] as MapEventPayload,
-            map: this,
-          });
-          break;
-        case BattleMapAction.Battle:
-          eventHandler = new BattleMapEvent({
-            event: events[i] as BattleMapEventPayload,
-            map: this,
-          });
-          break;
-        case PauseAction.Pause:
-          eventHandler = new PauseEvent({
-            event: events[i] as PauseEventPayload,
-            map: this,
-          });
-          break;
-      }
+      const eventHandler = new OverworldEvent({
+        event: events[i],
+        map: this,
+      });
 
       await eventHandler.init();
     }

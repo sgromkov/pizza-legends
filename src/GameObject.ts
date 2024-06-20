@@ -1,5 +1,10 @@
-import { GameObjectEvent, GameObjectEventPayload } from './GameObjectEvent';
-import { EventPayload } from './OverworldEvent';
+import {
+  OverworldEvent,
+  OverworldEventAction,
+  OverworldEventPayload,
+  OverworldEventStandPayload,
+  OverworldEventWalkPayload,
+} from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
 import { Sprite } from './Sprite';
 
@@ -17,13 +22,8 @@ export enum Direction {
   Right = 'right',
 }
 
-export enum GameObjectAction {
-  Walk = 'walk',
-  Stand = 'stand',
-}
-
 export interface GameObjectBehaviour {
-  type: GameObjectAction;
+  type: OverworldEventAction.Stand | OverworldEventAction.Walk;
   direction: Direction;
   time?: number;
   retry?: boolean;
@@ -41,7 +41,7 @@ export interface GameObjectConfig {
   direction?: Direction;
   behaviourLoop?: GameObjectBehaviour[];
   talking?: Array<{
-    events: EventPayload[];
+    events: OverworldEventPayload[];
   }>;
 }
 
@@ -56,7 +56,7 @@ export class GameObject {
   behaviourLoopIndex: number;
   isStanding: boolean;
   talking?: Array<{
-    events: EventPayload[];
+    events: OverworldEventPayload[];
   }>;
 
   constructor(config: GameObjectConfig) {
@@ -99,13 +99,14 @@ export class GameObject {
     }
 
     // Setting up our event with relevant info:
-    const eventConfig: GameObjectEventPayload = {
-      ...this.behaviourLoop[this.behaviourLoopIndex],
-      who: this.id,
-    };
+    const eventConfig: OverworldEventWalkPayload | OverworldEventStandPayload =
+      {
+        ...this.behaviourLoop[this.behaviourLoopIndex],
+        who: this.id,
+      };
 
     // Create an event instance out of our next event config:
-    const eventHandler = new GameObjectEvent({ map, event: eventConfig });
+    const eventHandler = new OverworldEvent({ map, event: eventConfig });
     await eventHandler.init();
 
     // Setting the next event to fire:

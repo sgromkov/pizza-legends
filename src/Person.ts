@@ -3,9 +3,9 @@ import {
   Direction,
   GameObject,
   GameObjectConfig,
-  GameObjectAction,
   GameObjectBehaviour,
 } from './GameObject';
+import { OverworldEventAction } from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
 import { AnimationKey } from './Sprite';
 import { emitEvent, EventName } from './utils';
@@ -44,7 +44,7 @@ export class Person extends GameObject {
         state.arrow
       ) {
         this.startBehaviour(state, {
-          type: GameObjectAction.Walk,
+          type: OverworldEventAction.Walk,
           direction: state.arrow,
         });
       }
@@ -56,7 +56,7 @@ export class Person extends GameObject {
     // Set character direction to whatever behaviour has:
     this.direction = behaviour.direction;
 
-    if (behaviour.type === GameObjectAction.Walk) {
+    if (behaviour.type === OverworldEventAction.Walk) {
       // Stop here if space is not free:
       if (state.map.isSpaceTaken(this.x, this.y, this.direction)) {
         if (behaviour.retry) {
@@ -74,7 +74,7 @@ export class Person extends GameObject {
       this.updateSprite();
     }
 
-    if (behaviour.type === GameObjectAction.Stand) {
+    if (behaviour.type === OverworldEventAction.Stand) {
       this.isStanding = true;
       setTimeout(() => {
         emitEvent(EventName.PersonStandComplete, { whoId: this.id });

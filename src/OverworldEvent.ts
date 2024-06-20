@@ -1,25 +1,189 @@
-import { GameObjectAction, GameObjectBehaviour } from './GameObject';
-import { OverworldMap } from './OverworldMap';
+import { Battle } from './Battle/Battle';
+import { Direction, GameObjectBehaviour, GameObjectName } from './GameObject';
+import { MapName, OverworldMap } from './OverworldMap';
+import { PauseMenu } from './PauseMenu';
+import { SceneTransition } from './SceneTransition';
 import { TextMessage } from './TextMessage';
-import { EventName } from './utils';
+import { EnemyKey } from './constants/ENEMIES';
+import { EventName, getOppositeDirection } from './utils';
 
-export interface EventPayload {
-  type: string;
-  [key: string]: any;
+export enum OverworldEventAction {
+  TextMessage = 'textMessage',
+  Walk = 'walk',
+  Stand = 'stand',
+  ChangeMap = 'changeMap',
+  Battle = 'battle',
+  Pause = 'pause',
 }
+
+export interface OverworldEventTextMesssagePayload {
+  type: OverworldEventAction.TextMessage;
+  text: string;
+  faceHero?: GameObjectName;
+}
+
+export interface OverworldEventStandPayload {
+  type: OverworldEventAction.Stand;
+  who: GameObjectName;
+  direction: Direction;
+  time?: number;
+}
+
+export interface OverworldEventWalkPayload {
+  type: OverworldEventAction.Walk;
+  who: GameObjectName;
+  direction: Direction;
+  time?: number;
+  retry?: boolean;
+}
+
+export interface OverworldEventChangeMapPayload {
+  type: OverworldEventAction.ChangeMap;
+  map: MapName;
+}
+
+export interface OverworldEventBattlePayload {
+  type: OverworldEventAction.Battle;
+  enemyId: EnemyKey;
+}
+
+export interface OverworldEventPausePayload {
+  type: OverworldEventAction.Pause;
+}
+
+export type OverworldEventPayload =
+  | OverworldEventTextMesssagePayload
+  | OverworldEventStandPayload
+  | OverworldEventWalkPayload
+  | OverworldEventChangeMapPayload
+  | OverworldEventBattlePayload
+  | OverworldEventPausePayload;
 
 interface Config {
   map: OverworldMap;
-  event: EventPayload;
+  event: OverworldEventPayload;
 }
 
 export class OverworldEvent {
   map: OverworldMap;
-  event: EventPayload;
+  event: OverworldEventPayload;
 
   constructor(config: Config) {
     this.map = config.map;
     this.event = config.event;
+  }
+
+  textMessage(resolve: Function): void {
+    const event = this.event as OverworldEventTextMesssagePayload;
+
+    if (event.faceHero) {
+      const gameObject = this.map.gameObjects[event.faceHero];
+
+      gameObject.direction = getOppositeDirection(
+        this.map.gameObjects[GameObjectName.Hero].direction
+      );
+    }
+
+    const message = new TextMessage({
+      text: event.text,
+      onComplete: () => resolve(),
+    });
+    message.init(document.querySelector('.game-container'));
+  }
+
+  stand(resolve: Function): void {
+    const event = this.event as OverworldEventStandPayload;
+    const person = this.map.gameObjects[event.who];
+
+    person.startBehaviour(
+      {
+        map: this.map,
+      },
+      {
+        type: OverworldEventAction.Stand,
+        direction: event.direction,
+        time: event.time,
+      }
+    );
+
+    const completeHandler = (e) => {
+      if (e.detail.whoId === event.who) {
+        document.removeEventListener(
+          EventName.PersonStandComplete,
+          completeHandler
+        );
+
+        resolve();
+      }
+    };
+
+    document.addEventListener(EventName.PersonStandComplete, completeHandler);
+  }
+
+  walk(resolve: Function): void {
+    const event = this.event as OverworldEventWalkPayload;
+    const person = this.map.gameObjects[event.who];
+
+    person.startBehaviour(
+      {
+        map: this.map,
+      },
+      {
+        type: OverworldEventAction.Walk,
+        direction: event.direction,
+        retry: true,
+      }
+    );
+
+    const completeHandler = (e) => {
+      if (e.detail.whoId === event.who) {
+        document.removeEventListener(
+          EventName.PersonWalkingComplete,
+          completeHandler
+        );
+
+        resolve();
+      }
+    };
+
+    document.addEventListener(EventName.PersonWalkingComplete, completeHandler);
+  }
+
+  changeMap(resolve: Function) {
+    const event = this.event as OverworldEventChangeMapPayload;
+    const sceneTransition = new SceneTransition();
+    sceneTransition.init(document.querySelector('.game-container'), () => {
+      this.map.overworld.startMap(window.OVERWORLD_MAPS[event.map]);
+      resolve();
+
+      sceneTransition.fadeOut();
+    });
+  }
+
+  battle(resolve: Function) {
+    const event = this.event as OverworldEventBattlePayload;
+    const battle = new Battle({
+      enemy: window.ENEMIES[event.enemyId],
+      onComplete: () => {
+        resolve();
+      },
+    });
+
+    battle.init(document.querySelector('.game-container'));
+  }
+
+  pause(resolve: Function) {
+    this.map.isPaused = true;
+
+    const menu = new PauseMenu({
+      onComplete: () => {
+        resolve();
+        this.map.isPaused = false;
+        this.map.overworld.startGameLoop();
+      },
+    });
+
+    menu.init(document.querySelector('.game-container'));
   }
 
   async init(): Promise<void> {
