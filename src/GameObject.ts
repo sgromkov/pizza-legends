@@ -7,11 +7,12 @@ import {
 } from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
 import { Sprite } from './Sprite';
+import { StoryFlag } from './State/PlayerState';
 
 export enum GameObjectId {
   Hero = 'hero',
-  Npc1 = 'npc1',
-  Npc2 = 'npc2',
+  Beth = 'beth',
+  Erio = 'erio',
   Npc3 = 'npc3',
 }
 
@@ -41,6 +42,7 @@ export interface GameObjectConfig {
   direction?: Direction;
   behaviourLoop?: GameObjectBehaviour[];
   talking?: Array<{
+    required?: StoryFlag[];
     events: OverworldEventPayload[];
   }>;
 }
@@ -56,6 +58,7 @@ export class GameObject {
   behaviourLoopIndex: number;
   isStanding: boolean;
   talking?: Array<{
+    required?: StoryFlag[];
     events: OverworldEventPayload[];
   }>;
 

@@ -68,7 +68,7 @@ export function getOppositeDirection(direction: Direction): Direction {
 
   switch (direction) {
     case Direction.Left:
-      oppositeDirection = Direction.Up;
+      oppositeDirection = Direction.Right;
       break;
     case Direction.Right:
       oppositeDirection = Direction.Left;

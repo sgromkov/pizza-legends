@@ -13,6 +13,13 @@ export enum PlayerPizzaId {
   P3 = 'p3',
 }
 
+export enum StoryFlag {
+  DidSomething = 'DID_SOMETHING',
+  DefeatedFirstBoss = 'DEFEATED_FIRST_BOSS',
+  TalkToErio = 'TALK_TO_ERIO',
+  DefeatedBeth = 'DEFEATED_BETH',
+}
+
 export interface PlayerPizza {
   pizzaId: PizzaId;
   hp: number;
@@ -30,6 +37,7 @@ export class PlayerState {
   pizzas: Record<PlayerPizzaId, PlayerPizza>;
   lineup: Array<Partial<PlayerPizzaId>>;
   items: Array<BattleActionItem>;
+  storyFlags: Partial<Record<StoryFlag, boolean>>;
 
   constructor() {
     this.pizzas = {
@@ -79,6 +87,7 @@ export class PlayerState {
         instanceId: 'item3',
       },
     ];
+    this.storyFlags = {};
   }
 
   swapLineup(oldId: PlayerPizzaId, incomingId: PlayerPizzaId) {

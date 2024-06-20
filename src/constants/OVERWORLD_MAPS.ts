@@ -3,6 +3,7 @@ import { OverworldEventAction } from '../OverworldEvent';
 import { MapId, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
 import { asGridCoord, withGrid } from '../utils';
+import { StoryFlag } from '../State/PlayerState';
 import { EnemyId } from './ENEMIES';
 
 window.OVERWORLD_MAPS = {
@@ -11,12 +12,12 @@ window.OVERWORLD_MAPS = {
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
       [GameObjectId.Hero]: new Person({
-        src: '../images/characters/people/npc4.png',
+        src: '../images/characters/people/hero.png',
         x: withGrid(5),
         y: withGrid(6),
         isPlayerControlled: true,
       }),
-      [GameObjectId.Npc1]: new Person({
+      [GameObjectId.Beth]: new Person({
         src: '../images/characters/people/npc1.png',
         x: withGrid(7),
         y: withGrid(9),
@@ -44,13 +45,32 @@ window.OVERWORLD_MAPS = {
         ],
         talking: [
           {
+            required: [StoryFlag.TalkToErio],
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "I'm busy...",
-                faceHero: GameObjectId.Npc1,
+                text: "Isn't Erio the coolest?",
+                faceHero: GameObjectId.Beth,
+              },
+            ],
+          },
+          {
+            events: [
+              {
+                type: OverworldEventAction.TextMessage,
+                text: "I'm going to crush you!",
+                faceHero: GameObjectId.Beth,
               },
               { type: OverworldEventAction.Battle, enemyId: EnemyId.Beth },
+              {
+                type: OverworldEventAction.AddStoryFlag,
+                flag: StoryFlag.DefeatedBeth,
+              },
+              {
+                type: OverworldEventAction.TextMessage,
+                text: 'You crushed me.',
+                faceHero: GameObjectId.Beth,
+              },
               // { type: OverworldEventAction.TextMessage, text: 'Go away!' },
               // {
               //   type: OverworldEventAction.Walk,
@@ -66,7 +86,7 @@ window.OVERWORLD_MAPS = {
           },
         ],
       }),
-      [GameObjectId.Npc2]: new Person({
+      [GameObjectId.Erio]: new Person({
         src: '../images/characters/people/erio.png',
         x: withGrid(8),
         y: withGrid(5),
@@ -75,10 +95,14 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Bahaha!',
-                faceHero: GameObjectId.Npc2,
+                text: 'Hello!',
+                faceHero: GameObjectId.Erio,
               },
-              { type: OverworldEventAction.Battle, enemyId: EnemyId.Erio },
+              {
+                type: OverworldEventAction.AddStoryFlag,
+                flag: StoryFlag.TalkToErio,
+              },
+              // { type: OverworldEventAction.Battle, enemyId: EnemyId.Erio },
               // {
               //   type: OverworldEventAction.Walk,
               //   direction: Direction.Left,
@@ -142,12 +166,12 @@ window.OVERWORLD_MAPS = {
         {
           events: [
             {
-              who: GameObjectId.Npc2,
+              who: GameObjectId.Erio,
               type: OverworldEventAction.Walk,
               direction: Direction.Left,
             },
             {
-              who: GameObjectId.Npc2,
+              who: GameObjectId.Erio,
               type: OverworldEventAction.Stand,
               direction: Direction.Up,
               time: 500,
@@ -157,7 +181,7 @@ window.OVERWORLD_MAPS = {
               text: "You can't be in here!",
             },
             {
-              who: GameObjectId.Npc2,
+              who: GameObjectId.Erio,
               type: OverworldEventAction.Walk,
               direction: Direction.Right,
             },

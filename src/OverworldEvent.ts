@@ -3,6 +3,7 @@ import { Direction, GameObjectBehaviour, GameObjectId } from './GameObject';
 import { MapId, OverworldMap } from './OverworldMap';
 import { PauseMenu } from './PauseMenu';
 import { SceneTransition } from './SceneTransition';
+import { StoryFlag } from './State/PlayerState';
 import { TextMessage } from './TextMessage';
 import { EnemyId } from './constants/ENEMIES';
 import { EventName, getOppositeDirection } from './utils';
@@ -14,6 +15,7 @@ export enum OverworldEventAction {
   ChangeMap = 'changeMap',
   Battle = 'battle',
   Pause = 'pause',
+  AddStoryFlag = 'addStoryFlag',
 }
 
 export interface OverworldEventTextMesssagePayload {
@@ -50,6 +52,10 @@ export interface OverworldEventBattlePayload {
 export interface OverworldEventPausePayload {
   type: OverworldEventAction.Pause;
 }
+export interface OverworldEventAddStoryFlagPayload {
+  type: OverworldEventAction.AddStoryFlag;
+  flag: StoryFlag;
+}
 
 export type OverworldEventPayload =
   | OverworldEventTextMesssagePayload
@@ -57,7 +63,13 @@ export type OverworldEventPayload =
   | OverworldEventWalkPayload
   | OverworldEventChangeMapPayload
   | OverworldEventBattlePayload
-  | OverworldEventPausePayload;
+  | OverworldEventPausePayload
+  | OverworldEventAddStoryFlagPayload;
+
+export enum OverworldEventBattleResult {
+  WonBattle = 'WON_BATTLE',
+  LostBattle = 'LOST_BATTLE',
+}
 
 interface Config {
   map: OverworldMap;
@@ -164,8 +176,12 @@ export class OverworldEvent {
     const event = this.event as OverworldEventBattlePayload;
     const battle = new Battle({
       enemy: window.ENEMIES[event.enemyId],
-      onComplete: () => {
-        resolve();
+      onComplete: (isPlayerWin: boolean) => {
+        resolve(
+          isPlayerWin
+            ? OverworldEventBattleResult.WonBattle
+            : OverworldEventBattleResult.LostBattle
+        );
       },
     });
 
@@ -186,7 +202,15 @@ export class OverworldEvent {
     menu.init(document.querySelector('.game-container'));
   }
 
-  async init(): Promise<void> {
+  addStoryFlag(resolve: Function) {
+    const event = this.event as OverworldEventAddStoryFlagPayload;
+
+    window.playerState.storyFlags[event.flag] = true;
+
+    resolve();
+  }
+
+  async init(): Promise<void | OverworldEventBattleResult> {
     return new Promise((resolve) => {
       this[this.event.type](resolve);
     });

@@ -15,7 +15,7 @@ import { TurnCycle } from './TurnCycle';
 
 interface Config {
   enemy: Enemy;
-  onComplete: () => void;
+  onComplete: (isPlayerWin: boolean) => void;
 }
 
 export class Battle {
@@ -28,7 +28,7 @@ export class Battle {
   enemyTeam: Team;
   enemy: Enemy;
   usedInstanceIds: Record<string, boolean>;
-  onComplete: () => void;
+  onComplete: (isPlayerWin: boolean) => void;
 
   constructor({ enemy, onComplete }: Config) {
     this.enemy = enemy;
@@ -140,7 +140,9 @@ export class Battle {
         });
       },
       onWinner: (winnerTeam: TeamType) => {
-        if (winnerTeam === TeamType.Player) {
+        const isPlayerWin = winnerTeam === TeamType.Player;
+
+        if (isPlayerWin) {
           Object.keys(window.playerState.pizzas).forEach(
             (id: PlayerPizzaId) => {
               const playerStatePizza = window.playerState.pizzas[id];
@@ -165,7 +167,7 @@ export class Battle {
         }
 
         this.element.remove();
-        this.onComplete();
+        this.onComplete(isPlayerWin);
       },
     });
     this.turnCycle.init();

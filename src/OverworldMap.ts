@@ -1,6 +1,10 @@
 import { Direction, GameObject, GameObjectId } from './GameObject';
 import { Overworld } from './Overworld';
-import { OverworldEventPayload, OverworldEvent } from './OverworldEvent';
+import {
+  OverworldEventPayload,
+  OverworldEvent,
+  OverworldEventBattleResult,
+} from './OverworldEvent';
 import { Person } from './Person';
 import { nextPosition, withGrid } from './utils';
 
@@ -104,7 +108,11 @@ export class OverworldMap {
         map: this,
       });
 
-      await eventHandler.init();
+      const result = await eventHandler.init();
+
+      if (result === OverworldEventBattleResult.LostBattle) {
+        break;
+      }
     }
 
     this.isCutscenePlaying = false;
@@ -123,7 +131,13 @@ export class OverworldMap {
     });
 
     if (!this.isCutscenePlaying && match && match.talking.length) {
-      this.startCutscene(match.talking[0].events);
+      const relevantScenario = match.talking.find((scenario) => {
+        return (scenario.required || []).every((sf) => {
+          return window.playerState.storyFlags[sf];
+        });
+      });
+
+      relevantScenario && this.startCutscene(relevantScenario.events);
     }
   }
 
