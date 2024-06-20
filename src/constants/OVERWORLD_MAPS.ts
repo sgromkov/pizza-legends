@@ -1,12 +1,12 @@
 import { Direction, GameObject, GameObjectId } from '../GameObject';
 import { OverworldEventAction } from '../OverworldEvent';
-import { MapName, OverworldMapConfig } from '../OverworldMap';
+import { MapId, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
 import { asGridCoord, withGrid } from '../utils';
 import { EnemyId } from './ENEMIES';
 
 window.OVERWORLD_MAPS = {
-  [MapName.DemoRoom]: {
+  [MapId.DemoRoom]: {
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
@@ -177,13 +177,13 @@ window.OVERWORLD_MAPS = {
       [asGridCoord(5, 10)]: [
         {
           events: [
-            { type: OverworldEventAction.ChangeMap, map: MapName.Kitchen },
+            { type: OverworldEventAction.ChangeMap, map: MapId.Kitchen },
           ],
         },
       ],
     },
   },
-  [MapName.Kitchen]: {
+  [MapId.Kitchen]: {
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {

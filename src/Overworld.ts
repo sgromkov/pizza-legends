@@ -3,7 +3,7 @@ import { Direction, GameObject, GameObjectId } from './GameObject';
 import { Hud } from './Hud';
 import { KeyPressListener } from './KeyPressListener';
 import { OverworldEventAction } from './OverworldEvent';
-import { MapName, OverworldMap, OverworldMapConfig } from './OverworldMap';
+import { MapId, OverworldMap, OverworldMapConfig } from './OverworldMap';
 import { EnemyId } from './constants/ENEMIES';
 import { EventName } from './utils';
 
@@ -107,7 +107,7 @@ export class Overworld {
     this.hud = new Hud();
     this.hud.init(document.querySelector('.game-container'));
 
-    this.startMap(window.OVERWORLD_MAPS[MapName.DemoRoom]);
+    this.startMap(window.OVERWORLD_MAPS[MapId.DemoRoom]);
 
     this.bindActionInput();
     this.bindHeroPositionCheck();

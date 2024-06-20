@@ -4,7 +4,7 @@ import { OverworldEventPayload, OverworldEvent } from './OverworldEvent';
 import { Person } from './Person';
 import { nextPosition, withGrid } from './utils';
 
-export enum MapName {
+export enum MapId {
   DemoRoom = 'DemoRoom',
   Kitchen = 'Kitchen',
 }

@@ -1,6 +1,6 @@
 import { Battle } from './Battle/Battle';
 import { Direction, GameObjectBehaviour, GameObjectId } from './GameObject';
-import { MapName, OverworldMap } from './OverworldMap';
+import { MapId, OverworldMap } from './OverworldMap';
 import { PauseMenu } from './PauseMenu';
 import { SceneTransition } from './SceneTransition';
 import { TextMessage } from './TextMessage';
@@ -39,7 +39,7 @@ export interface OverworldEventWalkPayload {
 
 export interface OverworldEventChangeMapPayload {
   type: OverworldEventAction.ChangeMap;
-  map: MapName;
+  map: MapId;
 }
 
 export interface OverworldEventBattlePayload {

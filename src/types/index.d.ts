@@ -1,4 +1,4 @@
-import { MapName, OverworldMapConfig } from '../OverworldMap';
+import { MapId, OverworldMapConfig } from '../OverworldMap';
 import { PlayerState } from '../State/PlayerState';
 import {
   BattleAction,
@@ -13,7 +13,7 @@ export {};
 
 declare global {
   interface Window {
-    OVERWORLD_MAPS: Record<MapName, OverworldMapConfig>;
+    OVERWORLD_MAPS: Record<MapId, OverworldMapConfig>;
     BATTLE_ANIMATIONS: Record<
       BattleAnimationId,
       (
