@@ -6,6 +6,7 @@ import {
   OverworldEventBattleResult,
 } from './OverworldEvent';
 import { Person } from './Person';
+import { PizzaStone } from './PizzaStone';
 import { nextPosition, withGrid } from './utils';
 
 export enum MapId {
@@ -14,7 +15,7 @@ export enum MapId {
 }
 
 export interface OverworldMapConfig {
-  gameObjects: Partial<Record<GameObjectId, GameObject | Person>>;
+  gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
   lowerSrc: string;
   upperSrc: string;
   walls?: Record<string, boolean>;
@@ -28,7 +29,7 @@ export interface OverworldMapConfig {
 
 export class OverworldMap {
   overworld: Overworld;
-  gameObjects: Partial<Record<GameObjectId, GameObject | Person>>;
+  gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
   walls: Record<string, boolean>;

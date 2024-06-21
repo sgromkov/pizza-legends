@@ -11,11 +11,13 @@ export enum AnimationId {
   WalkRight = 'walk-right',
   WalkUp = 'walk-up',
   WalkLeft = 'walk-left',
+  UsedDown = 'used-down',
+  UnusedDown = 'unused-down',
 }
 
 type AnimationStep = [number, number];
 type Animation = AnimationStep[];
-type Animations = Record<AnimationId, Animation>;
+type Animations = Partial<Record<AnimationId, Animation>>;
 
 interface Config {
   animations?: Animations;

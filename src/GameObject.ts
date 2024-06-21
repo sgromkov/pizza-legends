@@ -14,6 +14,7 @@ export enum GameObjectId {
   Beth = 'beth',
   Erio = 'erio',
   Npc3 = 'npc3',
+  PizzaStone = 'pizzaStone',
 }
 
 export enum Direction {
@@ -38,13 +39,14 @@ export interface ActionState {
 export interface GameObjectConfig {
   x?: number;
   y?: number;
-  src: string;
+  src?: string;
   direction?: Direction;
   behaviourLoop?: GameObjectBehaviour[];
   talking?: Array<{
     required?: StoryFlag[];
     events: OverworldEventPayload[];
   }>;
+  storyFlag?: StoryFlag;
 }
 
 export class GameObject {
@@ -61,6 +63,7 @@ export class GameObject {
     required?: StoryFlag[];
     events: OverworldEventPayload[];
   }>;
+  storyFlag?: StoryFlag;
 
   constructor(config: GameObjectConfig) {
     this.id = null;

@@ -7,17 +7,14 @@ import {
 import { PizzaId } from '../constants/PIZZAS';
 import { EventName, emitEvent } from '../utils';
 
-export enum PlayerPizzaId {
-  P1 = 'p1',
-  P2 = 'p2',
-  P3 = 'p3',
-}
+export type PlayerPizzaId = string;
 
 export enum StoryFlag {
   DidSomething = 'DID_SOMETHING',
   DefeatedFirstBoss = 'DEFEATED_FIRST_BOSS',
   TalkToErio = 'TALK_TO_ERIO',
   DefeatedBeth = 'DEFEATED_BETH',
+  UsedPizzaStone = 'USED_PIZZA_STONE',
 }
 
 export interface PlayerPizza {
@@ -35,13 +32,13 @@ export interface PlayerPizza {
 
 export class PlayerState {
   pizzas: Record<PlayerPizzaId, PlayerPizza>;
-  lineup: Array<Partial<PlayerPizzaId>>;
+  lineup: PlayerPizzaId[];
   items: Array<BattleActionItem>;
   storyFlags: Partial<Record<StoryFlag, boolean>>;
 
   constructor() {
     this.pizzas = {
-      [PlayerPizzaId.P1]: {
+      p1: {
         pizzaId: PizzaId.S001,
         hp: 30,
         maxHp: 50,
@@ -53,7 +50,7 @@ export class PlayerState {
           expiresIn: 3,
         },
       },
-      [PlayerPizzaId.P2]: {
+      p2: {
         pizzaId: PizzaId.V001,
         hp: 50,
         maxHp: 50,
@@ -62,7 +59,7 @@ export class PlayerState {
         level: 1,
         status: null,
       },
-      [PlayerPizzaId.P3]: {
+      p3: {
         pizzaId: PizzaId.F001,
         hp: 50,
         maxHp: 50,
@@ -72,7 +69,7 @@ export class PlayerState {
         status: null,
       },
     };
-    this.lineup = [PlayerPizzaId.P1, PlayerPizzaId.P2];
+    this.lineup = ['p1', 'p2'];
     this.items = [
       {
         actionId: BattleActionId.ItemRecoverHp,
@@ -88,6 +85,27 @@ export class PlayerState {
       },
     ];
     this.storyFlags = {};
+  }
+
+  addPizza(id: PizzaId) {
+    const newId: PlayerPizzaId =
+      `p${Date.now()}` + Math.floor(Math.random() * 99999);
+
+    this.pizzas[newId] = {
+      pizzaId: id,
+      hp: 50,
+      maxHp: 50,
+      xp: 0,
+      maxXp: 100,
+      level: 1,
+      status: null,
+    };
+
+    if (this.lineup.length < 3) {
+      this.lineup.push(newId);
+    }
+
+    emitEvent(EventName.LineupChanged);
   }
 
   swapLineup(oldId: PlayerPizzaId, incomingId: PlayerPizzaId) {

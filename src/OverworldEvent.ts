@@ -1,4 +1,5 @@
 import { Battle } from './Battle/Battle';
+import { CraftingMenu } from './CraftingMenu';
 import { Direction, GameObjectBehaviour, GameObjectId } from './GameObject';
 import { MapId, OverworldMap } from './OverworldMap';
 import { PauseMenu } from './PauseMenu';
@@ -6,6 +7,7 @@ import { SceneTransition } from './SceneTransition';
 import { StoryFlag } from './State/PlayerState';
 import { TextMessage } from './TextMessage';
 import { EnemyId } from './constants/ENEMIES';
+import { PizzaId } from './constants/PIZZAS';
 import { EventName, getOppositeDirection } from './utils';
 
 export enum OverworldEventAction {
@@ -16,6 +18,7 @@ export enum OverworldEventAction {
   Battle = 'battle',
   Pause = 'pause',
   AddStoryFlag = 'addStoryFlag',
+  CraftingMenu = 'craftingMenu',
 }
 
 export interface OverworldEventTextMesssagePayload {
@@ -57,6 +60,11 @@ export interface OverworldEventAddStoryFlagPayload {
   flag: StoryFlag;
 }
 
+export interface OverworldEventCraftingMenuPayload {
+  type: OverworldEventAction.CraftingMenu;
+  pizzas: PizzaId[];
+}
+
 export type OverworldEventPayload =
   | OverworldEventTextMesssagePayload
   | OverworldEventStandPayload
@@ -64,7 +72,8 @@ export type OverworldEventPayload =
   | OverworldEventChangeMapPayload
   | OverworldEventBattlePayload
   | OverworldEventPausePayload
-  | OverworldEventAddStoryFlagPayload;
+  | OverworldEventAddStoryFlagPayload
+  | OverworldEventCraftingMenuPayload;
 
 export enum OverworldEventBattleResult {
   WonBattle = 'WON_BATTLE',
@@ -208,6 +217,18 @@ export class OverworldEvent {
     window.playerState.storyFlags[event.flag] = true;
 
     resolve();
+  }
+
+  craftingMenu(resolve: Function) {
+    const event = this.event as OverworldEventCraftingMenuPayload;
+    const menu = new CraftingMenu({
+      pizzas: event.pizzas,
+      onComplete: () => {
+        resolve();
+      },
+    });
+
+    menu.init(document.querySelector('.game-container'));
   }
 
   async init(): Promise<void | OverworldEventBattleResult> {

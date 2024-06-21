@@ -5,6 +5,8 @@ import { Person } from '../Person';
 import { asGridCoord, withGrid } from '../utils';
 import { StoryFlag } from '../State/PlayerState';
 import { EnemyId } from './ENEMIES';
+import { PizzaStone } from '../PizzaStone';
+import { PizzaId } from './PIZZAS';
 
 window.OVERWORLD_MAPS = {
   [MapId.DemoRoom]: {
@@ -139,6 +141,12 @@ window.OVERWORLD_MAPS = {
         //     direction: Direction.Down,
         //   },
         // ],
+      }),
+      [GameObjectId.PizzaStone]: new PizzaStone({
+        x: withGrid(2),
+        y: withGrid(7),
+        storyFlag: StoryFlag.UsedPizzaStone,
+        pizzas: [PizzaId.V001, PizzaId.F001],
       }),
     },
     walls: {
