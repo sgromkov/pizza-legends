@@ -12,9 +12,11 @@ import { nextPosition, withGrid } from './utils';
 export enum MapId {
   DemoRoom = 'DemoRoom',
   Kitchen = 'Kitchen',
+  Street = 'Street',
 }
 
 export interface OverworldMapConfig {
+  id: MapId;
   gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
   lowerSrc: string;
   upperSrc: string;
@@ -28,6 +30,7 @@ export interface OverworldMapConfig {
 }
 
 export class OverworldMap {
+  id: MapId;
   overworld: Overworld;
   gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
   lowerImage: HTMLImageElement;

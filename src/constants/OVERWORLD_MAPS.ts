@@ -10,6 +10,7 @@ import { PizzaId } from './PIZZAS';
 
 window.OVERWORLD_MAPS = {
   [MapId.DemoRoom]: {
+    id: MapId.DemoRoom,
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
     gameObjects: {
@@ -230,13 +231,20 @@ window.OVERWORLD_MAPS = {
       [asGridCoord(5, 10)]: [
         {
           events: [
-            { type: OverworldEventAction.ChangeMap, map: MapId.Kitchen },
+            {
+              type: OverworldEventAction.ChangeMap,
+              map: MapId.Street,
+              x: withGrid(25),
+              y: withGrid(5),
+              direction: Direction.Down,
+            },
           ],
         },
       ],
     },
   },
   [MapId.Kitchen]: {
+    id: MapId.Kitchen,
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
     gameObjects: {
@@ -264,5 +272,62 @@ window.OVERWORLD_MAPS = {
       }),
     },
     walls: {},
+    cutsceneSpaces: {
+      [asGridCoord(5, 10)]: [
+        {
+          events: [
+            {
+              type: OverworldEventAction.ChangeMap,
+              map: MapId.Street,
+              x: withGrid(29),
+              y: withGrid(9),
+              direction: Direction.Down,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  [MapId.Street]: {
+    id: MapId.Street,
+    lowerSrc: '../images/maps/street-lower.png',
+    upperSrc: '../images/maps/street-upper.png',
+    gameObjects: {
+      [GameObjectId.Hero]: new Person({
+        src: '../images/characters/people/hero.png',
+        x: withGrid(30),
+        y: withGrid(10),
+        isPlayerControlled: true,
+      }),
+    },
+    walls: {},
+    cutsceneSpaces: {
+      [asGridCoord(29, 9)]: [
+        {
+          events: [
+            {
+              type: OverworldEventAction.ChangeMap,
+              map: MapId.Kitchen,
+              x: withGrid(5),
+              y: withGrid(10),
+              direction: Direction.Up,
+            },
+          ],
+        },
+      ],
+      [asGridCoord(25, 5)]: [
+        {
+          events: [
+            {
+              type: OverworldEventAction.ChangeMap,
+              map: MapId.DemoRoom,
+              x: withGrid(5),
+              y: withGrid(10),
+              direction: Direction.Up,
+            },
+          ],
+        },
+      ],
+    },
   },
 };

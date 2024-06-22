@@ -1,5 +1,6 @@
 import { KeyPressListener } from './KeyPressListener';
 import { KeyboardMenu, KeyboardMenuOption } from './KeyboardMenu';
+import { Progress } from './Progress';
 import { PlayerPizzaId } from './State/PlayerState';
 import { wait } from './utils';
 
@@ -8,12 +9,20 @@ export enum PauseMenuPageKey {
 }
 
 export class PauseMenu {
+  progress: Progress;
   onComplete: Function;
   element: HTMLElement;
   keyboardMenu: KeyboardMenu;
   esc: KeyPressListener;
 
-  constructor({ onComplete }: { onComplete: Function }) {
+  constructor({
+    progress,
+    onComplete,
+  }: {
+    progress: Progress;
+    onComplete: Function;
+  }) {
+    this.progress = progress;
     this.onComplete = onComplete;
   }
 
@@ -41,7 +50,8 @@ export class PauseMenu {
           label: 'Save',
           description: 'Save your progress',
           handler: () => {
-            // We'll come back to this...
+            this.progress.save();
+            this.close();
           },
         },
         {

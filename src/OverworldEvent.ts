@@ -45,6 +45,9 @@ export interface OverworldEventWalkPayload {
 export interface OverworldEventChangeMapPayload {
   type: OverworldEventAction.ChangeMap;
   map: MapId;
+  x: number;
+  y: number;
+  direction: Direction;
 }
 
 export interface OverworldEventBattlePayload {
@@ -174,7 +177,11 @@ export class OverworldEvent {
     const event = this.event as OverworldEventChangeMapPayload;
     const sceneTransition = new SceneTransition();
     sceneTransition.init(document.querySelector('.game-container'), () => {
-      this.map.overworld.startMap(window.OVERWORLD_MAPS[event.map]);
+      this.map.overworld.startMap(window.OVERWORLD_MAPS[event.map], {
+        x: event.x,
+        y: event.y,
+        direction: event.direction,
+      });
       resolve();
 
       sceneTransition.fadeOut();
@@ -201,6 +208,7 @@ export class OverworldEvent {
     this.map.isPaused = true;
 
     const menu = new PauseMenu({
+      progress: this.map.overworld.progress,
       onComplete: () => {
         resolve();
         this.map.isPaused = false;

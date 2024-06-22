@@ -4,6 +4,7 @@ import { Hud } from './Hud';
 import { KeyPressListener } from './KeyPressListener';
 import { OverworldEventAction } from './OverworldEvent';
 import { MapId, OverworldMap, OverworldMapConfig } from './OverworldMap';
+import { Progress } from './Progress';
 import { EnemyId } from './constants/ENEMIES';
 import { EventName } from './utils';
 
@@ -18,6 +19,7 @@ export class Overworld {
   map: OverworldMap;
   directionInput: DirectionInput;
   hud: Hud;
+  progress: Progress;
 
   constructor(config: Config) {
     this.element = config.element;
@@ -97,24 +99,75 @@ export class Overworld {
     );
   }
 
-  startMap(mapConfig: OverworldMapConfig) {
+  startMap(
+    mapConfig: OverworldMapConfig,
+    initialHeroState: {
+      x: number;
+      y: number;
+      direction: Direction;
+    } = null
+  ) {
     this.map = new OverworldMap(mapConfig);
     this.map.overworld = this;
     this.map.mountObjects();
+
+    if (initialHeroState) {
+      this.map.removeWall(
+        this.map.gameObjects.hero.x,
+        this.map.gameObjects.hero.y
+      );
+
+      this.map.gameObjects.hero.x = initialHeroState.x;
+      this.map.gameObjects.hero.y = initialHeroState.y;
+      this.map.gameObjects.hero.direction = initialHeroState.direction;
+
+      this.map.addWall(
+        this.map.gameObjects.hero.x,
+        this.map.gameObjects.hero.y
+      );
+    }
+
+    this.progress.mapId = mapConfig.id;
+    this.progress.startingHeroX = this.map.gameObjects.hero.x;
+    this.progress.startingHeroY = this.map.gameObjects.hero.y;
+    this.progress.startingHeroDirection = this.map.gameObjects.hero.direction;
   }
 
   init() {
+    // Create a new Progress tracker:
+    this.progress = new Progress();
+
+    // Potentially load save data:
+    let initialHeroState: {
+      x: number;
+      y: number;
+      direction: Direction;
+    } = null;
+    const saveFile = this.progress.getSaveFile();
+    if (saveFile) {
+      this.progress.load();
+      initialHeroState = {
+        x: this.progress.startingHeroX,
+        y: this.progress.startingHeroY,
+        direction: this.progress.startingHeroDirection,
+      };
+    }
+
+    // Load the HUD:
     this.hud = new Hud();
     this.hud.init(document.querySelector('.game-container'));
 
-    this.startMap(window.OVERWORLD_MAPS[MapId.DemoRoom]);
+    // Start the first map:
+    this.startMap(window.OVERWORLD_MAPS[this.progress.mapId], initialHeroState);
 
+    // Create controlls:
     this.bindActionInput();
     this.bindHeroPositionCheck();
 
     this.directionInput = new DirectionInput();
     this.directionInput.init();
 
+    // Kick off the game:
     this.startGameLoop();
 
     // this.map.startCutscene([
