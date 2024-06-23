@@ -1,0 +1,36 @@
+.title-screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000;
+}
+
+.title-screen__logo {
+    display: block;
+    margin: 0 auto;
+    width: 128px;
+    image-rendering: pixelated;
+}
+
+.title-screen .keyboard-menu {
+    position: relative;
+    width: 100px;
+    margin: 0 auto;
+    background: transparent;
+    border: 0;
+}
+
+.title-screen button {
+    color: #fff;
+    justify-content: center;
+    padding: 0;
+}
+
+.title-screen .description-box {
+    background: transparent;
+    color: #fff;
+    border: 0;
+    text-align: center;
+}

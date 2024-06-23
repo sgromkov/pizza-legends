@@ -40,36 +40,19 @@ export class PlayerState {
     this.pizzas = {
       p1: {
         pizzaId: PizzaId.S001,
-        hp: 30,
-        maxHp: 50,
-        xp: 90,
-        maxXp: 100,
-        level: 1,
-        status: {
-          type: StateChangeStatusType.Saucy,
-          expiresIn: 3,
-        },
-      },
-      p2: {
-        pizzaId: PizzaId.V001,
         hp: 50,
         maxHp: 50,
-        xp: 75,
+        xp: 0,
         maxXp: 100,
         level: 1,
         status: null,
-      },
-      p3: {
-        pizzaId: PizzaId.F001,
-        hp: 50,
-        maxHp: 50,
-        xp: 75,
-        maxXp: 100,
-        level: 1,
-        status: null,
+        // status: {
+        //   type: StateChangeStatusType.Saucy,
+        //   expiresIn: 3,
+        // },
       },
     };
-    this.lineup = ['p1', 'p2'];
+    this.lineup = ['p1'];
     this.items = [
       {
         actionId: BattleActionId.ItemRecoverHp,

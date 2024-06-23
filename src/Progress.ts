@@ -3,7 +3,7 @@ import { MapId } from './OverworldMap';
 import { PlayerPizza, PlayerPizzaId, StoryFlag } from './State/PlayerState';
 import { BattleActionItem } from './constants/BATLE_ACTIONS';
 
-interface ProgressPayload {
+export interface ProgressPayload {
   mapId: MapId;
   startingHeroX: number;
   startingHeroY: number;
