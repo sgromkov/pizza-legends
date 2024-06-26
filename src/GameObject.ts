@@ -11,10 +11,28 @@ import { StoryFlag } from './State/PlayerState';
 
 export enum GameObjectId {
   Hero = 'hero',
-  Beth = 'beth',
-  Erio = 'erio',
-  Npc3 = 'npc3',
-  PizzaStone = 'pizzaStone',
+  DemoRoomNpc1 = 'DemoRoomNpc1',
+  DemoRoomNpc2 = 'DemoRoomNpc2',
+  DemoRoomPizzaStone = 'DemoRoomPizzaStone',
+  KitchenNpc1 = 'KitchenNpc1',
+  KitchenNpc2 = 'KitchenNpc2',
+  StreetNpc1 = 'StreetNpc1',
+  StreetNpc2 = 'StreetNpc2',
+  StreetNpc3 = 'StreetNpc3',
+  ShopNpc1 = 'ShopNpc1',
+  ShopNpc2 = 'ShopNpc2',
+  ShopPizzaStone = 'ShopPizzaStone',
+  GreenKitchenNpc1 = 'GreenKitchenNpc1',
+  GreenKitchenNpc2 = 'GreenKitchenNpc2',
+  GreenKitchenBoss = 'GreenKitchenBoss',
+  StreetNorthNpc1 = 'StreetNorthNpc1',
+  StreetNorthNpc2 = 'StreetNorthNpc2',
+  StreetNorthNpc3 = 'StreetNorthNpc3',
+  StreetNorthPizzaStone = 'StreetNorthPizzaStone',
+  DiningRoomNpc1 = 'DiningRoomNpc1',
+  DiningRoomNpc2 = 'DiningRoomNpc2',
+  DiningRoomNpc3 = 'DiningRoomNpc3',
+  DiningRoomNpc4 = 'DiningRoomNpc4',
 }
 
 export enum Direction {

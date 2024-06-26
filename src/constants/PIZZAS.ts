@@ -12,7 +12,9 @@ export enum PizzaId {
   S001 = 's001',
   S002 = 's002',
   V001 = 'v001',
-  F001 = 'f001'
+  V002 = 'v002',
+  F001 = 'f001',
+  F002 = 'f002',
 }
 
 export interface Pizza {
@@ -31,7 +33,11 @@ window.PIZZAS = {
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s001.png',
     icon: 'images/icons/spicy.png',
-    actions: [BattleActionId.ClumsyStatus, BattleActionId.SaucyStatus, BattleActionId.Damage1],
+    actions: [
+      BattleActionId.ClumsyStatus,
+      BattleActionId.SaucyStatus,
+      BattleActionId.Damage1,
+    ],
   },
   [PizzaId.S002]: {
     name: 'Bacon Brigade',
@@ -39,7 +45,11 @@ window.PIZZAS = {
     type: PizzaType.Spicy,
     src: '/images/characters/pizzas/s002.png',
     icon: 'images/icons/spicy.png',
-    actions: [BattleActionId.Damage1, BattleActionId.SaucyStatus, BattleActionId.ClumsyStatus],
+    actions: [
+      BattleActionId.Damage1,
+      BattleActionId.SaucyStatus,
+      BattleActionId.ClumsyStatus,
+    ],
   },
   [PizzaId.V001]: {
     name: 'Call me Kale',
@@ -49,12 +59,28 @@ window.PIZZAS = {
     icon: 'images/icons/veggie.png',
     actions: [BattleActionId.Damage1],
   },
+  [PizzaId.V002]: {
+    name: 'Archie Artichoke',
+    description: 'Pizza desc here',
+    type: PizzaType.Veggie,
+    src: '/images/characters/pizzas/v002.png',
+    icon: '/images/icons/veggie.png',
+    actions: [BattleActionId.Damage1],
+  },
   [PizzaId.F001]: {
     name: 'Portobello Express',
     description: 'Pizza desc here',
     type: PizzaType.Fungi,
     src: '/images/characters/pizzas/f001.png',
     icon: 'images/icons/fungi.png',
+    actions: [BattleActionId.Damage1],
+  },
+  [PizzaId.F002]: {
+    name: 'Say Shitake',
+    description: 'Pizza desc here',
+    type: PizzaType.Fungi,
+    src: '/images/characters/pizzas/f002.png',
+    icon: '/images/icons/fungi.png',
     actions: [BattleActionId.Damage1],
   },
 };

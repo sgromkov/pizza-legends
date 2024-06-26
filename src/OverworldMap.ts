@@ -7,12 +7,17 @@ import {
 } from './OverworldEvent';
 import { Person } from './Person';
 import { PizzaStone } from './PizzaStone';
+import { StoryFlag } from './State/PlayerState';
 import { nextPosition, withGrid } from './utils';
 
 export enum MapId {
   DemoRoom = 'DemoRoom',
   Kitchen = 'Kitchen',
   Street = 'Street',
+  DiningRoom = 'DiningRoom',
+  Shop = 'Shop',
+  StreetNorth = 'StreetNorth',
+  GreenKitchen = 'GreenKitchen',
 }
 
 export interface OverworldMapConfig {
@@ -24,6 +29,7 @@ export interface OverworldMapConfig {
   cutsceneSpaces?: Record<
     string,
     Array<{
+      disqualify?: StoryFlag[];
       events: OverworldEventPayload[];
     }>
   >;
@@ -39,6 +45,7 @@ export class OverworldMap {
   cutsceneSpaces: Record<
     string,
     Array<{
+      disqualify?: StoryFlag[];
       events: OverworldEventPayload[];
     }>
   >;

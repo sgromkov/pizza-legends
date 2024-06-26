@@ -15,6 +15,13 @@ export enum StoryFlag {
   TalkToErio = 'TALK_TO_ERIO',
   DefeatedBeth = 'DEFEATED_BETH',
   UsedPizzaStone = 'USED_PIZZA_STONE',
+  StreetBattle = 'STREET_BATTLE',
+  StreetNorthBattle = 'STREET_NORTH_BATTLE',
+  DiningRoomBattle = 'DINING_ROOM_BATTLE',
+  StoneShop = 'STONE_SHOP',
+  StoneStreetNorth = 'STONE_STREET_NORTH',
+  ChefRootie = 'CHEF_ROOTIE',
+  SeenIntro = 'SEEN_INTRO'
 }
 
 export interface PlayerPizza {
