@@ -1,12 +1,18 @@
-import { Direction, GameObject, GameObjectId } from './GameObject';
+import {
+  Direction,
+  GameObject,
+  GameObjectConfig,
+  GameObjectId,
+  GameObjetcType,
+} from './GameObject';
 import { Overworld } from './Overworld';
 import {
   OverworldEventPayload,
   OverworldEvent,
   OverworldEventBattleResult,
 } from './OverworldEvent';
-import { Person } from './Person';
-import { PizzaStone } from './PizzaStone';
+import { Person, PersonConfig } from './Person';
+import { PizzaStone, PizzaStoneConfig } from './PizzaStone';
 import { StoryFlag } from './State/PlayerState';
 import { nextPosition, withGrid } from './utils';
 
@@ -22,7 +28,9 @@ export enum MapId {
 
 export interface OverworldMapConfig {
   id: MapId;
-  gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
+  configObjects: Partial<
+    Record<GameObjectId, GameObjectConfig | PersonConfig | PizzaStoneConfig>
+  >;
   lowerSrc: string;
   upperSrc: string;
   walls?: Record<string, boolean>;
@@ -38,6 +46,9 @@ export interface OverworldMapConfig {
 export class OverworldMap {
   id: MapId;
   overworld: Overworld;
+  configObjects: Partial<
+    Record<GameObjectId, GameObjectConfig | PersonConfig | PizzaStoneConfig>
+  >;
   gameObjects: Partial<Record<GameObjectId, GameObject | Person | PizzaStone>>;
   lowerImage: HTMLImageElement;
   upperImage: HTMLImageElement;
@@ -54,7 +65,8 @@ export class OverworldMap {
 
   constructor(config: OverworldMapConfig) {
     this.overworld = null;
-    this.gameObjects = config.gameObjects;
+    this.gameObjects = {};
+    this.configObjects = config.configObjects;
     this.walls = config.walls || {};
     this.cutsceneSpaces = config.cutsceneSpaces || {};
 
@@ -101,11 +113,22 @@ export class OverworldMap {
   }
 
   mountObjects(): void {
-    Object.keys(this.gameObjects).forEach((id: GameObjectId) => {
-      const gameObject = this.gameObjects[id];
+    Object.keys(this.configObjects).forEach((id: GameObjectId) => {
+      const configObject = this.configObjects[id];
+      configObject.id = id;
 
-      gameObject.id = id;
-      gameObject.mount(this);
+      let instance: Person | PizzaStone;
+      if (configObject.type === GameObjetcType.Person) {
+        instance = new Person(configObject);
+      }
+      if (configObject.type === GameObjetcType.PizzaStone) {
+        instance = new PizzaStone(configObject as PizzaStoneConfig);
+      }
+
+      this.gameObjects[id] = instance;
+      this.gameObjects[id].id = id;
+
+      instance.mount(this);
     });
   }
 

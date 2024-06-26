@@ -54,7 +54,13 @@ export interface ActionState {
   map: OverworldMap;
 }
 
+export enum GameObjetcType {
+  Person = 'Person',
+  PizzaStone = 'PizzaStone',
+}
+
 export interface GameObjectConfig {
+  id?: GameObjectId;
   x?: number;
   y?: number;
   src?: string;
@@ -65,6 +71,7 @@ export interface GameObjectConfig {
     events: OverworldEventPayload[];
   }>;
   storyFlag?: StoryFlag;
+  type: GameObjetcType;
 }
 
 export class GameObject {

@@ -3,7 +3,7 @@ import { OverworldEventAction } from './OverworldEvent';
 import { AnimationId, Sprite } from './Sprite';
 import { PizzaId } from './constants/PIZZAS';
 
-interface PizzaStoneConfig extends GameObjectConfig {
+export interface PizzaStoneConfig extends GameObjectConfig {
   pizzas: PizzaId[];
 }
 

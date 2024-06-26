@@ -1,4 +1,9 @@
-import { Direction, GameObject, GameObjectId } from '../GameObject';
+import {
+  Direction,
+  GameObject,
+  GameObjectId,
+  GameObjetcType,
+} from '../GameObject';
 import { OverworldEventAction } from '../OverworldEvent';
 import { MapId, OverworldMapConfig } from '../OverworldMap';
 import { Person } from '../Person';
@@ -13,14 +18,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.DemoRoom,
     lowerSrc: '../images/maps/demo-lower.png',
     upperSrc: '../images/maps/demo-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(5),
         y: withGrid(6),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.DemoRoomNpc1]: new Person({
+      },
+      [GameObjectId.DemoRoomNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc1.png',
         x: withGrid(7),
         y: withGrid(9),
@@ -77,8 +84,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.DemoRoomNpc2]: new Person({
+      },
+      [GameObjectId.DemoRoomNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc6.png',
         x: withGrid(8),
         y: withGrid(5),
@@ -97,13 +105,14 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.DemoRoomPizzaStone]: new PizzaStone({
+      },
+      [GameObjectId.DemoRoomPizzaStone]: {
+        type: GameObjetcType.PizzaStone,
         x: withGrid(2),
         y: withGrid(7),
         storyFlag: StoryFlag.UsedPizzaStone,
         pizzas: [PizzaId.V001, PizzaId.F001],
-      }),
+      },
     },
     walls: {
       [asGridCoord(7, 6)]: true,
@@ -202,14 +211,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.Kitchen,
     lowerSrc: '../images/maps/kitchen-lower.png',
     upperSrc: '../images/maps/kitchen-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(10),
         y: withGrid(5),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.KitchenNpc1]: new Person({
+      },
+      [GameObjectId.KitchenNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc8.png',
         x: withGrid(9),
         y: withGrid(5),
@@ -224,8 +235,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.KitchenNpc2]: new Person({
+      },
+      [GameObjectId.KitchenNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc3.png',
         x: withGrid(3),
         y: withGrid(6),
@@ -240,7 +252,7 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
+      },
     },
     cutsceneSpaces: {
       [asGridCoord(5, 10)]: [
@@ -385,14 +397,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.Street,
     lowerSrc: '../images/maps/street-lower.png',
     upperSrc: '../images/maps/street-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(30),
         y: withGrid(10),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.StreetNpc1]: new Person({
+      },
+      [GameObjectId.StreetNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc2.png',
         x: withGrid(9),
         y: withGrid(11),
@@ -419,8 +433,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.StreetNpc2]: new Person({
+      },
+      [GameObjectId.StreetNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc7.png',
         x: withGrid(31),
         y: withGrid(12),
@@ -462,8 +477,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.StreetNorthNpc3]: new Person({
+      },
+      [GameObjectId.StreetNorthNpc3]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc8.png',
         x: withGrid(22),
         y: withGrid(10),
@@ -493,7 +509,7 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
+      },
     },
     walls: {
       [asGridCoord(4, 9)]: true,
@@ -631,14 +647,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.Shop,
     lowerSrc: '../images/maps/pizza-shop-lower.png',
     upperSrc: '../images/maps/pizza-shop-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(3),
         y: withGrid(7),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.ShopNpc1]: new Person({
+      },
+      [GameObjectId.ShopNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc6.png',
         x: withGrid(6),
         y: withGrid(5),
@@ -653,8 +671,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.ShopNpc2]: new Person({
+      },
+      [GameObjectId.ShopNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc2.png',
         x: withGrid(5),
         y: withGrid(9),
@@ -676,13 +695,14 @@ window.OVERWORLD_MAPS = {
             time: 400,
           },
         ],
-      }),
-      [GameObjectId.ShopPizzaStone]: new PizzaStone({
+      },
+      [GameObjectId.ShopPizzaStone]: {
+        type: GameObjetcType.PizzaStone,
         x: withGrid(1),
         y: withGrid(4),
         storyFlag: StoryFlag.StoneShop,
         pizzas: [PizzaId.V002, PizzaId.F002],
-      }),
+      },
     },
     walls: {
       [asGridCoord(2, 4)]: true,
@@ -765,14 +785,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.GreenKitchen,
     lowerSrc: '../images/maps/green-kitchen-lower.png',
     upperSrc: '../images/maps/green-kitchen-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(3),
         y: withGrid(8),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.GreenKitchenNpc1]: new Person({
+      },
+      [GameObjectId.GreenKitchenNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc2.png',
         x: withGrid(8),
         y: withGrid(8),
@@ -809,8 +831,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.GreenKitchenNpc2]: new Person({
+      },
+      [GameObjectId.GreenKitchenNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc3.png',
         x: withGrid(1),
         y: withGrid(8),
@@ -873,8 +896,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.GreenKitchenBoss]: new Person({
+      },
+      [GameObjectId.GreenKitchenBoss]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/second-boss.png',
         x: withGrid(3),
         y: withGrid(5),
@@ -908,7 +932,7 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
+      },
     },
     walls: {
       [asGridCoord(1, 4)]: true,
@@ -977,14 +1001,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.StreetNorth,
     lowerSrc: '../images/maps/street-north-lower.png',
     upperSrc: '../images/maps/street-north-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(3),
         y: withGrid(8),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.StreetNorthNpc1]: new Person({
+      },
+      [GameObjectId.StreetNorthNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc1.png',
         x: withGrid(9),
         y: withGrid(6),
@@ -1027,8 +1053,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.StreetNorthNpc2]: new Person({
+      },
+      [GameObjectId.StreetNorthNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc3.png',
         x: withGrid(4),
         y: withGrid(12),
@@ -1070,8 +1097,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.StreetNorthNpc3]: new Person({
+      },
+      [GameObjectId.StreetNorthNpc3]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc8.png',
         x: withGrid(12),
         y: withGrid(9),
@@ -1104,13 +1132,14 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.StreetNorthPizzaStone]: new PizzaStone({
+      },
+      [GameObjectId.StreetNorthPizzaStone]: {
+        type: GameObjetcType.PizzaStone,
         x: withGrid(2),
         y: withGrid(9),
         storyFlag: StoryFlag.StoneStreetNorth,
         pizzas: [PizzaId.V001, PizzaId.F001],
-      }),
+      },
     },
     walls: {
       [asGridCoord(2, 7)]: true,
@@ -1200,14 +1229,16 @@ window.OVERWORLD_MAPS = {
     id: MapId.DiningRoom,
     lowerSrc: '../images/maps/dining-room-lower.png',
     upperSrc: '../images/maps/dining-room-upper.png',
-    gameObjects: {
-      [GameObjectId.Hero]: new Person({
+    configObjects: {
+      [GameObjectId.Hero]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/hero.png',
         x: withGrid(5),
         y: withGrid(8),
         isPlayerControlled: true,
-      }),
-      [GameObjectId.DiningRoomNpc1]: new Person({
+      },
+      [GameObjectId.DiningRoomNpc1]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc8.png',
         x: withGrid(12),
         y: withGrid(8),
@@ -1241,8 +1272,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.DiningRoomNpc2]: new Person({
+      },
+      [GameObjectId.DiningRoomNpc2]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc4.png',
         x: withGrid(9),
         y: withGrid(5),
@@ -1257,8 +1289,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.DiningRoomNpc3]: new Person({
+      },
+      [GameObjectId.DiningRoomNpc3]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc7.png',
         x: withGrid(9),
         y: withGrid(5),
@@ -1290,8 +1323,9 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
-      [GameObjectId.DiningRoomNpc4]: new Person({
+      },
+      [GameObjectId.DiningRoomNpc4]: {
+        type: GameObjetcType.Person,
         src: '../images/characters/people/npc1.png',
         x: withGrid(8),
         y: withGrid(9),
@@ -1338,7 +1372,7 @@ window.OVERWORLD_MAPS = {
             ],
           },
         ],
-      }),
+      },
     },
     walls: {
       [asGridCoord(7, 2)]: true,

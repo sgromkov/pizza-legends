@@ -10,7 +10,7 @@ import { OverworldMap } from './OverworldMap';
 import { AnimationId } from './Sprite';
 import { emitEvent, EventName } from './utils';
 
-interface PersonConfig extends GameObjectConfig {
+export interface PersonConfig extends GameObjectConfig {
   isPlayerControlled?: boolean;
 }
 
