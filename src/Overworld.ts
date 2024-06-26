@@ -114,19 +114,9 @@ export class Overworld {
     this.map.mountObjects();
 
     if (initialHeroState) {
-      this.map.removeWall(
-        this.map.gameObjects.hero.x,
-        this.map.gameObjects.hero.y
-      );
-
       this.map.gameObjects.hero.x = initialHeroState.x;
       this.map.gameObjects.hero.y = initialHeroState.y;
       this.map.gameObjects.hero.direction = initialHeroState.direction;
-
-      this.map.addWall(
-        this.map.gameObjects.hero.x,
-        this.map.gameObjects.hero.y
-      );
     }
 
     this.progress.mapId = mapConfig.id;

@@ -89,6 +89,7 @@ export class GameObject {
     events: OverworldEventPayload[];
   }>;
   storyFlag?: StoryFlag;
+  retryTimeout: NodeJS.Timeout;
 
   constructor(config: GameObjectConfig) {
     this.id = null;
@@ -100,15 +101,16 @@ export class GameObject {
       gameObject: this,
       src: config.src,
     });
+
+    // These happen once on map startup:
     this.behaviourLoop = config.behaviourLoop || [];
     this.behaviourLoopIndex = 0;
     this.talking = config.talking || [];
+    this.retryTimeout = null;
   }
 
   mount(map: OverworldMap): void {
     this.isMounted = true;
-
-    map.addWall(this.x, this.y);
 
     // If we have a behaviour, kick off after a short delay:
     setTimeout(() => {
@@ -121,11 +123,19 @@ export class GameObject {
   startBehaviour(state: ActionState, behaviour: GameObjectBehaviour): void {}
 
   async doBehaviourEvent(map: OverworldMap): Promise<void> {
-    if (
-      map.isCutscenePlaying ||
-      this.behaviourLoop.length === 0 ||
-      this.isStanding
-    ) {
+    if (this.behaviourLoop.length === 0) {
+      return;
+    }
+
+    if (map.isCutscenePlaying) {
+      if (this.retryTimeout) {
+        clearTimeout(this.retryTimeout);
+      }
+
+      this.retryTimeout = setTimeout(() => {
+        this.doBehaviourEvent(map);
+      }, 1000);
+
       return;
     }
 

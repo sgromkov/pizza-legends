@@ -8,7 +8,7 @@ import {
 import { OverworldEventAction } from './OverworldEvent';
 import { OverworldMap } from './OverworldMap';
 import { AnimationId } from './Sprite';
-import { emitEvent, EventName } from './utils';
+import { emitEvent, EventName, nextPosition } from './utils';
 
 export interface PersonConfig extends GameObjectConfig {
   isPlayerControlled?: boolean;
@@ -18,12 +18,14 @@ export class Person extends GameObject {
   movingProgressRemaining: number;
   directionUpdate: Record<Direction, [string, number]>;
   isPlayerControlled: boolean;
+  intentPosition: [number, number];
 
   constructor(config: PersonConfig) {
     super(config);
 
     this.movingProgressRemaining = 0;
     this.isStanding = false;
+    this.intentPosition = null;
     this.isPlayerControlled = config.isPlayerControlled || false;
     this.directionUpdate = {
       [Direction.Up]: ['y', -0.5],
@@ -53,6 +55,10 @@ export class Person extends GameObject {
   }
 
   startBehaviour(state: ActionState, behaviour: GameObjectBehaviour): void {
+    if (!this.isMounted) {
+      return;
+    }
+
     // Set character direction to whatever behaviour has:
     this.direction = behaviour.direction;
 
@@ -69,8 +75,12 @@ export class Person extends GameObject {
       }
 
       // Move character:
-      state.map.moveWall(this.x, this.y, this.direction);
       this.movingProgressRemaining = 16;
+
+      // Add next position intent:
+      const intentPosition = nextPosition(this.x, this.y, this.direction);
+      this.intentPosition = [intentPosition.x, intentPosition.y];
+
       this.updateSprite();
     }
 
@@ -91,6 +101,7 @@ export class Person extends GameObject {
 
     if (this.movingProgressRemaining === 0) {
       // We finished the walk!
+      this.intentPosition = null;
       emitEvent(EventName.PersonWalkingComplete, { whoId: this.id });
     }
   }

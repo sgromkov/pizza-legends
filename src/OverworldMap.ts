@@ -109,7 +109,28 @@ export class OverworldMap {
   ): boolean {
     const { x, y } = nextPosition(currentX, currentY, direction);
 
-    return this.walls[`${x},${y}`] || false;
+    if (this.walls[`${x},${y}`]) {
+      return true;
+    }
+
+    // Check for game objects at this position:
+    return Boolean(
+      Object.values(this.gameObjects).find((obj: Person) => {
+        if (obj.x === x && obj.y === y) {
+          return true;
+        }
+
+        if (
+          obj.intentPosition &&
+          obj.intentPosition[0] === x &&
+          obj.intentPosition[1] === y
+        ) {
+          return true;
+        }
+
+        return false;
+      })
+    );
   }
 
   mountObjects(): void {
@@ -182,20 +203,5 @@ export class OverworldMap {
     if (!this.isCutscenePlaying && match) {
       this.startCutscene(match[0].events);
     }
-  }
-
-  addWall(x: number, y: number): void {
-    this.walls[`${x},${y}`] = true;
-  }
-
-  removeWall(x: number, y: number): void {
-    delete this.walls[`${x},${y}`];
-  }
-
-  moveWall(wasX: number, wasY: number, direction: Direction): void {
-    const { x, y } = nextPosition(wasX, wasY, direction);
-
-    this.removeWall(wasX, wasY);
-    this.addWall(x, y);
   }
 }
