@@ -24,7 +24,7 @@ export class Progress {
   saveFileKey: string;
 
   constructor() {
-    this.mapId = MapId.DemoRoom;
+    this.mapId = MapId.Kitchen;
     this.startingHeroX = 0;
     this.startingHeroY = 0;
     this.startingHeroDirection = Direction.Down;
