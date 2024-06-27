@@ -28,10 +28,10 @@ export class Person extends GameObject {
     this.intentPosition = null;
     this.isPlayerControlled = config.isPlayerControlled || false;
     this.directionUpdate = {
-      [Direction.Up]: ['y', -0.5],
-      [Direction.Down]: ['y', 0.5],
-      [Direction.Left]: ['x', -0.5],
-      [Direction.Right]: ['x', 0.5],
+      [Direction.Up]: ['y', -1],
+      [Direction.Down]: ['y', 1],
+      [Direction.Left]: ['x', -1],
+      [Direction.Right]: ['x', 1],
     };
   }
 
@@ -97,7 +97,7 @@ export class Person extends GameObject {
     const [property, change] = this.directionUpdate[this.direction];
 
     this[property] += change;
-    this.movingProgressRemaining -= 0.5;
+    this.movingProgressRemaining -= 1;
 
     if (this.movingProgressRemaining === 0) {
       // We finished the walk!

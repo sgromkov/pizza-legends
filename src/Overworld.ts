@@ -30,46 +30,65 @@ export class Overworld {
     this.map = null;
   }
 
-  startGameLoop() {
-    const step = () => {
-      // Clear off the canvas:
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  gameLoopStepWork(delta: number) {
+    // Clear off the canvas:
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      // Establish the camera person:
-      const cameraPerson = this.map.gameObjects.hero;
+    // Establish the camera person:
+    const cameraPerson = this.map.gameObjects.hero;
 
-      // Update all objects:
-      Object.values(this.map.gameObjects).forEach((object) => {
-        object.update({
-          arrow: this.directionInput.direction,
-          map: this.map,
-        });
+    // Update all objects:
+    Object.values(this.map.gameObjects).forEach((object) => {
+      object.update({
+        delta,
+        arrow: this.directionInput.direction,
+        map: this.map,
+      });
+    });
+
+    // Draw Lower Layer:
+    this.map.drawLowerImage(this.ctx, cameraPerson);
+
+    // Draw Game Objects:
+    Object.values(this.map.gameObjects)
+      // Set correct z-indexes:
+      .sort((a, b) => {
+        return a.y - b.y;
+      })
+      .forEach((object) => {
+        object.sprite.draw(this.ctx, cameraPerson);
       });
 
-      // Draw Lower Layer:
-      this.map.drawLowerImage(this.ctx, cameraPerson);
+    // Draw Upper Layer:
+    this.map.drawUpperImage(this.ctx, cameraPerson);
+  }
 
-      // Draw Game Objects:
-      Object.values(this.map.gameObjects)
-        // Set correct z-indexes:
-        .sort((a, b) => {
-          return a.y - b.y;
-        })
-        .forEach((object) => {
-          object.sprite.draw(this.ctx, cameraPerson);
-        });
+  startGameLoop() {
+    let previousMs: number;
+    const step = 1 / 60;
 
-      // Draw Upper Layer:
-      this.map.drawUpperImage(this.ctx, cameraPerson);
-
-      if (!this.map.isPaused) {
-        requestAnimationFrame(() => {
-          step();
-        });
+    const stepFn: FrameRequestCallback = (timestampMs) => {
+      if (this.map.isPaused) {
+        return;
       }
+
+      if (previousMs === undefined) {
+        previousMs = timestampMs;
+      }
+
+      let delta = (timestampMs - previousMs) / 1000;
+      while (delta >= step) {
+        this.gameLoopStepWork(delta);
+        delta -= step;
+      }
+      previousMs = timestampMs - delta * 1000;
+
+      // Business as usual tick:
+      requestAnimationFrame(stepFn);
     };
 
-    step();
+    // First kickoff tick:
+    requestAnimationFrame(stepFn);
   }
 
   bindActionInput() {
@@ -158,7 +177,8 @@ export class Overworld {
     this.hud.init(container);
 
     // Start the first map:
-    this.startMap(window.OVERWORLD_MAPS[this.progress.mapId], initialHeroState);
+    // this.startMap(window.OVERWORLD_MAPS[this.progress.mapId], initialHeroState);
+    this.startMap(window.OVERWORLD_MAPS[MapId.Street], initialHeroState);
 
     // Create controlls:
     this.bindActionInput();

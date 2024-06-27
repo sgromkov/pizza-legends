@@ -50,6 +50,7 @@ export interface GameObjectBehaviour {
 }
 
 export interface ActionState {
+  delta?: number;
   arrow?: Direction;
   map: OverworldMap;
 }
