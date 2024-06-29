@@ -20,8 +20,8 @@ export class TitleScreen {
     const saveFile = this.progress.getSaveFile();
     const options: KeyboardMenuOption[] = [
       {
-        label: 'New Game',
-        description: 'Start a new pizza adventure!',
+        label: 'Новая игра',
+        description: 'Начните новое приключение и станьте лучшим пиццайоло!',
         handler: () => {
           this.close();
           resolve(null);
@@ -29,8 +29,8 @@ export class TitleScreen {
       },
       saveFile
         ? {
-            label: 'Continue Game',
-            description: 'Resume your adventure!',
+            label: 'Продолжить игру',
+            description: 'Возобновите прежнее приключение.',
             handler: () => {
               this.close();
               resolve(saveFile);

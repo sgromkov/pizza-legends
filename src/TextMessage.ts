@@ -20,7 +20,7 @@ export class TextMessage {
     this.element.classList.add('text-message');
     this.element.innerHTML = `
       <p class="text-message__text"></p>
-      <button class="text-message__button">Next</button>
+      <button class="text-message__button">Далее</button>
     `;
 
     // Init the typewriter effect:

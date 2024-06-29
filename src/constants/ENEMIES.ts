@@ -55,7 +55,6 @@ window.ENEMIES = {
     src: '/images/characters/people/npc1.png',
     pizzas: {
       [EnemyPizzaId.BethPizza1]: {
-        hp: 1,
         pizzaId: PizzaId.F001,
         maxHp: 50,
         level: 1,

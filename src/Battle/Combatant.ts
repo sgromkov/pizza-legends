@@ -166,7 +166,7 @@ export class Combatant {
       randomFromArray([true, false, false])
     ) {
       return [
-        { type: BattleActionType.TextMessage, text: `${this.name} flops over!` },
+        { type: BattleActionType.TextMessage, text: `${this.name} опрокидывается!` },
       ];
     }
 
@@ -176,7 +176,7 @@ export class Combatant {
   getPostEvents(): BattleActionPayload[] {
     if (this.status?.type === StateChangeStatusType.Saucy) {
       return [
-        { type: BattleActionType.TextMessage, text: 'Feeling saucy!' },
+        { type: BattleActionType.TextMessage, text: 'Чувствую себя облитым чем-то вонючим!' },
         { type: BattleActionType.StateChange, recover: 5, onCaster: true },
       ];
     }
@@ -195,7 +195,7 @@ export class Combatant {
 
         return {
           type: BattleActionType.TextMessage,
-          text: 'Status expired!',
+          text: 'Эффекты сброшены!',
         };
       }
     }

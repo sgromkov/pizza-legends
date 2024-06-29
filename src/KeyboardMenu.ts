@@ -81,7 +81,7 @@ export class KeyboardMenu {
     // Description box element:
     this.descriptionElement = document.createElement('div');
     this.descriptionElement.classList.add('description-box');
-    this.descriptionElement.innerHTML = `<p>I will</p>`;
+    this.descriptionElement.innerHTML = `<p></p>`;
     this.descriptionElementText = this.descriptionElement.querySelector('p');
   }
 

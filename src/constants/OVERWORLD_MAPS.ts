@@ -59,7 +59,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "Isn't Erio the coolest?",
+                text: "Разве Эрио не самый крутой?",
                 faceHero: GameObjectId.DemoRoomNpc1,
               },
             ],
@@ -68,7 +68,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "I'm going to crush you!",
+                text: "Я собираюсь раздавить тебя!",
                 faceHero: GameObjectId.DemoRoomNpc1,
               },
               { type: OverworldEventAction.Battle, enemyId: EnemyId.Beth },
@@ -78,7 +78,7 @@ window.OVERWORLD_MAPS = {
               },
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'You crushed me.',
+                text: 'Ты победил меня.',
                 faceHero: GameObjectId.DemoRoomNpc1,
               },
             ],
@@ -95,7 +95,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Hello!',
+                text: 'Привет!',
                 faceHero: GameObjectId.DemoRoomNpc2,
               },
               {
@@ -172,7 +172,7 @@ window.OVERWORLD_MAPS = {
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: "You can't be in here!",
+              text: "Тебе нельзя здесь находиться!",
             },
             {
               who: GameObjectId.DemoRoomNpc2,
@@ -230,7 +230,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "** They don't want to talk to you **",
+                text: "** Он не хочет с тобой разговаривать **",
               },
             ],
           },
@@ -246,7 +246,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'People take their jobs here very seriously.',
+                text: 'Люди здесь очень серьезно относятся к своей работе.',
                 faceHero: GameObjectId.KitchenNpc2,
               },
             ],
@@ -278,7 +278,7 @@ window.OVERWORLD_MAPS = {
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: '* You are chopping ingredients on your first day as a Pizza Chef at a famed establishment in town. *',
+              text: '* В свой первый день работы шеф-поваром пиццерии вы режете овощи в знаменитом заведении города. *',
             },
             {
               type: OverworldEventAction.Walk,
@@ -299,19 +299,19 @@ window.OVERWORLD_MAPS = {
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: 'Ahem. Is this your best work?',
+              text: 'Кхм. Это твоя лучшая работа?',
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: 'These pepperonis are completely unstable! The pepper shapes are all wrong!',
+              text: 'Эти пепперони совершенно разные! Формы перца неправильные!',
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: "Don't even get me started on the mushrooms.",
+              text: "Даже не просите меня добавить грибы!",
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: 'You will never make it in pizza!',
+              text: 'Вы никогда не добьетесь успеха в пицце!',
             },
             {
               type: OverworldEventAction.Stand,
@@ -338,7 +338,7 @@ window.OVERWORLD_MAPS = {
             },
             {
               type: OverworldEventAction.TextMessage,
-              text: '* The competition is fierce! You should spend some time leveling up your Pizza lineup and skills. *',
+              text: '* Конкуренция жестокая! Вам следует потратить некоторое время на повышение уровня своего персонажа и навыков пиццы. *',
             },
             {
               type: OverworldEventAction.ChangeMap,
@@ -427,7 +427,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'All ambitious pizza chefs gather on Anchovy Avenue.',
+                text: 'На Анчоус-авеню собираются все амбициозные пиццайолы.',
                 faceHero: GameObjectId.StreetNpc1,
               },
             ],
@@ -471,7 +471,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "I can't decide on my favorite toppings.",
+                text: "Не могу определиться какая начинка подойдет лучше всего.",
                 faceHero: GameObjectId.StreetNpc2,
               },
             ],
@@ -489,7 +489,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'You are quite capable.',
+                text: 'А ты хорош!',
                 faceHero: GameObjectId.StreetNorthNpc3,
               },
             ],
@@ -498,7 +498,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'You should have just stayed home!',
+                text: 'Тебе следовало просто остаться дома!',
                 faceHero: GameObjectId.StreetNorthNpc3,
               },
               { type: OverworldEventAction.Battle, enemyId: EnemyId.Beth },
@@ -665,7 +665,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'All of the chef rivalries have been good for business.',
+                text: 'Все соперничества шеф-поваров пошли на пользу бизнесу.',
                 faceHero: GameObjectId.ShopNpc1,
               },
             ],
@@ -682,7 +682,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Which peel will make me a better chef?',
+                text: 'Какое тесто поможет мне стать лучшим поваром?',
                 faceHero: GameObjectId.ShopNpc2,
               },
             ],
@@ -825,7 +825,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Chef Rootie uses the best seasoning.',
+                text: 'Шеф-повар Рути использует лучшие приправы.',
                 faceHero: GameObjectId.GreenKitchenNpc1,
               },
             ],
@@ -890,7 +890,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Finally... a pizza place that gets me!',
+                text: 'Наконец-то... пиццерия, которая меня зацепила!',
                 faceHero: GameObjectId.GreenKitchenNpc2,
               },
             ],
@@ -908,7 +908,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'My veggies need more growth.',
+                text: 'Моим овощам нужно еще поспеть.',
                 faceHero: GameObjectId.GreenKitchenBoss,
               },
             ],
@@ -917,7 +917,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Veggies are the fuel for the heart and soul!',
+                text: 'Овощи – топливо для сердца и души!',
                 faceHero: GameObjectId.GreenKitchenNpc1,
               },
               {
@@ -1047,7 +1047,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'This place is famous for veggie pizzas!',
+                text: 'Это место славится овощной пиццей!',
                 faceHero: GameObjectId.StreetNorthNpc1,
               },
             ],
@@ -1091,7 +1091,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'I love the fresh smell of garlic in the air.',
+                text: 'Мне нравится запах чеснока в воздухе.',
                 faceHero: GameObjectId.StreetNorthNpc2,
               },
             ],
@@ -1109,7 +1109,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Could you be the Legendary one?',
+                text: 'Можешь ли ты стать Легендарным пиццайоло?',
                 faceHero: GameObjectId.StreetNorthNpc3,
               },
             ],
@@ -1118,7 +1118,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'This is my turf!',
+                text: 'Это моя территория!',
                 faceHero: GameObjectId.StreetNorthNpc3,
               },
               {
@@ -1248,7 +1248,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'Maybe I am not ready for this place.',
+                text: 'Возможно, я не еще готов работать здесь.',
                 faceHero: GameObjectId.DiningRoomNpc1,
               },
             ],
@@ -1257,7 +1257,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'You think you have what it takes to cook here?!',
+                text: 'Думаешь, у тебя есть все, что нужно, чтобы готовить здесь?!',
                 faceHero: GameObjectId.DiningRoomNpc1,
               },
               {
@@ -1283,7 +1283,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'People come from all over to dine here.',
+                text: 'Сюда приезжают отовсюду пообедать.',
                 faceHero: GameObjectId.DiningRoomNpc2,
               },
             ],
@@ -1293,8 +1293,8 @@ window.OVERWORLD_MAPS = {
       [GameObjectId.DiningRoomNpc3]: {
         type: GameObjetcType.Person,
         src: '../images/characters/people/npc7.png',
-        x: withGrid(9),
-        y: withGrid(5),
+        x: withGrid(3),
+        y: withGrid(6),
         behaviourLoop: [
           {
             type: OverworldEventAction.Stand,
@@ -1317,7 +1317,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: 'I was so lucky to score a reservation!',
+                text: 'Мне так повезло, что я забронировал номер!',
                 faceHero: GameObjectId.DiningRoomNpc3,
               },
             ],
@@ -1366,7 +1366,7 @@ window.OVERWORLD_MAPS = {
             events: [
               {
                 type: OverworldEventAction.TextMessage,
-                text: "I've been dreaming of this pizza for weeks!",
+                text: "Я мечтала об этой пицце уже несколько недель!",
                 faceHero: GameObjectId.DiningRoomNpc4,
               },
             ],

@@ -47,16 +47,16 @@ export class PauseMenu {
       return [
         ...lineupPizzas,
         {
-          label: 'Save',
-          description: 'Save your progress',
+          label: 'Созранить',
+          description: 'Сохранить свой прогресс в игре',
           handler: () => {
             this.progress.save();
             this.close();
           },
         },
         {
-          label: 'Close',
-          description: 'Close the pause menu',
+          label: 'Закрыть',
+          description: 'Закрыть меню',
           handler: () => {
             this.close();
           },
@@ -75,7 +75,7 @@ export class PauseMenu {
         const { pizzaId } = window.playerState.pizzas[id];
         const base = window.PIZZAS[pizzaId];
         const option: KeyboardMenuOption = {
-          label: `Swap for ${base.name}`,
+          label: `Заменить на ${base.name}`,
           description: base.description,
           handler: () => {
             window.playerState.swapLineup(pageKey, id);
@@ -91,16 +91,16 @@ export class PauseMenu {
     return [
       ...unequipped,
       {
-        label: 'Move to front',
-        description: 'Move this pizza to the front of the list',
+        label: 'Переместить наверх',
+        description: 'Переместить пиццу на самый верх',
         handler: () => {
           window.playerState.moveToFront(pageKey);
           this.keyboardMenu.setOptions(this.getOptions(PauseMenuPageKey.Root));
         },
       },
       {
-        label: 'Back',
-        description: 'Back to the root menu',
+        label: 'Назад',
+        description: 'Вернуться в предыдущее меню',
         handler: () => {
           this.keyboardMenu.setOptions(this.getOptions(PauseMenuPageKey.Root));
         },
@@ -113,7 +113,7 @@ export class PauseMenu {
     this.element.classList.add('pause-menu');
     this.element.classList.add('overlay-menu');
     this.element.innerHTML = `
-      <h2>Pause menu</h2>
+      <h2>Пауза</h2>
     `;
   }
 

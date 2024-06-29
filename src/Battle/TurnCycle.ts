@@ -50,7 +50,7 @@ export class TurnCycle {
 
       await this.onNewEvent({
         type: BattleActionType.TextMessage,
-        text: `Go get 'em, ${submission.replacement.name}`,
+        text: `Вперед, ${submission.replacement.name}`,
       });
 
       this.nextTurn();
@@ -85,7 +85,7 @@ export class TurnCycle {
     if (targetDead) {
       await this.onNewEvent({
         type: BattleActionType.TextMessage,
-        text: `${submission.target.name} is ruined!`,
+        text: `${submission.target.name} повержен!`,
       });
 
       if (submission.target.team === TeamType.Enemy) {
@@ -94,7 +94,7 @@ export class TurnCycle {
 
         await this.onNewEvent({
           type: BattleActionType.TextMessage,
-          text: `Gained ${xp} XP!`,
+          text: `Получил ${xp} опыта!`,
         });
 
         await this.onNewEvent({
@@ -111,7 +111,7 @@ export class TurnCycle {
       // End the battle:
       await this.onNewEvent({
         type: BattleActionType.TextMessage,
-        text: 'Winner!',
+        text: 'Победитель!',
       });
 
       this.onWinner(winner);
@@ -131,7 +131,7 @@ export class TurnCycle {
       });
       await this.onNewEvent({
         type: BattleActionType.TextMessage,
-        text: `${replacement.name} appears!`,
+        text: `${replacement.name} выходит на арену!`,
       });
     }
 
@@ -186,7 +186,7 @@ export class TurnCycle {
   async init() {
     await this.onNewEvent({
       type: BattleActionType.TextMessage,
-      text: `${this.battle.enemy.name} wants to throw down!`,
+      text: `${this.battle.enemy.name} бросает тебе вызов!`,
     });
 
     // Start the first turn:

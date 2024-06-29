@@ -40,7 +40,7 @@ export class CraftingMenu {
     this.element.classList.add('crafting-menu');
     this.element.classList.add('overlay-menu');
     this.element.innerHTML = `
-      <h2>Create a Pizza</h2>
+      <h2>Создай пиццу</h2>
     `;
   }
 

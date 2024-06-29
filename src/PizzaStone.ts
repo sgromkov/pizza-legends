@@ -33,7 +33,7 @@ export class PizzaStone extends GameObject {
         events: [
           {
             type: OverworldEventAction.TextMessage,
-            text: 'You have already used this.',
+            text: 'Вы уже взяли пиццу отсюда.',
           },
         ],
       },
@@ -41,7 +41,7 @@ export class PizzaStone extends GameObject {
         events: [
           {
             type: OverworldEventAction.TextMessage,
-            text: 'Approaching the legendary pizza stone...',
+            text: 'А вот и легендарный стол для приготовления пиццы...',
           },
           {
             type: OverworldEventAction.CraftingMenu,

@@ -103,12 +103,12 @@ export interface BattleActionItem {
 
 window.BATLE_ACTIONS = {
   [BattleActionId.Damage1]: {
-    name: 'Whomp!',
-    description: 'Pillowy punch of dough',
+    name: 'Бросок теста',
+    description: 'Мягкий пунш из теста',
     success: [
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} uses {ACTION}!',
+        text: '{CASTER} использует {ACTION}!',
       },
       {
         type: BattleActionType.Animation,
@@ -121,13 +121,13 @@ window.BATLE_ACTIONS = {
     ],
   },
   [BattleActionId.SaucyStatus]: {
-    name: 'Tomato Squeeze!',
-    description: 'Applies the Saucy status',
+    name: 'Томатная паста',
+    description: 'Поливает томатной пастой',
     targetType: BattleActionTargetType.Friendly,
     success: [
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} uses {ACTION}!',
+        text: '{CASTER} использует {ACTION}!',
       },
       {
         type: BattleActionType.StateChange,
@@ -139,12 +139,12 @@ window.BATLE_ACTIONS = {
     ],
   },
   [BattleActionId.ClumsyStatus]: {
-    name: 'Olive Oil',
-    description: 'Slippery mess of deliciousness',
+    name: 'Оливковое масло',
+    description: 'Вкусно, но скользко!',
     success: [
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} uses {ACTION}!',
+        text: '{CASTER} использует {ACTION}!',
       },
       {
         type: BattleActionType.Animation,
@@ -160,19 +160,19 @@ window.BATLE_ACTIONS = {
       },
       {
         type: BattleActionType.TextMessage,
-        text: '{TARGET} is slipping all around!',
+        text: '{TARGET} всюду подскальзывается!',
       },
     ],
   },
   // Items:
   [BattleActionId.ItemRecoverStatus]: {
-    name: 'Heating Lamp',
-    description: 'Clear status to your character',
+    name: 'Подогрев пиццы',
+    description: 'Очистит негативные эффекты на вашем персонажу',
     targetType: BattleActionTargetType.Friendly,
     success: [
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} uses a {ACTION}!',
+        text: '{CASTER} использует {ACTION}!',
       },
       {
         type: BattleActionType.StateChange,
@@ -180,18 +180,18 @@ window.BATLE_ACTIONS = {
       },
       {
         type: BattleActionType.TextMessage,
-        text: 'Feeling fresh!',
+        text: 'Чувствую свежесть!',
       },
     ],
   },
   [BattleActionId.ItemRecoverHp]: {
-    name: 'Parmesan',
-    description: 'Recover 10 hp to your character',
+    name: 'Пармезан',
+    description: 'Восстановит 10 пунктов здоровья вашему персонажу',
     targetType: BattleActionTargetType.Friendly,
     success: [
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} sprinkles on some {ACTION}!',
+        text: '{CASTER} берет {ACTION} и посыпает им пиццу!',
       },
       {
         type: BattleActionType.StateChange,
@@ -199,7 +199,7 @@ window.BATLE_ACTIONS = {
       },
       {
         type: BattleActionType.TextMessage,
-        text: '{CASTER} recovers HP!',
+        text: '{CASTER} Восстановал здрровье!',
       },
     ],
   },

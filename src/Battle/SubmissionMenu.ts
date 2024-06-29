@@ -75,8 +75,8 @@ export class SubmissionMenu {
 
   getPages(): Record<SubmissionMenuPageKey, KeyboardMenuOption[]> {
     const backOption: KeyboardMenuOption = {
-      label: 'Go back',
-      description: 'Return to previous page',
+      label: 'Назад',
+      description: 'Венруться в прежнее меню',
       handler: () => {
         this.keyboardMenu.setOptions(
           this.getPages()[SubmissionMenuPageKey.Root]
@@ -87,8 +87,8 @@ export class SubmissionMenu {
     const pages: Record<SubmissionMenuPageKey, KeyboardMenuOption[]> = {
       [SubmissionMenuPageKey.Root]: [
         {
-          label: 'Attack',
-          description: 'Choose an attack',
+          label: 'Атака',
+          description: 'Выберите способ атаки',
           handler: () => {
             this.keyboardMenu.setOptions(
               this.getPages()[SubmissionMenuPageKey.Attacks]
@@ -96,8 +96,8 @@ export class SubmissionMenu {
           },
         },
         {
-          label: 'Items',
-          description: 'Choose an item',
+          label: 'Предметы',
+          description: 'Выберите полезные предметы и ингридиенты',
           handler: () => {
             this.keyboardMenu.setOptions(
               this.getPages()[SubmissionMenuPageKey.Items]
@@ -105,8 +105,8 @@ export class SubmissionMenu {
           },
         },
         {
-          label: 'Swap',
-          description: 'Change to another pizza',
+          label: 'Поменять пиццу',
+          description: 'Выбрать другую пиццу',
           handler: () => {
             this.keyboardMenu.setOptions(
               this.getPages()[SubmissionMenuPageKey.Replacements]
